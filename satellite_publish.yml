@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    login: &login
+      server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+      username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+      password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+      validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
+    organization: Default Organization
+    lifecycle_environment: "{{ content_view }}_{{ env }}"
+    content_view: undef
+    publish_timeout: 14400
+    publish_retry_interval: 15
+
+  tasks:
+  - name: Publish Content View
+    redhat.satellite.content_view_version:
+      <<: *login
+      content_view: "{{ content_view }}"
+      organization: "{{ organization }}"
+      lifecycle_environments: "{{ lifecycle_environment }}"
+    async: "{{ publish_timeout }}"
+    poll: 0
+    register: publish_async
+
+  - name: Check if content view  is finished
+    async_status:
+      jid: "{{ publish_async.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: "{{ ( publish_timeout / publish_retry_interval ) | int }}"
+    delay: "{{ publish_retry_interval }}"

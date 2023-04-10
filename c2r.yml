@@ -1,0 +1,85 @@
+---
+- hosts: "env_{{ centos_lifecycle_environment }}"
+  become: true
+  environment:
+    CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
+  vars:
+    convert2rhel_timeout: 14400
+    convert2rhel_retry_interval: 15
+  tasks:
+  - name: verify operating system
+    assert:
+      that:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+        - "ansible_distribution_version.split('.')[1] | int >= 9"
+      fail_msg: "CentOS 7 minor release must be >= 9"
+      success_msg: "CentOS 7 minor release minimum requirement met, continue..."
+
+  - name: Install convert2rhel rpm from Red Hat OS and App Modernization Group GitHub
+    yum:
+      name: https://github.com/oamg/convert2rhel/releases/download/v0.25/convert2rhel-0.25-1.el7.noarch.rpm
+      state: present
+
+  - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
+    get_url:
+      url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+      dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
+      mode: '0440'
+
+  - name: "Add {{ ansible_distribution_major_version }}Server to file /etc/yum/vars/releasever if it does not exist on this CentOS {{ ansible_distribution_major_version }} system"
+    lineinfile:
+      path: /etc/yum/vars/releasever
+      line: "{{ ansible_distribution_major_version }}Server"
+      create: yes
+    when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7')
+
+  - name: Launch conversion asynchronously
+    command: >-
+      convert2rhel --keep-rhsm
+        --org {{ org_id }}
+        --activationkey {{ rhel_lifecycle_environment }}
+        --no-rpm-va
+        -y
+    async: "{{ convert2rhel_timeout }}"
+    poll: 0
+    register: convert2rhel_async
+
+  - name: Check if conversion is finished
+    async_status:
+      jid: "{{ convert2rhel_async.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: "{{ ( convert2rhel_timeout / convert2rhel_retry_interval ) | int }}"
+    delay: "{{ convert2rhel_retry_interval }}"
+
+  - name: Reboot server
+    reboot:
+    register: reboot_result
+
+  - name: Wait for connection...
+    wait_for_connection:
+      connect_timeout: 20
+      sleep: 5
+      delay: 5
+      timeout: 300
+
+  - name: Unregister node as prep for re-register
+    command: >-
+      subscription-manager unregister
+
+  - name: Ensure removal of all local subscription data
+    command: >-
+      subscription-manager clean
+
+  - name: Register system to Satellite as new RHEL node
+    include_role:
+      name: rhsm_register
+    vars:
+      env: "{{ rhel_lifecycle_environment.split('_')[1] }}"
+      activation_key: "{{ rhel_lifecycle_environment }}"
+      sat_url: satellite.example.com
+
+  - name: Enable all repos for current content view
+    command: >-
+      subscription-manager repos --enable=*
