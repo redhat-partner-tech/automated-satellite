@@ -32,21 +32,25 @@ controller_workflows:
       - identifier: Insights / Replace Satellite Manifest
         all_parents_must_converge: false
         unified_job_template: Insights / Replace Satellite Manifest
-        success_nodes: SERVER / RHEL7 - Register
+        success_nodes:
+          - SERVER / RHEL7 - Register
         organization: Default
       - identifier: SERVER / RHEL7 - Register
         unified_job_template: SERVER / RHEL7 - Register
-        success_nodes: Insights / Install and Register
+        success_nodes:
+          - Insights / Install and Register
         organization: Default
       - identifier: Insights / Install and Register
         all_parents_must_converge: false
         unified_job_template: Insights / Install and Register
-        success_nodes: Insights / Create Insights Credential
+        success_nodes:
+          - Insights / Create Insights Credential
         organization: Default
       - identifier: Insights / Create Insights Credential
         all_parents_must_converge: false
         unified_job_template: Insights / Create Insights Credential
-        success_nodes: Insights / Create Insights Project
+        success_nodes:
+          - Insights / Create Insights Project
         organization: Default
       - identifier: Insights / Create Insights Project
         all_parents_must_converge: false
