@@ -52,3 +52,4 @@ controller_workflows:
         all_parents_must_converge: false
         unified_job_template: Insights / Create Insights Project
         organization: Default
+        success_nodes: []
