@@ -27,6 +27,7 @@
       async: "{{ refresh_timeout }}"
       poll: 0
       register: refresh_async
+      delegate_to: localhost
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   become: true
