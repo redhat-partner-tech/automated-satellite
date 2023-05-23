@@ -178,6 +178,14 @@ controller_templates:
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
 
+  - name: SATELLITE / Refresh manifest
+    project: Automated Management
+    playbook: satellite_manifest_refresh.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
