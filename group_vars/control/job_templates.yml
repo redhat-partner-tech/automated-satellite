@@ -186,6 +186,13 @@ controller_templates:
       - Satellite Credential
       - Workshop Credential
 
+  - name: SATELLITE / Resume paused tasks
+    project: Automated Management
+    playbook: satellite_hammer_task_resume.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
