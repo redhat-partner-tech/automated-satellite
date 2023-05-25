@@ -1,6 +1,7 @@
 ---
 satellite_lifecycle_environments:
   # Red Hat Enterprise Linux 7
+  - name: "Library"
   - name: "RHEL7_Dev"
     prior: "Library"
   - name: "RHEL7_QA"
@@ -8,6 +9,7 @@ satellite_lifecycle_environments:
   - name: "RHEL7_Prod"
     prior: "RHEL7_QA"
   # Red Hat Enterprise Linux 8
+  - name: "Library"
   - name: "RHEL8_Dev"
     prior: "Library"
   - name: "RHEL8_QA"
@@ -15,6 +17,7 @@ satellite_lifecycle_environments:
   - name: "RHEL8_Prod"
     prior: "RHEL8_QA"
   # Community Enterprise Linux 7
+  - name: "Library"
   - name: "CentOS7_Dev"
     prior: "Library"
   - name: "CentOS7_QA"
@@ -22,6 +25,7 @@ satellite_lifecycle_environments:
   - name: "CentOS7_Prod"
     prior: "CentOS7_QA"
   # Community Enterprise Linux 8
+  - name: "Library"
   - name: "CentOS8_Dev"
     prior: "Library"
   - name: "CentOS8_QA"
