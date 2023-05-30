@@ -52,7 +52,7 @@
   - name: set the Product Id from specific Product Name selection via "{{ sat_product_name[0] }}" variable and .Name
     set_fact: sat_product_id={{ hammer_product_list_result.stdout | from_json | json_query(my_query) }}
     vars:
-      my_query: "[?Name=='{{ sat_product_name[0] }}'].ID"
+      my_query: "[?Name=='{{ sat_product_name[0] }}'].Id"
 
   - name: What is the Product Id? 
     debug:
