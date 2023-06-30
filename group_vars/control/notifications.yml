@@ -1,0 +1,9 @@
+---
+controller_notifications:
+  - name: Telemetry
+    organization: Default
+    notification_type: webhook
+    notification_configuration:
+      url: https://script.google.com/macros/s/AKfycbzxUObvCJ6ZbzfJyicw4RvxlGE3AZdrK4AR5-TsedCYd7O-rtTOVjvsRvqyb3rx6B0g8g/exec
+      http_method: POST
+      headers: {}

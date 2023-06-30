@@ -7,6 +7,7 @@
       - redhat_cop.controller_configuration.projects
       - redhat_cop.controller_configuration.inventories
       - redhat_cop.controller_configuration.inventory_sources
+      - redhat_cop.controller_configuration.notification_templates
       - redhat_cop.controller_configuration.job_templates
       - redhat_cop.controller_configuration.workflow_job_templates
     controller_hostname: "{{ lookup('env', 'TOWER_HOST') }}"

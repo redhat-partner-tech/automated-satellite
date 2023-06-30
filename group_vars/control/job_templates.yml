@@ -9,6 +9,9 @@ controller_templates:
     limit: rhel7
     extra_vars:
       org_id: "Default_Organization"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -37,6 +40,9 @@ controller_templates:
     extra_vars:
       org_id: "Default_Organization"
       product_name_or_regex: "Community Enterprise OS 7"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -63,6 +69,9 @@ controller_templates:
       - Satellite Credential
     extra_vars:
       env: Dev
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -82,6 +91,9 @@ controller_templates:
       - Satellite Credential
     extra_vars:
       env: Dev
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -99,6 +111,9 @@ controller_templates:
     inventory: Workshop Inventory
     credentials:
       - Satellite Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -126,6 +141,9 @@ controller_templates:
     inventory: Workshop Inventory
     credentials:
       - Satellite Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -155,6 +173,9 @@ controller_templates:
       - Satellite Credential
     extra_vars:
       node_group: env_CentOS7_Dev
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: SATELLITE / Transfer converted host(s) to another LE
     project: Automated Management
@@ -162,6 +183,9 @@ controller_templates:
     inventory: ALL Development
     credentials:
       - Satellite Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -178,6 +202,27 @@ controller_templates:
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
 
+  - name: SATELLITE / Refresh manifest
+    project: Automated Management
+    playbook: satellite_manifest_refresh.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
+  - name: SATELLITE / Resume paused tasks
+    project: Automated Management
+    playbook: satellite_hammer_task_resume.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
@@ -185,6 +230,9 @@ controller_templates:
     use_fact_cache: true
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     limit: ''
     survey_enabled: true
     survey:
@@ -211,6 +259,9 @@ controller_templates:
     use_fact_cache: true
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     limit: centos7
     survey_enabled: true
     survey:
@@ -238,6 +289,9 @@ controller_templates:
     use_fact_cache: true
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     limit: ''
 
   - name: SERVER / CentOS7 - Fact Scan
@@ -248,6 +302,9 @@ controller_templates:
     use_fact_cache: true
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     limit: centos7
 
   - name: SERVER / Start node via ec2_node_tools
@@ -263,6 +320,9 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           short_name: node*
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: SERVER / Stop node via ec2_node_tools
     description: Stop node - selection via EC2 instance tags
@@ -277,6 +337,9 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           short_name: node*
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 01 - Take node snapshot
     description: Take node snapshot - selection via EC2 instance tags
@@ -291,6 +354,9 @@ controller_templates:
           short_name: node*
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 02 - Upgrade OS to latest release
     description: Upgrade OS to latest available packages
@@ -301,6 +367,9 @@ controller_templates:
       - Workshop Credential
     extra_vars:
       ec2_region: "{{ workshop_ec2_region }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 03 - convert2rhel
     description: Convert OS to RHEL OS via targetted LE
@@ -312,6 +381,9 @@ controller_templates:
     extra_vars:
       org_id: "Default_Organization"
       product_name_or_regex: "Red Hat Enterprise Linux Server"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -339,6 +411,9 @@ controller_templates:
       pg_db_name: db01
       pg_db_user: user01
       pg_db_passwd: Xtr4Sup3rS3cr3tP4ssw0rd?!
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 97 - Three Tier App smoke test
     description: Smoke test three tier app
@@ -351,6 +426,9 @@ controller_templates:
       pg_db_name: db01
       pg_db_user: user01
       pg_db_passwd: Xtr4Sup3rS3cr3tP4ssw0rd?!
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 98 - Revert node state via snapshot
     description: Revert via snapshot - selection via EC2 instance tags
@@ -365,6 +443,9 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           username: centos
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONVERT2RHEL / 99 - Delete snapshot
     description: Delete snapshot - selection via EC2 snapshot tags
@@ -378,6 +459,9 @@ controller_templates:
         tags:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tags based on Satellite(Foreman) facts
     description: Set instance tags - selection via existing EC2 instance tags
@@ -393,6 +477,9 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           short_name: node*
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tag - AnsibleGroup
     description: Set instance tag - AnsibleGroup via provided extra_vars dict
@@ -410,6 +497,9 @@ controller_templates:
         node4.example.com: frontends
         node5.example.com: apps
         node6.example.com: appdbs
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: EC2 / Get instance details via ec2_node_tools role
     description: Utilize ec2_node_tools role to display info available per instance/node
@@ -425,6 +515,9 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           short_name: node*
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: EC2 / Update Route53
     description: Update Route53 records with external IPs
@@ -440,6 +533,9 @@ controller_templates:
           Workshop: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
       student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
       workshop_dns_zone: "{{ lookup('env', 'AWX_HOST').split('.',2)[2] }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONTROLLER / Update CentOS7 Dev inventories
     project: Automated Management
@@ -447,6 +543,9 @@ controller_templates:
     inventory: Workshop Inventory
     credentials:
       - Controller Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: CONTROLLER / Update inventories via dynamic sources
     project: Automated Management
@@ -454,6 +553,9 @@ controller_templates:
     inventory: Workshop Inventory
     credentials:
       - Controller Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -483,6 +585,9 @@ controller_templates:
     extra_vars:
       refresh_satellite_manifest: false
       bulk_load_size: 1000
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     ask_variables_on_launch: true
 
   - name: Insights / Replace Satellite Manifest
@@ -496,6 +601,9 @@ controller_templates:
       manifest_name: smrtmgmt-wrksp
       offline_token: value
       rhsm_org_id: value
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: Insights / Install and Register
     project: Automated Management
@@ -504,6 +612,9 @@ controller_templates:
     limit: rhel
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: Insights / Create Insights Credential
     project: Automated Management
@@ -516,6 +627,9 @@ controller_templates:
     extra_vars:
       insights_user: username
       insights_password: password
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 
   - name: Insights / Create Insights Project
     project: Automated Management
@@ -525,3 +639,6 @@ controller_templates:
     credentials:
       - Controller Credential
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
