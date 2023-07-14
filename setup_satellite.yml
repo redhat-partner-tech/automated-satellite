@@ -48,6 +48,12 @@
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   gather_facts: false
+  tasks:
+    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
   vars:
     refresh_satellite_manifest: false
     refresh_timeout: 14400
@@ -82,9 +88,3 @@
           path: "{{ sat_prodlog_tempfile.path }}"
           state: absent
       when: refresh_satellite_manifest
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  connection: local
-  gather_facts: false
-  tasks:
-    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
