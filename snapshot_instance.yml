@@ -1,6 +1,6 @@
 ---
 - name: Take snapshot of instance
-- hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
+  hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
   become: yes
   roles:
     - name: lvm_snapshots
