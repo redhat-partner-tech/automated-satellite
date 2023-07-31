@@ -32,8 +32,8 @@
   rescue:
     - fail:
         msg: Maximum retries of grouped tasks reached
-      # initial try plus 4 retries = 5 total tries
-      when: retry_count | int == 4
+      # initial try plus 3 retries = 4 total tries
+      when: retry_count | int == 3
 
     - debug:
         msg: "satellite_infra workloads Task Group failed, retry count: {{ retry_count }}"
