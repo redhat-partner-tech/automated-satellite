@@ -40,12 +40,12 @@ cd automated-satellite
 git checkout ee-build-source-aap2-22
 
 sed -i "s/AABBccddeeff112233gghh/$API_TOKEN/g" ansible.cfg
-buildah copy $ctr 'ansible.cfg' '/runner/ansible.cfg'
+buildah copy $ctr 'ansible.cfg' '/etc/ansible/ansible.cfg'
 
 buildah copy $ctr 'collections/requirements.yml' '/tmp/requirements.yml'
 buildah run $ctr /bin/sh -c 'ansible-galaxy collection install -r /tmp/requirements.yml -p /usr/share/ansible/collections'
 buildah run $ctr /bin/sh -c 'rm /tmp/requirements.yml'
-buildah run $ctr /bin/sh -c 'ansible-config init --disabled > /runner/ansible.cfg'
+buildah run $ctr /bin/sh -c 'ansible-config init --disabled > /etc/ansible/ansible.cfg'
 
 buildah copy $ctr 'roles/content_views' '/usr/share/ansible/roles/content_views'
 buildah copy $ctr 'roles/ec2_node_tools' '/usr/share/ansible/roles/ec2_node_tools'
