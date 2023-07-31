@@ -23,13 +23,13 @@ BASEIMAGENAME=ee-minimal-rhel8
 BIVERSION=1.0.0-373
 #automated-satellite-ee
 IMAGE=ee-automated-satellite-aap2
-VERSION=1.0.3
+VERSION=1.0.4
 START_DIR=$(pwd)
 TMP_WRKDIR=$(mktemp -d /tmp/XXXXXXXX)
 ctr=$(buildah from registry.redhat.io/$BASEIMAGEOWNER/$BASEIMAGENAME:$BIVERSION)
 scratchmnt=$(buildah mount ${ctr})
 buildah run $ctr /bin/sh -c 'python3 -m pip install boto==2.49.0'
-buildah run $ctr /bin/sh -c 'python3 -m pip install boto3==1.17.56'
+buildah run $ctr /bin/sh -c 'python3 -m pip install boto3==1.24.96'
 buildah run $ctr /bin/sh -c 'python3 -m pip install apypie==0.4.0'
 buildah run $ctr /bin/sh -c 'python3 -m pip install psycopg2-binary==2.9.6'
 #buildah run $ctr /bin/sh -c 'rm /usr/libexec/platform-python3.6'
