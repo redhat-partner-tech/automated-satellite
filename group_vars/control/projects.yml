@@ -14,3 +14,14 @@ controller_projects:
     scm_update_on_launch: true
     scm_update_cache_timeout: 3600
     default_environment: auto_satellite workshop execution environment
+
+  - name: LVM Snapshot
+    organization: Default
+    scm_type: git
+    scm_url: 'https://github.com/heatmiser/lvm-snapshot.git'
+    scm_branch: main
+    scm_delete_on_update: true
+    scm_update_on_launch: true
+    scm_update_cache_timeout: 3600
+    default_environment: Default execution environment
+...
