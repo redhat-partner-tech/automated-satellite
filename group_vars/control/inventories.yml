@@ -6,7 +6,6 @@ controller_inventories:
   - name: CentOS7 Development
     organization: Default
     variables:
-      ansible_user: centos
       instances:
         tags:
           ContentView: CentOS7
@@ -17,7 +16,6 @@ controller_inventories:
   - name: CentOS7 Production
     organization: Default
     variables:
-      ansible_user: centos
       instances:
         tags:
           ContentView: CentOS7
@@ -93,7 +91,6 @@ controller_inventory_sources:
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
-        ansible_user: "'centos'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
@@ -123,7 +120,6 @@ controller_inventory_sources:
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
-        ansible_user: "'centos'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
@@ -155,7 +151,6 @@ controller_inventory_sources:
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
-        ansible_user: "'centos'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
