@@ -346,6 +346,8 @@ controller_templates:
     project: LVM Snapshot
     playbook: snapshot_instance_aap2.yml
     inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
     extra_vars:
       lvm_snapshots_set_name: ripu
       lvm_snapshots_snapshot_autoextend_threshold: 70
