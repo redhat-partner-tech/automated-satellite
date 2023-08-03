@@ -345,6 +345,7 @@ controller_templates:
     description: 
     project: LVM Snapshot
     playbook: snapshot_instance_aap2.yml
+    execution_environment: auto_satellite workshop execution environment
     inventory: Workshop Inventory
     limit: rhel7
     credentials:
@@ -388,6 +389,7 @@ controller_templates:
     description: 
     project: LVM Snapshot
     playbook: snapshot_instance_aap2.yml
+    execution_environment: auto_satellite workshop execution environment
     inventory: Workshop Inventory
     limit: centos7
     credentials:
@@ -427,10 +429,10 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: Z - CONVERT2RHEL / 01 - Take node snapshot
+  - name: Z / CONVERT2RHEL / 01 - Take node snapshot
     description: Take node snapshot - selection via EC2 instance tags
     project: Automated Management
-    playbook: snapshot_instance.yml
+    playbook: snapshot_instance_ec2.yml
     inventory: Workshop Inventory
     limit: control
     extra_vars:
@@ -516,10 +518,10 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: Z - CONVERT2RHEL / 98 - Revert node state via snapshot
+  - name: Z / CONVERT2RHEL / 98 - Revert node state via snapshot
     description: Revert via snapshot - selection via EC2 instance tags
     project: Automated Management
-    playbook: snapshot_revert.yml
+    playbook: snapshot_revert_ec2.yml
     inventory: Workshop Inventory
     limit: control
     extra_vars:
@@ -536,7 +538,7 @@ controller_templates:
   - name: Z - CONVERT2RHEL / 99 - Delete snapshot
     description: Delete snapshot - selection via EC2 snapshot tags
     project: Automated Management
-    playbook: snapshot_delete.yml
+    playbook: snapshot_delete_ec2.yml
     inventory: Workshop Inventory
     limit: control
     extra_vars:
