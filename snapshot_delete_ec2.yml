@@ -10,3 +10,4 @@
     vars:
       ec2_instance_action: "snapshot_delete"
     when: should_i_delete_snapshot|default(false)|bool
+...

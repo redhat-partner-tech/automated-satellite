@@ -9,3 +9,4 @@
       name: ec2_node_tools
     vars:
       ec2_instance_action: "snapshot_revert"
+...
