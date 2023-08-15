@@ -341,7 +341,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 01 - LVM snapshot create-revert-commit / RHEL7
+  - name: CONVERT2RHEL / 01 - LVM snapshot create-revert-remove / RHEL7
     description: 
     project: LVM Snapshot
     playbook: snapshot_instance_aap2.yml
@@ -379,13 +379,13 @@ controller_templates:
             - check
             - create
             - revert
-            - delete
+            - remove
           required: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 01 - LVM snapshot create-revert-commit / CentOS7
+  - name: CONVERT2RHEL / 01 - LVM snapshot create-revert-remove / CentOS7
     description: 
     project: LVM Snapshot
     playbook: snapshot_instance_aap2.yml
@@ -423,7 +423,7 @@ controller_templates:
             - check
             - create
             - revert
-            - delete
+            - remove
           required: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
