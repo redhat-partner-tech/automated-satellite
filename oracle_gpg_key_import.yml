@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
   tasks:
   - name: Create gpg key directory for importing keys
     file:
