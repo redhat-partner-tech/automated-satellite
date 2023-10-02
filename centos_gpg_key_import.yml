@@ -31,10 +31,10 @@
     register: hammer_org_list_result
     ignore_errors: true
 
-  - name: set the Organization Id from specific org selection via "{{ organization }}" variable and .Id
+  - name: set the Organization Id from specific org selection via "{{ satellite_organization }}" variable and .Id
     set_fact: sat_org_id={{ hammer_org_list_result.stdout | from_json | json_query(my_query) }}
     vars:
-      my_query: "[?Name=='{{ organization }}'].Id"
+      my_query: "[?Name=='{{ satellite_organization }}'].Id"
 
   - name: What is the Org Id? 
     debug:
