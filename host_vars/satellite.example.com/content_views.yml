@@ -33,6 +33,38 @@ satellite_content_views:
       product: Red Hat Enterprise Linux for x86_64
     - name: Red Hat Satellite Client 6 for RHEL 8 x86_64 RPMs
       product: Red Hat Enterprise Linux for x86_64
+# Oracle Linux 7
+  - name: Oracle7
+    content_view: Oracle7
+    content_view_update: true
+    lifecycle_environments:
+      - "Oracle7_Dev"
+      - "Oracle7_QA"
+      - "Oracle7_Prod"
+    repositories:
+    # name provided here is parsed by role and appends basearch to the name submitted to Satellite
+    # ...so for actual repo named 'Oracle-7 - Base RPMs x86_64' set name to 'Oracle-7 - Base RPMs' here
+    - name: Oracle-7 - Base RPMs
+      product: 'Oracle Linux 7'
+    #- name: Oracle Linux 7 - Addons RPMs x86_64
+    #  basearch: x86_64
+    - name: Oracle-7 - Addons RPMs
+      product: 'Oracle Linux 7'
+  # Oracle Linux 8
+  - name: Oracle8
+    content_view: Oracle8
+    content_view_update: true
+    lifecycle_environments:
+      - "Oracle8_Dev"
+      - "Oracle8_QA"
+      - "Oracle8_Prod"
+    repositories:
+    - name: Oracle-8 for x86_64 - BaseOS RPMs
+      #releasever: 8
+      product: Oracle Linux 8
+    - name: Oracle-8 for x86_64 - AppStream RPMs
+      #releasever: 8
+      product: Oracle Linux 8
   # Community Enterprise Linux 7
   - name: CentOS7
     content_view: CentOS7
