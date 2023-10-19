@@ -71,6 +71,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - CentOS7 Development
     inventory: CentOS7 Development
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
@@ -101,6 +102,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - CentOS7 Development - ALL
     inventory: ALL Development
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
@@ -131,6 +133,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - CentOS7 Production
     inventory: CentOS7 Production
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
@@ -163,6 +166,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - RHEL7 Development
     inventory: RHEL7 Development
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
@@ -192,6 +196,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - RHEL7 Development - ALL
     inventory: ALL Development
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
@@ -221,6 +226,7 @@ controller_inventory_sources:
   - name: EC2 Dynamic Source - RHEL7 Production
     inventory: RHEL7 Production
     source: ec2
+    execution_environment: auto_satellite workshop execution environment
     source_vars:
       regions:
         - "{{ workshop_ec2_region }}"
