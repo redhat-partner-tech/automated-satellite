@@ -3,6 +3,7 @@
   become: yes
   vars:
     check_only: yes
+    mountname: "/"
 
   tasks:
   - name: check operating system
