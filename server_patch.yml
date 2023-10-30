@@ -12,7 +12,7 @@
   - name: Ensure that free space on {{ mountname }} is grater than 20%
     assert:
       that: mount.size_available > mount.size_total|float * 0.2
-        msg: disk space has reached 80% threshold
+      msg: disk space has reached 80% threshold
     vars:
       mount: "{{ ansible_mounts | selectattr('mount','equalto',mountname) | list | first }}"
       
