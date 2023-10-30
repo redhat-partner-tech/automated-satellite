@@ -8,7 +8,14 @@
   - name: check operating system
     assert:
       that: "ansible_os_family == 'RedHat'"
-
+      
+  - name: Ensure that free space on {{ mountname }} is grater than 20%
+    assert:
+      that: mount.size_available > mount.size_total|float * 0.2
+        msg: disk space has reached 80% threshold
+    vars:
+      mount: "{{ ansible_mounts | selectattr('mount','equalto',mountname) | list | first }}"
+      
   - name: check for updates
     yum:
       name: '*'
@@ -21,6 +28,17 @@
   - name: output updates dictionary
     debug:
       msg: "{{ updates }}"
+      
+  - name: Sending an email using Ansible
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username: dmeonavneet@gmail.com
+      password: "Kalu@134"
+      to: demonavneet@gmail.com
+      subject: Email By Ansible - about patch 
+      body: Patch Successfuly completed check Satellite server for more details 
+      delegate_to: localhost          
     
   - name: updated package list
     debug:
