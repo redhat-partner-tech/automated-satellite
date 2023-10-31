@@ -35,7 +35,7 @@
 #      host: smtp.gmail.com
 #      port: 587
 #      username: dmeonavneet@gmail.com
-#      password: "Kalu@134"
+#      password: "rbfqhoincpyouxqk"
 #      to: demonavneet@gmail.com
 #      subject: Email By Ansible - about patch 
 #      body: Patch Successfuly completed check Satellite server for more details 
