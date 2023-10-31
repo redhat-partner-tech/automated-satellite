@@ -38,12 +38,18 @@
       password: "rbfqhoincpyouxqk"
       to: 
       - dmeonavneet@gmail.com
-      - nrathi@redhat.com
-      - rdodia@redhat.com
+#      - nrathi@redhat.com
+#      - rdodia@redhat.com
       subject: Email By Ansible - about patch 
       body: Patch Successfuly completed check Satellite server for more details 
     delegate_to: localhost          
-    
+    run_once: true
+    when: _changed|length > 0
+    vars:
+      _changed: "{{ hostvars|dict2items|
+                      selectattr('value.yum_update.changed')|
+                      map(attribute='key')|list }}"   
+ 
   - name: updated package list
     debug:
       msg: "{% if item[0] in packages %}{{ packages[item[0]][0].version }}-{{ packages[item[0]][0].release }}.{{ packages[item[0]][0].arch }} >>> {{ item[1] }} {% else %} {{ item[1] }}{% endif %}"
