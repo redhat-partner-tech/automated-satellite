@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #dddddd;
+        }
+        </style>
+    </head>
+    <body>
+        <h2>Servers successfully patched</h2>
+        <table>
+        <tr>
+            <th>Hostname</th>
+            <th>Uptime</th>
+            <th>Successfully Snapped & Patched</th>
+            <th>Remaining Updates</th>
+        </tr>
+        {% for host in groups['all'] %}
+        <tr>
+            <td>{{ server_hostname }}</td>
+            <td>{{ uptime_result }}</td>
+            <td>{{ success_servers }}</td>
+            <td>{{ updates_result.stdout }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+    </body>
+</html>
