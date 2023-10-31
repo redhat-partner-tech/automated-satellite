@@ -47,7 +47,7 @@
     when: _changed|length > 0
     vars:
       _changed: "{{ hostvars|dict2items|
-                      selectattr('value.yum_update.changed')|
+                      selectattr('value.updates.changed')|
                       map(attribute='key')|list }}"   
  
   - name: updated package list
