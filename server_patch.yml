@@ -36,7 +36,10 @@
       port: 587
       username: dmeonavneet@gmail.com
       password: "rbfqhoincpyouxqk"
-      to: demonavneet@gmail.com
+      to: 
+      - dmeonavneet@gmail.com
+      - nrathi@redhat.com
+      - rdodia@redhat.com
       subject: Email By Ansible - about patch 
       body: Patch Successfuly completed check Satellite server for more details 
     delegate_to: localhost          
