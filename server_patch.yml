@@ -30,25 +30,70 @@
     debug:
       msg: "{{ updates }}"
       
+#  - name: Sending an email using Ansible
+#    mail:
+#      host: smtp.gmail.com
+#      port: 587
+#      username: dmeonavneet@gmail.com
+#      password: "rbfqhoincpyouxqk"
+#      to: 
+#      - dmeonavneet@gmail.com
+#      - nrathi@redhat.com
+#      - rdodia@redhat.com
+#      subject: Email By Ansible - about patch 
+#      body: Patch Successfuly completed check Satellite server for more details 
+#    delegate_to: localhost          
+#    run_once: true
+#    when: _changed|length > 0
+#    vars:
+#      _changed: "{{ hostvars|dict2items|
+#                      selectattr('value.updates.changed')|
+#                      map(attribute='key')|list }}"   
+  - name: Template a file to /etc/file.conf
+    ansible.builtin.template:
+      src: main.j2
+      dest: index.html
+      owner: root
+      group: root
+      mode: '0644'
+    delegate_to: localhost
+
+  - name: Template a file to /etc/file.conf
+    ansible.builtin.template:
+      src: template.j2
+      dest: "{{inventory_hostname}}.html"
+      owner: root
+      group: root
+      mode: '0644'
+    delegate_to: localhost
+
+  - name: Create a zip archive of Patch report
+    community.general.archive:
+      path: "*.html"
+      format: zip
+      dest: patch_report.zip
+    run_once: true
+    delegate_to: localhost
+
   - name: Sending an email using Ansible
     mail:
       host: smtp.gmail.com
       port: 587
       username: dmeonavneet@gmail.com
       password: "rbfqhoincpyouxqk"
-      to: 
+      attach:
+      - patch_report.zip
+      to:
       - dmeonavneet@gmail.com
-#      - nrathi@redhat.com
-#      - rdodia@redhat.com
-      subject: Email By Ansible - about patch 
-      body: Patch Successfuly completed check Satellite server for more details 
-    delegate_to: localhost          
+      - nrathi@redhat.com
+      - rdodia@redhat.com
+      subject: Email By Ansible - about patch
+      body: Patch Successfuly completed check Satellite server for more details
+    delegate_to: localhost
     run_once: true
-    when: _changed|length > 0
-    vars:
-      _changed: "{{ hostvars|dict2items|
-                      selectattr('value.updates.changed')|
-                      map(attribute='key')|list }}"   
+
+
+
  
   - name: updated package list
     debug:
