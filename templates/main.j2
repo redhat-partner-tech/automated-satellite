@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+
+	<h2>Below is the list of inventory</h2>
+<table style="width:100%">
+        <tr>
+            <th>Inventory Host</th>
+        </tr>
+	{%for host in ansible_play_hosts_all %}
+        <tr>
+            <tr>
+		    <th> <a href="{{host}}.html"> {{host}} </a>
+		    </th>
+            </tr>
+            {% endfor %}
+    </table>
+</body>
+</html>
