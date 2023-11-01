@@ -51,7 +51,7 @@
 #                      map(attribute='key')|list }}"   
   - name: Template a file to /etc/file.conf
     ansible.builtin.template:
-      src: main.j2
+      src: "templates/main.j2"
       dest: index.html
       owner: root
       group: root
@@ -60,7 +60,7 @@
 
   - name: Template a file to /etc/file.conf
     ansible.builtin.template:
-      src: template.j2
+      src: "templates/patch.j2"
       dest: "{{inventory_hostname}}.html"
       owner: root
       group: root
