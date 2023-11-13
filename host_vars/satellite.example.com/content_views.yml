@@ -29,9 +29,23 @@ satellite_content_views:
       product: Red Hat Enterprise Linux for x86_64
     - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8
       product: Red Hat Enterprise Linux for x86_64
-    - name: Red Hat Satellite Utils 6.12 for RHEL 8 x86_64 RPMs
+    - name: Red Hat Satellite Utils 6.13 for RHEL 8 x86_64 RPMs
       product: Red Hat Enterprise Linux for x86_64
     - name: Red Hat Satellite Client 6 for RHEL 8 x86_64 RPMs
+      product: Red Hat Enterprise Linux for x86_64
+  - name: RHEL9
+    content_view: RHEL9
+    content_view_update: true
+    lifecycle_environments:
+      - "RHEL9_Dev"
+      - "RHEL9_QA"
+      - "RHEL9_Prod"
+    repositories:
+    - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9
+      product: Red Hat Enterprise Linux for x86_64
+    - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 8
+      product: Red Hat Enterprise Linux for x86_64
+    - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
       product: Red Hat Enterprise Linux for x86_64
   # Community Enterprise Linux 7
   - name: CentOS7

@@ -14,6 +14,13 @@ satellite_lifecycle_environments:
     prior: "RHEL8_Dev"
   - name: "RHEL8_Prod"
     prior: "RHEL8_QA"
+  # Red Hat Enterprise Linux 9
+  - name: "RHEL9_Dev"
+    prior: "Library"
+  - name: "RHEL9_QA"
+    prior: "RHEL9_Dev"
+  - name: "RHEL9_Prod"
+    prior: "RHEL9_QA"
   # Community Enterprise Linux 7
   - name: "CentOS7_Dev"
     prior: "Library"
