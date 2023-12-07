@@ -1,6 +1,8 @@
 ---
 controller_execution_environments:
   - name: auto_satellite workshop execution environment
-    image: quay.io/s4v0/ee-automated-satellite-aap2:latest
+    image: quay.io/s4v0/ee-automated-satellite-aap2:2.0.2
+  - name: auto_satellite controller iac execution environment
+    image: quay.io/s4v0/ee-automated-satellite-aap2:2.0.2
   - name: Insights execution environment
     image: quay.io/bdumont/automated-sm-ee
