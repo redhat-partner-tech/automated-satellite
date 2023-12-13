@@ -11,7 +11,7 @@ hostnames:
   - tag:NodeName
 compose:
   ansible_host: private_ip_address
-  ansible_user: "'centos'"
+  ansible_user: "'ec2-user'"
 keyed_groups:
   - prefix: cv
     key: tags['ContentView']

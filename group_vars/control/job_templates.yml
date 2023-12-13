@@ -442,7 +442,7 @@ controller_templates:
         tags:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
-          username: centos
+          username: ec2-user
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry

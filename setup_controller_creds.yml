@@ -22,7 +22,7 @@
 
     - name: add CentOS node SSH credential into Ansible Controller
       awx.awx.credential:
-        username: centos
+        username: ec2-user
         name: "CentOS SSH Credential"
         ssh_key_data: "{{ lookup('file', playbook_dir +'/' + ec2_name_prefix + '/' + ec2_name_prefix + '-private.pem') }}"
         kind: ssh
