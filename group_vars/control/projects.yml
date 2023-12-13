@@ -14,3 +14,12 @@ controller_projects:
     scm_update_on_launch: true
     scm_update_cache_timeout: 3600
     default_environment: auto_satellite workshop execution environment
+
+  - name: Project Leapp
+    organization: Default
+    scm_type: git
+    scm_url: 'https://github.com/redhat-partner-tech/leapp-project.git'
+    scm_branch: dev01
+    scm_update_on_launch: false
+    scm_update_cache_timeout: 3600
+    default_environment: Default execution environment
