@@ -226,7 +226,7 @@ controller_templates:
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
-    inventory: RHEL7 Development
+    inventory: EC2 Dynamic Inventory
     use_fact_cache: true
     credentials:
       - Workshop Credential
@@ -255,7 +255,7 @@ controller_templates:
   - name: SERVER / CentOS7 - Patch
     project: Automated Management
     playbook: server_patch.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     use_fact_cache: true
     credentials:
       - Workshop Credential
@@ -284,7 +284,7 @@ controller_templates:
   - name: SERVER / RHEL7 - Fact Scan
     project: Fact Scan
     playbook: scan_facts.yml
-    inventory: RHEL7 Development
+    inventory: EC2 Dynamic Inventory
     ask_limit_on_launch: true
     use_fact_cache: true
     credentials:
@@ -297,7 +297,7 @@ controller_templates:
   - name: SERVER / CentOS7 - Fact Scan
     project: Fact Scan
     playbook: scan_facts.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     ask_limit_on_launch: true
     use_fact_cache: true
     credentials:
@@ -362,7 +362,7 @@ controller_templates:
     description: Upgrade OS to latest available packages
     project: Automated Management
     playbook: upgrade_instance.yml
-    inventory: CentOS7 Development
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
@@ -404,7 +404,7 @@ controller_templates:
     description: Deploy three tier app
     project: Three Tier App / Dev
     playbook: Configure_3TA_AWS.yml
-    inventory: CentOS7 Development
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
@@ -419,7 +419,7 @@ controller_templates:
     description: Smoke test three tier app
     project: Three Tier App / Dev
     playbook: SmokeTest_3TA_AWS.yml
-    inventory: CentOS7 Development
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
