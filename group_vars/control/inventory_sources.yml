@@ -200,6 +200,7 @@ controller_inventory_sources:
   - name: inventory_centos7_dev.aws_ec2
     inventory: EXAMPLE dynamic project inventory
     source: scm
+    execution_environment: auto_satellite workshop execution environment
     source_project: Automated Management
     source_path: inventory/inventory_centos7_dev.aws_ec2.yml
     overwrite: true
@@ -209,6 +210,7 @@ controller_inventory_sources:
   - name: inventory_rhel7_dev.aws_ec2
     inventory: EXAMPLE dynamic project inventory
     source: scm
+    execution_environment: auto_satellite workshop execution environment
     source_project: Automated Management
     source_path: inventory/inventory_rhel7_dev.aws_ec2.yml
     overwrite: true
