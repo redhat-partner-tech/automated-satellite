@@ -1,0 +1,216 @@
+---
+controller_inventory_sources:
+  - name: satellite_source
+    inventory: Workshop Inventory
+    credential: Inventory Credential
+    source: satellite6
+    execution_environment: auto_satellite workshop execution environment
+    update_on_launch: false
+    overwrite: true
+    source_vars:
+      keyed_groups:
+        - prefix: env
+          key: satellite_content_facet_attributes.lifecycle_environment_name
+        - prefix: cv
+          key: satellite_content_facet_attributes.content_view_name
+        - prefix: os
+          key: satellite_operatingsystem_name
+
+  - name: EC2 Dynamic Source - CentOS7 Development
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: CentOS7
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: EC2 Dynamic Source - CentOS7 Development - ALL
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: CentOS7
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: EC2 Dynamic Source - CentOS7 Production
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: CentOS7
+        tag:Environment: Prod
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+        - tag:Name
+        - private-dns-name
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: EC2 Dynamic Source - RHEL7 Development
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL7
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: EC2 Dynamic Source - RHEL7 Development - ALL
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL7
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: EC2 Dynamic Source - RHEL7 Production
+    inventory: Workshop Inventory
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL7
+        tag:Environment: Prod
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+        - tag:Name
+        - private-dns-name
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - prefix: env
+          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: inventory_centos7_dev.aws_ec2
+    inventory: EXAMPLE dynamic project inventory
+    source: scm
+    source_project: Automated Management
+    source_path: inventory/inventory_centos7_dev.aws_ec2.yml
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: inventory_rhel7_dev.aws_ec2
+    inventory: EXAMPLE dynamic project inventory
+    source: scm
+    source_project: Automated Management
+    source_path: inventory/inventory_rhel7_dev.aws_ec2.yml
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
