@@ -16,7 +16,7 @@ controller_inventory_sources:
         - prefix: os
           key: satellite_operatingsystem_name
 
-  - name: EC2 Dynamic Source - CentOS7 Development
+  - name: CentOS7 Development
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:
@@ -46,7 +46,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: EC2 Dynamic Source - CentOS7 Development - ALL
+  - name: CentOS7 QA
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:
@@ -54,7 +54,7 @@ controller_inventory_sources:
         - "{{ workshop_ec2_region }}"
       filters:
         tag:ContentView: CentOS7
-        tag:Environment: Dev
+        tag:Environment: QA
         tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
         tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
       hostnames:
@@ -76,7 +76,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: EC2 Dynamic Source - CentOS7 Production
+  - name: CentOS7 Production
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:
@@ -108,7 +108,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: EC2 Dynamic Source - RHEL7 Development
+  - name: RHEL7 Development
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:
@@ -137,7 +137,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: EC2 Dynamic Source - RHEL7 Development - ALL
+  - name: RHEL7 QA
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:
@@ -145,7 +145,7 @@ controller_inventory_sources:
         - "{{ workshop_ec2_region }}"
       filters:
         tag:ContentView: RHEL7
-        tag:Environment: Dev
+        tag:Environment: QA
         tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
         tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
       hostnames:
@@ -166,7 +166,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: EC2 Dynamic Source - RHEL7 Production
+  - name: RHEL7 Production
     inventory: EC2 Dynamic Inventory
     source: ec2
     source_vars:

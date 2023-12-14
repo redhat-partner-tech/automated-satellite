@@ -180,7 +180,7 @@ controller_templates:
   - name: SATELLITE / Transfer converted host(s) to another LE
     project: Automated Management
     playbook: satellite_transfer_host.yml
-    inventory: ALL Development
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Satellite Credential
     notification_templates_started: Telemetry
@@ -375,7 +375,7 @@ controller_templates:
     description: Convert OS to RHEL OS via targetted LE
     project: Automated Management
     playbook: c2r.yml
-    inventory: ALL Development
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
