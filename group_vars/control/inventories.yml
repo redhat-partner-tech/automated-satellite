@@ -2,6 +2,9 @@
 controller_inventories:
   - name: Workshop Inventory
     organization: Default
+  
+  - name: EC2 Dynamic Inventory
+    organization: Default
 
   - name: EXAMPLE dynamic project inventory
     organization: Default
