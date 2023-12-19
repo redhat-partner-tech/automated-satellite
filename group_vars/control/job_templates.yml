@@ -233,7 +233,6 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    limit: ''
     survey_enabled: true
     survey:
       name: ''
@@ -251,6 +250,7 @@ controller_templates:
             - 'yes'
             - 'no'
           required: true
+    ask_limit_on_launch: true
 
   - name: SERVER / CentOS7 - Patch
     project: Automated Management
@@ -262,7 +262,6 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    limit: centos7
     survey_enabled: true
     survey:
       name: ''
@@ -280,6 +279,7 @@ controller_templates:
             - 'yes'
             - 'no'
           required: true
+    ask_limit_on_launch: true
 
   - name: SERVER / RHEL7 - Fact Scan
     project: Fact Scan
@@ -292,7 +292,7 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    limit: ''
+    limit: cv_RHEL7
 
   - name: SERVER / CentOS7 - Fact Scan
     project: Fact Scan
@@ -305,7 +305,7 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    limit: centos7
+    limit: cv_CentOS7
 
   - name: SERVER / Start node via ec2_node_tools
     description: Start node - selection via EC2 instance tags
