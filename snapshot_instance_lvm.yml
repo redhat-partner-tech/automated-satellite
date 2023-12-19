@@ -1,0 +1,12 @@
+---
+- name: Check/create/revert/remove LVM snapshot of node
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  become: yes
+  environment:
+    LANG: en_US.UTF-8
+    LC_ALL: en_US.UTF-8
+    TERM: linux
+  roles:
+    - name: infra.lvm_snapshots.lvm_snapshots
+      # lvm_snapshot_* vars provided via AAP2 job template and associated surveys
+...
