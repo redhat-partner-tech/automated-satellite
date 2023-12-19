@@ -590,7 +590,7 @@ controller_templates:
     notification_templates_error: Telemetry
     ask_variables_on_launch: true
 
-  - name: Insights / Replace Satellite Manifest
+  - name: INSIGHTS / Replace Satellite Manifest
     project: Automated Management
     playbook: insights_replace_satellite_manifest.yml
     inventory: Workshop Inventory
@@ -605,7 +605,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: Insights / Install and Register
+  - name: INSIGHTS / Install and Register
     project: Automated Management
     playbook: insights_install.yml
     inventory: Workshop Inventory
@@ -616,7 +616,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: Insights / Create Insights Credential
+  - name: INSIGHTS / Create Insights Credential
     project: Automated Management
     playbook: insights_setup_aap_creds.yml
     execution_environment: Insights execution environment
@@ -631,7 +631,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: Insights / Create Insights Project
+  - name: INSIGHTS / Create Insights Project
     project: Automated Management
     playbook: insights_create_insights_project.yml
     execution_environment: Insights execution environment
