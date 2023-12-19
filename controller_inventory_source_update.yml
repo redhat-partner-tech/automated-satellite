@@ -19,14 +19,14 @@
       environment_name_expanded: "Production"
     when: env == "Prod"
 
-  - name: Update "{{ content_view }} {{ environment_name_expanded }}" inventory via source ==> "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }}"
+  - name: Update EC2 Dynamic Inventory via source ==> "{{ content_view }} {{ environment_name_expanded }}"
     ansible.controller.inventory_source_update:
-      name: "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }}"
+      name: "EC2 Dynamic Inventory"
       inventory: "{{ content_view }} {{ environment_name_expanded }}"
       organization: Default
 
-  - name: Update "ALL {{ environment_name_expanded }}" inventory via source ==> "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }} - ALL"
-    ansible.controller.inventory_source_update:
-      name: "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }} - ALL"
-      inventory: "ALL {{ environment_name_expanded }}"
-      organization: Default
+  #- name: Update "ALL {{ environment_name_expanded }}" inventory via source ==> "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }} - ALL"
+  #  ansible.controller.inventory_source_update:
+  #    name: "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }} - ALL"
+  #    inventory: "ALL {{ environment_name_expanded }}"
+  #    organization: Default
