@@ -18,6 +18,7 @@ controller_inventory_sources:
 
   - name: CentOS7 Development
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
@@ -48,6 +49,7 @@ controller_inventory_sources:
 
   - name: CentOS7 QA
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
@@ -78,6 +80,7 @@ controller_inventory_sources:
 
   - name: CentOS7 Production
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
@@ -110,6 +113,7 @@ controller_inventory_sources:
 
   - name: RHEL7 Development
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
@@ -139,6 +143,7 @@ controller_inventory_sources:
 
   - name: RHEL7 QA
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
@@ -168,6 +173,7 @@ controller_inventory_sources:
 
   - name: RHEL7 Production
     inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
     source: ec2
     source_vars:
       regions:
