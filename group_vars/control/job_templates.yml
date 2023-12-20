@@ -675,3 +675,25 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+
+  - name: LEAPP / 01 Analysis
+    project: Project Leapp
+    playbook: leapp-analysis.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: rhel_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+    extra_vars:
+      leapp_upgrade_type: satellite
+      leapp_repos_enabled: []
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
