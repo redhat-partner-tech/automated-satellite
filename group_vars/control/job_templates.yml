@@ -677,7 +677,7 @@ controller_templates:
     notification_templates_error: Telemetry
 
   - name: LEAPP / 01 Analysis
-    project: Project Leapp
+    project: Automated Management
     playbook: leapp-analysis.yml
     inventory: Workshop Inventory
     credentials:
