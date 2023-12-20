@@ -343,7 +343,7 @@ controller_templates:
 
   - name: UTILITY / Snapshot Instance
     description: Take node snapshot - selection via inventory group
-    project: Project Leapp
+    project: Automated Management
     playbook: snapshot_instance_lvm.yml
     inventory: Workshop Inventory
     credentials:
