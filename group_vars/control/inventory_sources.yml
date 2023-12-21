@@ -33,8 +33,7 @@ controller_inventory_sources:
       keyed_groups:
         - prefix: cv
           key: tags['ContentView']
-        - prefix: env
-          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
         - prefix: os
           key: tags['satellite_operatingsystem_name']
         - prefix: AnsibleGroup
@@ -64,8 +63,7 @@ controller_inventory_sources:
       keyed_groups:
         - prefix: cv
           key: tags['ContentView']
-        - prefix: env
-          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
         - prefix: os
           key: tags['satellite_operatingsystem_name']
         - prefix: AnsibleGroup
@@ -127,8 +125,7 @@ controller_inventory_sources:
       keyed_groups:
         - prefix: cv
           key: tags['ContentView']
-        - prefix: env
-          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
         - prefix: os
           key: tags['satellite_operatingsystem_name']
         - prefix: AnsibleGroup
@@ -157,8 +154,7 @@ controller_inventory_sources:
       keyed_groups:
         - prefix: cv
           key: tags['ContentView']
-        - prefix: env
-          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
         - prefix: os
           key: tags['satellite_operatingsystem_name']
         - prefix: AnsibleGroup
@@ -189,8 +185,7 @@ controller_inventory_sources:
       keyed_groups:
         - prefix: cv
           key: tags['ContentView']
-        - prefix: env
-          key: tags['ContentView'] ~ '_' ~ tags['Environment']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
         - prefix: os
           key: tags['satellite_operatingsystem_name']
         - prefix: AnsibleGroup
