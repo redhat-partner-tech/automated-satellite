@@ -1,0 +1,38 @@
+---
+- name: Wait for connection...
+  ansible.builtin.wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+
+- name: Configure firewalld
+  ansible.builtin.lineinfile:
+    path: "/etc/firewalld/firewalld.conf"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - {key: "AllowZoneDrifting", value: "no"}
+  notify:
+    - Restart firewalld
+
+- name: Check VDO devices if present # noqa command-instead-of-module
+  ansible.builtin.shell: |
+    set -o pipefail
+    leapp answer --section check_vdo.confirm=True
+  args:
+    executable: /bin/bash
+
+- name: Configure sshd
+  ansible.builtin.lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - {key: "PermitRootLogin", value: "prohibit-password"}
+    - {key: "PasswordAuthentication", value: "no"}
+  notify:
+    - Restart sshd
+...

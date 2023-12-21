@@ -1,0 +1,39 @@
+---
+- name: Wait for connection...
+  ansible.builtin.wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+
+- name: Define kernel modules to unload
+  ansible.builtin.set_fact:
+    kernel_modules_to_unload:
+      - floppy
+      - pata_acpi
+
+- name: Kernel modules defined by kernel_modules_to_unload are unloaded
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ kernel_modules_to_unload }}"
+
+- name: Remove pam_pkcs11 module # noqa command-instead-of-module
+  ansible.builtin.shell: |
+    set -o pipefail
+    leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+  args:
+    executable: /bin/bash
+
+- name: Configure sshd
+  ansible.builtin.lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - {key: "PermitRootLogin", value: "prohibit-password"}
+    - {key: "PasswordAuthentication", value: "no"}
+  notify:
+    - Restart sshd
+...
