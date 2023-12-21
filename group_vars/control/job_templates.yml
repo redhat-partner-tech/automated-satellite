@@ -345,7 +345,7 @@ controller_templates:
     description: Take node snapshot - selection via inventory group
     project: Automated Management
     playbook: snapshot_instance_lvm.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
@@ -679,7 +679,7 @@ controller_templates:
   - name: LEAPP / 01 Analysis
     project: Automated Management
     playbook: leapp-analysis.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     survey_enabled: true
