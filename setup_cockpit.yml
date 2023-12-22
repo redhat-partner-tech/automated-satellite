@@ -120,7 +120,7 @@
         state: started
 
 - name: Install and Cockpit/Web Console on system nodes
-  hosts: nodes
+  hosts: node
   become: true
   gather_facts: false
   tasks:
