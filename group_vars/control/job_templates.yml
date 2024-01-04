@@ -718,7 +718,7 @@ controller_templates:
 
   - name: OS / Remediation
     project: Automated Management
-    playbook: remediate.yml
+    playbook: leapp-remediate.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
