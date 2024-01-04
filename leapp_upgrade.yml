@@ -1,0 +1,13 @@
+---
+- name: Leapp upgrade
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: free
+  become: true
+  force_handlers: true
+  # vars:
+  #   ansible_python_interpreter: /usr/libexec/platform-python
+  tasks:
+    - name: Perform OS upgrade
+      ansible.builtin.import_role:
+        name: infra.leapp.upgrade
+...
