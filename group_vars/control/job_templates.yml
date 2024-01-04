@@ -712,7 +712,14 @@ controller_templates:
           required: true
     extra_vars:
       leapp_upgrade_type: satellite
-      leapp_repos_enabled: []
+      satellite_organization: 'Default_Organization'
+      satellite_activation_key_pre_leapp: 'RHEL7_Dev'
+      satellite_activation_key_leapp: 'RHEL7IPU_Dev'
+      leapp_repos_enabled:
+        - satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms
+      analysis_packages_el7:
+        - leapp-upgrade
+        - cockpit-leapp
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 
@@ -732,5 +739,27 @@ controller_templates:
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
           required: true
+    ask_limit_on_launch: true
+
+  - name: OS / Upgrade
+    project: Automated Management
+    playbook: leapp-upgrade.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    extra_vars:
+      leapp_upgrade_type: satellite
+      leapp_repos_enabled: []
+    ask_variables_on_launch: true
     ask_limit_on_launch: true
 ...
