@@ -1,0 +1,20 @@
+---
+satellite_content_views:
+  # Red Hat Enterprise Linux 7
+  - name: RHEL7IPU
+    content_view: RHEL7IPU
+    content_view_update: true
+    lifecycle_environments:
+      - "RHEL7IPU_Dev"
+    repositories:
+    - name: Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server
+      product: 'Red Hat Enterprise Linux Server'
+    - name: Red Hat Enterprise Linux 7 Server - Extras RPMs x86_64
+      product: 'Red Hat Enterprise Linux Server'
+    - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8.8
+      product: Red Hat Enterprise Linux for x86_64
+    - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.8
+      product: Red Hat Enterprise Linux for x86_64
+    - name: Red Hat Satellite Client 6 for RHEL 7 Server RPMs x86_64
+      product: 'Red Hat Enterprise Linux Server'
+...
