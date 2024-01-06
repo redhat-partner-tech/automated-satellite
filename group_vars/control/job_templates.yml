@@ -696,7 +696,7 @@ controller_templates:
 
   - name: LEAPP / 01 Analysis
     project: Automated Management
-    playbook: leapp-analysis.yml
+    playbook: leapp_analysis.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
@@ -725,7 +725,7 @@ controller_templates:
 
   - name: OS / Remediation
     project: Automated Management
-    playbook: leapp-remediate.yml
+    playbook: leapp_remediate.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
@@ -743,7 +743,7 @@ controller_templates:
 
   - name: OS / Upgrade
     project: Automated Management
-    playbook: leapp-upgrade.yml
+    playbook: leapp_upgrade.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
