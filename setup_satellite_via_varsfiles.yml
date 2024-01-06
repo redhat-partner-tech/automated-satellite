@@ -1,0 +1,26 @@
+---
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Satellite deployment instrumentation
+      ansible.builtin.uri:
+        url: https://docs.google.com/forms/d/e/1FAIpQLSdIZ77YpETjEfGOoYlXtMnQiU-6M7QFlb2hJA4ujo25QYb2jw/formResponse
+        method: POST
+        body: "ifq&entry.1569353616=smart_mgmt &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
+      ignore_errors: true
+
+    - name: check satellite status
+      redhat.satellite.status_info:
+        validate_certs: false
+
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Include Satellite IaC via vars files
+      ansible.builtin.include_vars:
+        dir: satellite_iac/leapp_7_to_8
+
+    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+...
