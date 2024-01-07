@@ -2,7 +2,7 @@
 - hosts: "{{ HOSTS | default('control[0]') }}"
   connection: local
 
-  tasks:
+  pre_tasks:
     - name: Controller deployment instrumentation
       ansible.builtin.uri:
         url: https://docs.google.com/forms/d/e/1FAIpQLSdIZ77YpETjEfGOoYlXtMnQiU-6M7QFlb2hJA4ujo25QYb2jw/formResponse
@@ -20,7 +20,7 @@
       ansible.builtin.include_vars:
         dir: config_as_code/controller/rhel_8_inventories
 
-    - name: Call dispatch role
-      ansible.builtin.include_role:
-        name: infra.controller_configuration.dispatch
+  roles:
+    - {role: infra.controller_configuration.inventories, when: controller_inventories is defined}
+    - {role: infra.controller_configuration.inventory_sources, when: controller_inventory_sources is defined}
 ...
