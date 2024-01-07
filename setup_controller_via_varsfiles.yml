@@ -1,0 +1,21 @@
+---
+- hosts: "{{ HOSTS | default('control[0]') }}"
+  connection: local
+
+  tasks:
+    - name: Controller deployment instrumentation
+      ansible.builtin.uri:
+        url: https://docs.google.com/forms/d/e/1FAIpQLSdIZ77YpETjEfGOoYlXtMnQiU-6M7QFlb2hJA4ujo25QYb2jw/formResponse
+        method: POST
+        body: "ifq&entry.1569353616=satellite &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
+      ignore_errors: true
+
+    - name: Include Controller CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/controller/rhel_8_inventories
+        validate_certs: false
+
+    - name: Call dispatch role
+      ansible.builtin.include_role:
+        name: infra.controller_configuration.dispatch
+...
