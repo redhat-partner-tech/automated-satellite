@@ -10,6 +10,12 @@
         body: "ifq&entry.1569353616=satellite &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
       ignore_errors: true
 
+    # Gather EC2 metadata facts
+    - amazon.aws.ec2_metadata_facts:
+  
+    - ansible.builtin.set_fact:
+        workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
+
     - name: Include Controller CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/controller/rhel_8_inventories
