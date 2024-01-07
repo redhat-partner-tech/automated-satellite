@@ -716,7 +716,7 @@ controller_templates:
       satellite_activation_key_pre_leapp: 'RHEL7_Dev'
       satellite_activation_key_leapp: 'RHEL7IPU_Dev'
       leapp_repos_enabled:
-        - {% raw %}'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'{% endraw %}
+        - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
       analysis_packages_el7:
         - leapp-upgrade
         - cockpit-leapp
