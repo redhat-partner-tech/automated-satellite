@@ -13,7 +13,6 @@
     - name: Include Controller CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/controller/rhel_8_inventories
-        validate_certs: false
 
     - name: Call dispatch role
       ansible.builtin.include_role:
