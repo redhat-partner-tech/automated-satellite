@@ -20,7 +20,7 @@
   tasks:
     - name: Include Satellite IaC via vars files
       ansible.builtin.include_vars:
-        dir: satellite_iac/leapp_7_to_8
+        dir: config_as_code/satellite/leapp_7_to_8
 
     - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 ...
