@@ -43,6 +43,13 @@
         - ansible_system_vendor == "Amazon EC2" or ansible_system_vendor == "Xen"
         - ansible_product_uuid|regex_search('^ec2') or ansible_product_uuid|regex_search('^EC2')
         - "'rhui' in yum_repolist.stdout"
+
+    - name: Include randomized delay before starting analysis
+      command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(15.0,30.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
+
   roles:
     - infra.leapp.analysis
 ...

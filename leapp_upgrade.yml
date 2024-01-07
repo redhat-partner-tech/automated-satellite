@@ -7,6 +7,11 @@
   # vars:
   #   ansible_python_interpreter: /usr/libexec/platform-python
   tasks:
+    - name: Include randomized delay before beginning upgrade
+      command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(15.0,30.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
     - name: Perform OS upgrade
       ansible.builtin.import_role:
         name: infra.leapp.upgrade
