@@ -28,16 +28,16 @@
       ansible.builtin.slurp: src=files/dynamic_development_source_vars.yaml
       register: dynamic_development_source_vars_slurped
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         dynamic_development_source_vars: "{{ dynamic_development_source_vars_slurped['content'] | b64decode }}"
 
     # Gather EC2 metadata facts
     - amazon.aws.ec2_metadata_facts:
   
-    - set_fact:
+    - ansible.builtin.set_fact:
         workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
 
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ dynamic_development_source_vars }}"
 
 # Allow projects to pull collections via collections/requirements.yml
@@ -51,3 +51,4 @@
     - name: Call dispatch role
       ansible.builtin.include_role:
         name: infra.controller_configuration.dispatch
+...
