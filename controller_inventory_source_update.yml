@@ -7,15 +7,15 @@
     controller_validate_certs: false
 
   tasks:
-  - set_fact:
+  - ansible.builtin.set_fact:
       environment_name_expanded: "Development"
     when: env == "Dev"
 
-  - set_fact:
+  - ansible.builtin.set_fact:
       environment_name_expanded: "QA"
     when: env == "QA"
 
-  - set_fact:
+  - ansible.builtin.set_fact:
       environment_name_expanded: "Production"
     when: env == "Prod"
 
