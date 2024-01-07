@@ -18,7 +18,7 @@
   connection: local
   gather_facts: false
   tasks:
-    - name: Include Satellite IaC via vars files
+    - name: Include Satellite CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/satellite/leapp_7_to_8
 
