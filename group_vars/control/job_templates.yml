@@ -9,6 +9,9 @@ controller_templates:
     limit: rhel7
     extra_vars:
       org_id: "Default_Organization"
+      rhsm_enabled_repos:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -721,6 +724,7 @@ controller_templates:
         - leapp-upgrade
         - cockpit-leapp
         - dnf-plugins-core
+      leapp_preupg_opts: '--target 8.8'
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 
@@ -766,6 +770,7 @@ controller_templates:
       satellite_activation_key_post_leapp: 'RHEL8_Dev'
       leapp_repos_enabled:
         - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
+      leapp_upgrade_opts: '--target 8.8'
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 ...
