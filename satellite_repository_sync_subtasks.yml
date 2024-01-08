@@ -6,7 +6,7 @@
     set_fact:
       retry_count: "{{ 0 if retry_count is undefined else retry_count | int + 1 }}"
   - name: Resume failed Satellite tasks after each failed attempt
-    ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
+    ansible.builtin.import_playbook: satellite_hammer_task_resume.yml
     when: retry_count | int != 0
 
   - name: List repositories to sync
