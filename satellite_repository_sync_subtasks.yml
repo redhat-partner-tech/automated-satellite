@@ -16,17 +16,11 @@
     loop_control:
       loop_var: content_view
 
-  - name: "Sync repositories with the CDN"
-    redhat.satellite.repository_sync:
-      validate_certs: "{{ satellite_validate_certs }}"
-      product: "{{ content_view.repositories | map(attribute='name') | list | unique }}"
-      organization: "{{ satellite_organization }}"
+  - name: Loop on repositories to sync
+    ansible.builtin.include_tasks: 'satellite_repository_sync_include.yml'
     with_items: "{{ satellite_content_views | default([]) }}"
     loop_control:
       loop_var: content_view
-    async: "{{ async_timeout }}"
-    poll: "{{ async_delay }}"
-    register: async_update
 
   rescue:
     - fail:
