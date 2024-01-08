@@ -7,14 +7,14 @@ satellite_content_views:
     lifecycle_environments:
       - "RHEL8IPU_Dev"
     repositories:
-    - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs
-      product: Red Hat Enterprise Linux for x86_64
-    - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs
-      product: Red Hat Enterprise Linux for x86_64
-    - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.0
-      product: Red Hat Enterprise Linux for x86_64
-    - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.0
-      product: Red Hat Enterprise Linux for x86_64
-    - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
-      product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.0
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.0
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
+        product: Red Hat Enterprise Linux for x86_64
 ...
