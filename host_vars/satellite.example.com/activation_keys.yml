@@ -20,6 +20,16 @@ satellite_activation_keys:
   - name: "RHEL8_Prod"
     lifecycle_environment: "RHEL8_Prod"
     content_view: "RHEL8"
+  # Red Hat Enterprise Linux 9
+  - name: "RHEL9_Dev"
+    lifecycle_environment: "RHEL9_Dev"
+    content_view: "RHEL9"
+  - name: "RHEL9_QA"
+    lifecycle_environment: "RHEL9_QA"
+    content_view: "RHEL9"
+  - name: "RHEL9_Prod"
+    lifecycle_environment: "RHEL9_Prod"
+    content_view: "RHEL9"
   # Community Enterprise Linux 7
   - name: "CentOS7_Dev"
     lifecycle_environment: "CentOS7_Dev"
