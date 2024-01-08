@@ -15,20 +15,22 @@
         body: "ifq&entry.1569353616=smart_mgmt &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
       ignore_errors: true
 
-    - name: check satellite status
+    - name: Check satellite status
       redhat.satellite.status_info:
         validate_certs: "{{ satellite_validate_certs }}"
 
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  connection: local
-  gather_facts: false
-  tasks:
     - name: Include Satellite CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/satellite/leapp_7_to_8
 
-    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+    - name: Include setup_satellite_infra_subtasks
+      ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 
-    - ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
+    - name: Reset retry count
+      ansible.builtin.set_fact:
+        retry_count: 0
+
+    - name: Include satellite_repository_sync_subtasks
+      ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
       when: sync_repository | default(true) | bool
 ...
