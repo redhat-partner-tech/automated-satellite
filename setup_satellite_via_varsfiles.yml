@@ -19,9 +19,20 @@
       redhat.satellite.status_info:
         validate_certs: "{{ satellite_validate_certs }}"
 
-    - name: Include Satellite CaC via vars files
+    - name: Include RHEL7 to RHEL8 IPU Satellite CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/satellite/leapp_7_to_8
+      when: satellite_cac_scenario == 'RHEL7_to_RHEL8'
+
+    - name: Include RHEL7 to RHEL8 IPU Satellite CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/satellite/leapp_8_to_9
+      when: satellite_cac_scenario == 'RHEL8_to_RHEL9'
+
+    - name: Include CentOS7 to RHEL7 Conversion Satellite CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/satellite/convert2rhel_centos7_to_rhel7
+      when: satellite_cac_scenario == 'CentOS7_to_RHEL7'
 
     - name: Include setup_satellite_infra_subtasks
       ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
