@@ -6,7 +6,6 @@
     satellite_validate_certs: false
     async_timeout: 3600
     async_delay: 15
-    sync_repository: true
 
   tasks:
     - name: Satellite deployment instrumentation
@@ -18,7 +17,7 @@
 
     - name: check satellite status
       redhat.satellite.status_info:
-        validate_certs: false
+        validate_certs: "{{ satellite_validate_certs }}"
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
@@ -31,5 +30,5 @@
     - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 
     - ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
-      when: sync_repository | bool
+      when: sync_repository | default(true) | bool
 ...
