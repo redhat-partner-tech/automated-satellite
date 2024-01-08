@@ -1,0 +1,12 @@
+---
+- name: "Sync repositories with the CDN"
+  redhat.satellite.repository_sync:
+    validate_certs: "{{ satellite_validate_certs }}"
+    repository: "{{ item.name }}"
+    product: "{{ item.product }}"
+    organization: "{{ satellite_organization }}"
+  loop: "{{ content_view.repositories | default([]) }}"
+  async: "{{ async_timeout }}"
+  poll: "{{ async_delay }}"
+  register: async_update
+...
