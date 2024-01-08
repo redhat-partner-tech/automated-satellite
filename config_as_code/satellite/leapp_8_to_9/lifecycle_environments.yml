@@ -1,0 +1,6 @@
+---
+satellite_lifecycle_environments:
+  # Red Hat Enterprise Linux 8
+  - name: "RHEL8IPU_Dev"
+    prior: "Library"
+...

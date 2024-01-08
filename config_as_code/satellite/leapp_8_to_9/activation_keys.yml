@@ -1,0 +1,7 @@
+---
+satellite_activation_keys:
+  # Leapp AK for RHEL 8 to RHEL 9
+  - name: "RHEL8IPU_Dev"
+    lifecycle_environment: "RHEL8IPU_Dev"
+    content_view: "RHEL8IPU"
+...

@@ -1,0 +1,9 @@
+---
+satellite_products:
+  - name: Red Hat Enterprise Linux for x86_64
+    repository_sets:
+      - name: "Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)"
+        releasever: "9.0"
+      - name: "Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)"
+        releasever: "9.0"
+...
