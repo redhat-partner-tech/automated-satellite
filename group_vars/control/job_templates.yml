@@ -703,6 +703,9 @@ controller_templates:
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -734,6 +737,9 @@ controller_templates:
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -752,6 +758,9 @@ controller_templates:
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
     survey_enabled: true
     survey:
       name: ''
@@ -773,4 +782,31 @@ controller_templates:
       leapp_upgrade_opts: '--target 8.8'
     ask_variables_on_launch: true
     ask_limit_on_launch: true
+
+  - name: SETUP / Satellite / Conversion-Upgrade Config-as-Code
+    project: Automated Management
+    playbook: setup_satellite_via_varsfiles.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    extra_vars:
+      refresh_satellite_manifest: false
+    ask_variables_on_launch: true
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose conversion/upgrade scenario to prepare on Satellite
+          type: multiplechoice
+          variable: satellite_cac_scenario
+          choices:
+            - CentOS7_to_RHEL7
+            - RHEL7_to_RHEL8
+            - RHEL8_to_RHEL9
+          required: true
 ...
