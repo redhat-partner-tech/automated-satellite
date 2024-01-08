@@ -1,6 +1,6 @@
 ---
 satellite_content_views:
-  # Red Hat Enterprise Linux 7
+  # Red Hat Enterprise Linux IPU 7 to 8
   - name: RHEL7IPU
     content_view: RHEL7IPU
     content_view_update: true
