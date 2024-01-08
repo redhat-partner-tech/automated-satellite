@@ -6,6 +6,7 @@
     satellite_validate_certs: false
     async_timeout: 3600
     async_delay: 15
+    sync_repository: true
 
   tasks:
     - name: Satellite deployment instrumentation
