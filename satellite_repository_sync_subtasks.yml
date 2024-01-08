@@ -9,12 +9,12 @@
     ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
     when: retry_count | int != 0
 
-  - name: "Get the list of repositories"
-    set_fact:
-      repos_to_sync: "{{ satellite_content_views | map(attribute='repositories') | list | unique }}"
-
-  - debug:
-      var: repos_to_sync
+  - name: List repositories to sync
+    ansible.builtin.debug:
+      msg: "{{ content_view.repositories | map(attribute='name') | list | unique }}"
+    with_items: "{{ satellite_content_views | default([]) }}"
+    loop_control:
+      loop_var: content_view
 
   #- name: "Sync repositories with the CDN"
   #  redhat.satellite.repository_sync:
