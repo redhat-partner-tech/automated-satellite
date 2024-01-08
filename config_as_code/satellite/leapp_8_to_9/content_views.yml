@@ -1,6 +1,6 @@
 ---
 satellite_content_views:
-  # Red Hat Enterprise Linux 8
+  # Red Hat Enterprise Linux IPU 8 to 9
   - name: RHEL8IPU
     content_view: RHEL8IPU
     content_view_update: true
@@ -14,6 +14,21 @@ satellite_content_views:
       - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.0
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.0
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
+        product: Red Hat Enterprise Linux for x86_64
+  # Red Hat Enterprise Linux 9
+  - name: RHEL9
+    content_view: RHEL9
+    content_view_update: true
+    lifecycle_environments:
+      - "RHEL9_Dev"
+      - "RHEL9_QA"
+      - "RHEL9_Prod"
+    repositories:
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9
+        product: Red Hat Enterprise Linux for x86_64
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
         product: Red Hat Enterprise Linux for x86_64
