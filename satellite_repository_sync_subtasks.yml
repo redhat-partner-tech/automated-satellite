@@ -1,0 +1,38 @@
+---
+# https://devpress.csdn.net/cicd/62ec1d2689d9027116a10320.html
+- name: satellite_repository_sync workloads Task Group
+  block:
+  - name: Increment retry count
+    set_fact:
+      retry_count: "{{ 0 if retry_count is undefined else retry_count | int + 1 }}"
+  - name: Resume failed Satellite tasks after each failed attempt
+    ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
+    when: retry_count | int != 0
+
+  - name: "Get the list of repositories"
+    set_fact:
+      repos_to_sync: "{{ satellite_content_views | map(attribute='name') | list | unique }}"
+
+  - debug:
+      var: repos_to_sync
+
+  #- name: "Sync repositories with the CDN"
+  #  redhat.satellite.repository_sync:
+  #    validate_certs: "{{ satellite_validate_certs }}"
+  #    product: "{{ item }}"
+  #  loop: "{{ repos_to_sync }}"
+  #  async: "{{ async_timeout }}"
+  #  poll: "{{ async_delay }}"
+  #  register: async_update
+
+  rescue:
+    - fail:
+        msg: Maximum retries of grouped tasks reached
+      # initial try plus 3 retries = 4 total tries
+      when: retry_count | int == 3
+
+    - debug:
+        msg: "satellite_repository_sync workloads Task Group failed, retry count: {{ retry_count }}"
+
+    - ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
+...
