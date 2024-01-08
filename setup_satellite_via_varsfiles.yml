@@ -26,10 +26,6 @@
     - name: Include setup_satellite_infra_subtasks
       ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 
-    - name: Reset retry count
-      ansible.builtin.set_fact:
-        retry_count: 0
-
     - name: Include satellite_repository_sync_subtasks
       ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
       when: sync_repository | default(true) | bool
