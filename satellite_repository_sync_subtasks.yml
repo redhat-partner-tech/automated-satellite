@@ -11,7 +11,7 @@
 
   - name: "Get the list of repositories"
     set_fact:
-      repos_to_sync: "{{ satellite_content_views | map(attribute='name') | list | unique }}"
+      repos_to_sync: "{{ satellite_content_views | map(attribute='repositories') | list | unique }}"
 
   - debug:
       var: repos_to_sync
