@@ -1,5 +1,6 @@
 ---
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+- name: Satellite Configuration as Code automation
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   gather_facts: false
   tasks:
@@ -10,85 +11,37 @@
         body: "ifq&entry.1569353616=smart_mgmt &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
       ignore_errors: true
 
-    - name: check satellite status
+    - name: Check satellite status
       redhat.satellite.status_info:
         validate_certs: false
 
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+- name: Satellite disconnected mode
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   become: true
-- name: satellite disconnected mode
+- name: Satellite disconnected mode
   import_playbook: satellite_disconnected_mode.yml
   vars:
     disconnected_mode: "false"
   when: refresh_satellite_manifest
 
-- name: satellite set bulk_load_size
+- name: Satellite set bulk_load_size
   import_playbook: satellite_set_bulk_load_size.yml
   vars:
     bulk_load_size: 1000
 
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+- name: Satellite CaC subtasks with dynamic retries
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   gather_facts: false
   tasks:
-    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+    - name: Satellite CaC workload Task Groups
+      ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
   vars:
     refresh_satellite_manifest: false
     refresh_timeout: 14400
   tasks:
-    - block:
-        - name: Create tempfile for Satellite production.log asynchronous tail
-          ansible.builtin.tempfile:
-            state: file
-          register: sat_prodlog_tempfile
-
-        - name: Asynchronous tail Satellite production.log to tempfile 
-          ansible.builtin.shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
-          async: "{{ refresh_timeout }}"
-          poll: 0
-      when: refresh_satellite_manifest
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  connection: local
-  gather_facts: false
-  vars:
-    refresh_satellite_manifest: false
-    refresh_timeout: 14400
-  tasks:
-    - name: Pause for 2 minutes to let system settle post infra subtasks
-      ansible.builtin.pause:
-        minutes: 2
-
-    - name: refresh manifest
-      redhat.satellite.subscription_manifest:
-        organization: "Default Organization"
-        state: refreshed
-      async: "{{ refresh_timeout }}"
-      poll: 0
-      register: refresh_async
-      delegate_to: localhost
-      when: refresh_satellite_manifest
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
-  vars:
-    refresh_satellite_manifest: false
-    refresh_timeout: 14400
-  tasks:
-    - block:
-      - name: >
-          Watch the temp file until ManifestRefresh result ==> success appears before continuing...
-        ansible.builtin.wait_for:
-          path: "{{ sat_prodlog_tempfile.path }}"
-          search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
-          timeout: 1500
-          sleep: 20
-
-      - name: Remove tempfile
-        ansible.builtin.file:
-          path: "{{ sat_prodlog_tempfile.path }}"
-          state: absent
-      when: refresh_satellite_manifest
+    - name: Satellite manifest refresh workload Task Groups
+      ansible.builtin.include_tasks: satellite_manifest_subtasks_init.yml
+...
