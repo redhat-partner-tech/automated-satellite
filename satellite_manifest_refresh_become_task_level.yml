@@ -22,7 +22,8 @@
       async: "{{ refresh_timeout }}"
       poll: 0
       register: refresh_async
-      delegate_to: ansible-1.example.com
+      vars:
+        ansible_connection: local
 
     - name: >
         Watch the temp file until ManifestRefresh result ==> success appears before continuing...
