@@ -1,31 +1,34 @@
 ---
+- name: Satellite manifest refresh odyssey
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  tasks:
 # https://devpress.csdn.net/cicd/62ec1d2689d9027116a10320.html
-- name: Satellite manifest refresh workloads Task Group
-  block:
-  - name: Increment retry count
-    set_fact:
-      manifest_refresh_retry_count: "{{ 0 if manifest_refresh_retry_count is undefined else manifest_refresh_retry_count | int + 1 }}"
-  - name: Resume failed Satellite tasks after each failed attempt
-    ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
-    when: manifest_refresh_retry_count | int != 0
+    - name: Satellite manifest refresh workloads Task Group
+      block:
+      - name: Increment retry count
+        set_fact:
+          manifest_refresh_retry_count: "{{ 0 if manifest_refresh_retry_count is undefined else manifest_refresh_retry_count | int + 1 }}"
+      - name: Resume failed Satellite tasks after each failed attempt
+        ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
+        when: manifest_refresh_retry_count | int != 0
 
-  - name: Import manifest refresh tempfile init playbook
-    ansible.builtin.import_playbook: satellite_manifest_refresh_tempfile_init.yml
+      - name: Import manifest refresh tempfile init playbook
+        ansible.builtin.import_playbook: satellite_manifest_refresh_tempfile_init.yml
 
-  - name: Import manifest refresh role execution playbook
-    ansible.builtin.import_playbook: satellite_manifest_refresh_execute_role.yml
+      - name: Import manifest refresh role execution playbook
+        ansible.builtin.import_playbook: satellite_manifest_refresh_execute_role.yml
 
-  - name: Import manifest refresh watch tempfile playbook
-    ansible.builtin.import_playbook: satellite_manifest_refresh_watch_tempfile.yml
+      - name: Import manifest refresh watch tempfile playbook
+        ansible.builtin.import_playbook: satellite_manifest_refresh_watch_tempfile.yml
 
-  rescue:
-    - fail:
-        msg: Maximum retries of grouped tasks reached
-      # initial try plus 3 retries = 4 total tries
-      when: manifest_refresh_retry_count | int == 3
+      rescue:
+        - fail:
+            msg: Maximum retries of grouped tasks reached
+          # initial try plus 3 retries = 4 total tries
+          when: manifest_refresh_retry_count | int == 3
 
-    - debug:
-        msg: "Satellite manifest refresh Task Group failed, retry count: {{ manifest_refresh_retry_count }}"
+        - debug:
+            msg: "Satellite manifest refresh Task Group failed, retry count: {{ manifest_refresh_retry_count }}"
 
-    - ansible.builtin.include_tasks: satellite_manifest_subtasks.yml
+        - ansible.builtin.include_tasks: satellite_manifest_subtasks.yml
 ...
