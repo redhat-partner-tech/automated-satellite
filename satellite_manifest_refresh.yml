@@ -1,10 +1,7 @@
 ---
-- name: Import manifest refresh tempfile init playbook
-  ansible.builtin.import_playbook: satellite_manifest_refresh_tempfile_init.yml
-
-- name: Import manifest refresh role execution playbook
-  ansible.builtin.import_playbook: satellite_manifest_refresh_execute_role.yml
-
-- name: Import manifest refresh watch tempfile playbook
-  ansible.builtin.import_playbook: satellite_manifest_refresh_watch_tempfile.yml
+- name: Satellite manifest refresh odyssey
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  tasks:
+    - name: Satellite manifest refresh workloads Task Group
+      ansible.builtin.include_tasks: satellite_manifest_subtasks_init.yml
 ...
