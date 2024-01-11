@@ -1,0 +1,41 @@
+---
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  vars:
+    refresh_timeout: 14400
+  tasks:
+    - name: Create tempfile for Satellite production.log asynchronous tail
+      ansible.builtin.tempfile:
+        state: file
+      register: sat_prodlog_tempfile
+      become: true
+
+    - name: Asynchronous tail Satellite production.log to tempfile 
+      ansible.builtin.shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      become: true
+
+    - name: refresh manifest
+      redhat.satellite.subscription_manifest:
+        organization: "Default Organization"
+        state: refreshed
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      register: refresh_async
+      delegate_to: ansible-1.example.com
+
+    - name: >
+        Watch the temp file until ManifestRefresh result ==> success appears before continuing...
+      ansible.builtin.wait_for:
+        path: "{{ sat_prodlog_tempfile.path }}"
+        search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
+        timeout: 1500
+        sleep: 20
+      become: true
+
+    - name: Remove tempfile
+      ansible.builtin.file:
+        path: "{{ sat_prodlog_tempfile.path }}"
+        state: absent
+      become: true
+...
