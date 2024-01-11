@@ -27,5 +27,5 @@
     - debug:
         msg: "Satellite manifest refresh Task Group failed, retry count: {{ manifest_refresh_retry_count }}"
 
-    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+    - ansible.builtin.include_tasks: satellite_manifest_subtasks.yml
 ...
