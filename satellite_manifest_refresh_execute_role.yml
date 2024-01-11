@@ -1,0 +1,17 @@
+---
+- name: Instantiate redhat.satellite.subscription_manifest role
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  vars:
+    refresh_timeout: 14400
+  tasks:
+    - name: Refresh manifest
+      redhat.satellite.subscription_manifest:
+        organization: "Default Organization"
+        state: refreshed
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      register: refresh_async
+      delegate_to: localhost
+...

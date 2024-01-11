@@ -1,0 +1,17 @@
+---
+- name: Satellite refresh manifest log tempfile instantiation and tail
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  become: true
+  vars:
+    refresh_timeout: 14400
+  tasks:
+    - name: Create tempfile for Satellite production.log asynchronous tail
+      ansible.builtin.tempfile:
+        state: file
+      register: sat_prodlog_tempfile
+
+    - name: Asynchronous tail Satellite production.log to tempfile 
+      ansible.builtin.shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
+      async: "{{ refresh_timeout }}"
+      poll: 0
+...

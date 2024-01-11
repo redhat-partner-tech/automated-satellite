@@ -1,0 +1,20 @@
+---
+- name: Watch tempfile for ManifestRefresh success and delete logging tempfile
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  become: true
+  vars:
+    refresh_timeout: 14400
+  tasks:
+    - name: >
+        Watch the temp file until ManifestRefresh result ==> success appears before continuing...
+      ansible.builtin.wait_for:
+        path: "{{ sat_prodlog_tempfile.path }}"
+        search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
+        timeout: 1500
+        sleep: 20
+
+    - name: Remove tempfile
+      ansible.builtin.file:
+        path: "{{ sat_prodlog_tempfile.path }}"
+        state: absent
+...
