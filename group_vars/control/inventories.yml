@@ -51,6 +51,10 @@ controller_inventories:
   - name: EXAMPLE dynamic project inventory
     organization: Default
 
+  - name: Demo Inventory
+    organization: Default
+    state: absent
+
 controller_inventory_sources:
   - name: satellite_source
     inventory: Workshop Inventory
@@ -274,3 +278,4 @@ controller_inventory_sources:
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
+...
