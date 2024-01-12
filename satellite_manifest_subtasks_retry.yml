@@ -25,12 +25,14 @@
         ansible_connection: local
 
     - name: >
-        Watch Satellite production.log until ManifestRefresh result ==> success appears before continuing...
-      ansible.builtin.wait_for:
-        path: "/var/log/foreman/production.log"
-        search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
-        timeout: "{{ refresh_timeout }}"
-        sleep: 10
+        Check Satellite production.log until ManifestRefresh result ==> success appears before continuing...
+      ansible.builtin.command: grep -q "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success" /var/log/foreman/production.log
+      register: grep_prod_log_refresh
+      ignore_errors: true
+      changed_when: false
+      until: grep_prod_log_refresh.rc == 0
+      retries: 60
+      delay: 2
       become: true
 
   rescue:
