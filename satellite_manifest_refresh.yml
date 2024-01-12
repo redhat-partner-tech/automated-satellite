@@ -2,7 +2,7 @@
 - name: Satellite manifest refresh
   hosts: "{{ HOSTS | default('satellite.example.com') }}"
   vars:
-    refresh_timeout: 14400
+    refresh_timeout: 120
   tasks:
     - name: Satellite manifest refresh workloads Task Group
       ansible.builtin.include_tasks: satellite_manifest_subtasks_init.yml
