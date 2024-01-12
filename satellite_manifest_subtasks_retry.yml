@@ -2,13 +2,12 @@
 # https://devpress.csdn.net/cicd/62ec1d2689d9027116a10320.html
 - name: Satellite manifest refresh workloads Task Group
   block:
-
     - name: Increment retry count
       ansible.builtin.set_fact:
         manifest_refresh_retry_count: "{{ manifest_refresh_retry_count | int + 1 }}"
 
     - name: Resume failed Satellite tasks after each failed attempt
-      ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
+      ansible.builtin.include_tasks: satellite_hammer_task_resume_include.yml
       when: manifest_refresh_retry_count | int != 1
 
     - name: Create tempfile for Satellite production.log asynchronous tail
@@ -36,7 +35,7 @@
     - name: >
         Check the temp file until ManifestRefresh result ==> success appears before continuing...
       ansible.builtin.command: >-
-        grep -q "ManifestRefresh.*state.*changed.*stopped.*result.*success" {{ sat_prodlog_tempfile.path }}
+        grep -q ManifestRefresh.*state.*changed.*stopped.*result.*success {{ sat_prodlog_tempfile.path }}
       register: grep_prod_log_refresh
       ignore_errors: true
       changed_when: false
