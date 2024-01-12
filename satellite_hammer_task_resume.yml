@@ -1,16 +1,19 @@
 ---
-- name: Satellite - resume paused/errored tasks
-  ansible.builtin.command: >-
-    hammer task resume
-  become: true
-  register: hammer_task_resume
-  ignore_errors: true
+- name: Satellite task resume via hammer
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  tasks:
+    - name: Satellite - resume paused/errored tasks
+      ansible.builtin.command: >-
+        hammer task resume
+      become: true
+      register: hammer_task_resume
+      ignore_errors: true
 
-- name: Pause for 1 minute to allow paused/errored tasks to complete
-  ansible.builtin.pause:
-    minutes: 1
+    - name: Pause for 1 minute to allow paused/errored tasks to complete
+      ansible.builtin.pause:
+        minutes: 1
 
-- name: hammer task resume output 
-  ansible.builtin.debug:
-    msg: "{{ hammer_task_resume }}"
+    - name: hammer task resume output 
+      ansible.builtin.debug:
+        msg: "{{ hammer_task_resume }}"
 ...
