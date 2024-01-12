@@ -26,7 +26,8 @@
 
     - name: >
         Check Satellite production.log until ManifestRefresh result ==> success appears before continuing...
-      ansible.builtin.command: grep -q "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success" /var/log/foreman/production.log
+      ansible.builtin.command: >-
+        grep -q "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success" /var/log/foreman/production.log
       register: grep_prod_log_refresh
       ignore_errors: true
       changed_when: false
