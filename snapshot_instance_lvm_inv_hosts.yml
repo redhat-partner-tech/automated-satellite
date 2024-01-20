@@ -6,7 +6,23 @@
     LANG: en_US.UTF-8
     LC_ALL: en_US.UTF-8
     TERM: linux
-  roles:
-    - name: infra.lvm_snapshots.lvm_snapshots
-      # lvm_snapshot_* vars provided via AAP2 job template and associated surveys
+  tasks:
+    - ansible.builtin.set_fact:
+        snapshot_create_set_name: "{{ snapshot_set_name }}"
+        snapshot_remove_set_name: "{{ snapshot_set_name }}"
+        snapshot_revert_set_name: "{{ snapshot_set_name }}"
+
+    - name: "Execute snapshot check"
+      ansible.builtin.include_role:
+        name: "infra.lvm_snapshots.snapshot_create"
+      vars:
+        snapshot_create_check_only: true
+        # Additional snapshot_* vars provided via AAP2 job template and associated surveys
+      when: lvm_snapshots_action == "check"
+
+    - name: "Execute snapshot {{ lvm_snapshots_action }}"
+      ansible.builtin.include_role:
+        name: "infra.lvm_snapshots.snapshot_{{ lvm_snapshots_action }}"
+        # Additional snapshot_* vars provided via AAP2 job template and associated surveys
+      when: (lvm_snapshots_action == "create") or (lvm_snapshots_action == "remove") or (lvm_snapshots_action == "revert")
 ...
