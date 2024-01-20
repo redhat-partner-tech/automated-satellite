@@ -880,4 +880,16 @@ controller_templates:
     extra_vars:
       controller_configuration_async_retries: 60
       controller_configuration_async_delay": 5
+
+  - name: UTILITY / Extend partition and resize physical volume
+    project: Automated Management
+    playbook: partition_lvm_resize.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    ask_limit_on_launch: true
+    ask_variables_on_launch: true
+    extra_vars:
+      full_storage_device_name: /dev/nvme0n1
+      perform_resize: true
 ...
