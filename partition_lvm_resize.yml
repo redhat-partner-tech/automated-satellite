@@ -1,0 +1,55 @@
+---
+- name: Extend partition and resize physical volume
+  hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
+  strategy: free
+  gather_facts: true
+  become: true
+  vars:
+    perform_resize: false
+  tasks:
+    - name: "Read {{ full_storage_device_name }} storage device information (always use unit when probing)"
+      community.general.parted:
+        device: "{{ full_storage_device_name }}"
+        unit: MiB
+      register: storage_device_info
+
+    - name: "{{ full_storage_device_name }} device information"
+      ansible.builtin.debug:
+        var: storage_device_info
+
+    - name: "Calculate total partition usage on {{ full_storage_device_name }}"
+      ansible.builtin.set_fact:
+        total_partitions_size: "{{ total_partitions_size | default(0) | int + item.size | int }}"
+      loop: "{{ storage_device_info.partitions }}"
+      loop_control:
+        label: "{{ item.num }}"
+
+    - name: "Validate total partition usage on {{ full_storage_device_name }} is less than total device size"
+      ansible.builtin.assert:
+        that:
+          - 'total_partitions_size | int + 1 < storage_device_info.disk.size'
+        fail_msg: Total partition usage on {{ full_storage_device_name }} equals total size of the device.
+        success_msg: Total partition usage on {{ full_storage_device_name }} is less than total size of the device.
+
+    - name: Extend existing partition to fill all available space on device
+      ansible.builtin.command: >-
+        growpart {{ full_storage_device_name }} {{ storage_device_info.partitions | length }}
+      when: perform_resize
+      register: growpart_output
+
+    - name: Resize physical volume to utilize all available space
+      ansible.builtin.command: >-
+        pvresize {{ full_storage_device_name }}p{{ storage_device_info.partitions | length }}
+      when:
+        - '"CHANGED" in growpart_output.stdout'
+        - perform_resize
+      register: pvresize_output
+
+    - name: Validate partition and physical volume resized
+      ansible.builtin.assert:
+        that:
+          - 'full_storage_device_name ~ "p" ~ storage_device_info.partitions | length in pvresize_output.stdout'
+          - '"changed" in pvresize_output.stdout'
+        fail_msg: Failed to resize {{ full_storage_device_name }} partition {{ storage_device_info.partitions | length }} and physical volume {{ full_storage_device_name }}p{{ storage_device_info.partitions | length }}.
+        success_msg: Resized {{ full_storage_device_name }} partition {{ storage_device_info.partitions | length }} and physical volume {{ full_storage_device_name }}p{{ storage_device_info.partitions | length }}.
+...
