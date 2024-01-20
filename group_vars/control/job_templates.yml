@@ -867,4 +867,17 @@ controller_templates:
             - RHEL7_to_RHEL8
             - RHEL8_to_RHEL9
           required: true
+
+  - name: SETUP / Controller / vars files
+    project: Automated Management
+    playbook: setup_controller_via_varsfiles.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Controller Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    extra_vars:
+      controller_configuration_async_retries: 60
+      controller_configuration_async_delay": 5
 ...
