@@ -5,10 +5,10 @@
   gather_facts: true
   become: true
   vars:
-    rhsm_username: "{{ rhsm_username | default('') }}"
-    rhsm_password: "{{ rhsm_password | default('') }}"
-    rhsm_org: "{{ org_id | default('') }}"
-    rhsm_activation_key: "{{ rhel_lifecycle_environment | default('') }}"
+    rhsm_username: ""
+    rhsm_password: ""
+    rhsm_org: "{{ org_id }}"
+    rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
   tasks:
   - name: verify operating system
     ansible.builtin.assert:
