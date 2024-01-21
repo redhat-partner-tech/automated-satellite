@@ -1,6 +1,6 @@
 ---
 - name: Convert2rhel pre-conversion analysis
-  hosts: "env_{{ centos_lifecycle_environment }}"
+  hosts: "{{ centos_lifecycle_environment | default(omit) }}"
   strategy: free
   gather_facts: true
   become: true
