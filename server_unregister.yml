@@ -1,0 +1,49 @@
+---
+- name: Unregister host and remove from Satellite
+  hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    organization: "Default Organization"
+    validate_certs: false
+  tasks:
+    - name: Wait for connection...
+      ansible.builtin.wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 300
+
+    - name: Command - yum clean all
+      ansible.builtin.command: >-
+        yum clean all
+
+    - name: Delete /var/cache/yum/*
+      ansible.builtin.command: >-
+        rm -rf /var/cache/yum/*
+
+    - name: Subscription manager - remove all
+      ansible.builtin.command: >-
+        subscription-manager remove --all
+
+    - name: Subscription manager - unregister
+      ansible.builtin.command: >-
+        subscription-manager unregister
+
+    - name: Subscription manager - clean
+      ansible.builtin.command: >-
+        subscription-manager clean
+
+    - name: Remove host from Satellite satellite.example.com"
+      redhat.satellite.host:
+        server_url: "https://satellite.example.com"
+        name: "{{ inventory_hostname }}"
+        organization: "{{ organization }}"
+        state: absent
+      delegate_to: localhost
+      register: delete_host_result
+
+    - name: Output delete_host_result
+      ansible.builtin.debug:
+        var: delete_host_result
+...
