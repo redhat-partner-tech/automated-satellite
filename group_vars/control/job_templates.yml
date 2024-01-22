@@ -452,19 +452,6 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 01 - Upgrade OS to latest release
-    description: Upgrade OS to latest available packages
-    project: Automated Management
-    playbook: upgrade_instance.yml
-    inventory: EC2 Dynamic Inventory
-    credentials:
-      - Workshop Credential
-    extra_vars:
-      ec2_region: "{{ workshop_ec2_region }}"
-    notification_templates_started: Telemetry
-    notification_templates_success: Telemetry
-    notification_templates_error: Telemetry
-
   - name: CONVERT2RHEL / 02 - convert2rhel
     description: Convert OS to RHEL OS via targetted LE
     project: Automated Management
