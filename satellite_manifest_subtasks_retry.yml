@@ -1,0 +1,62 @@
+---
+# https://devpress.csdn.net/cicd/62ec1d2689d9027116a10320.html
+- name: Satellite manifest refresh workloads Task Group
+  block:
+    - name: Increment retry count
+      ansible.builtin.set_fact:
+        manifest_refresh_retry_count: "{{ manifest_refresh_retry_count | int + 1 }}"
+
+    - name: Resume failed Satellite tasks after each failed attempt
+      ansible.builtin.include_tasks: satellite_hammer_task_resume_include.yml
+      when: manifest_refresh_retry_count | int != 1
+
+    - name: Create tempfile for Satellite production.log asynchronous tail
+      ansible.builtin.tempfile:
+        state: file
+      register: sat_prodlog_tempfile
+      become: true
+
+    - name: Asynchronous tail Satellite production.log to tempfile
+      ansible.builtin.shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      become: true
+
+    - name: refresh manifest
+      redhat.satellite.subscription_manifest:
+        organization: "Default Organization"
+        state: refreshed
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      register: refresh_async
+      vars:
+        ansible_connection: local
+
+    - name: >
+        Check the temp file until ManifestRefresh result ==> success appears before continuing...
+      ansible.builtin.command: >-
+        grep -q ManifestRefresh.*state.*changed.*stopped.*result.*success {{ sat_prodlog_tempfile.path }}
+      register: grep_prod_log_refresh
+      ignore_errors: true
+      changed_when: false
+      until: grep_prod_log_refresh.rc == 0
+      retries: 60
+      delay: 2
+      become: true
+
+    - name: Remove tempfile
+      ansible.builtin.file:
+        path: "{{ sat_prodlog_tempfile.path }}"
+        state: absent
+      become: true
+
+  rescue:
+    - ansible.builtin.fail:
+        msg: Maximum retries of grouped tasks reached
+      when: manifest_refresh_retry_count | int == 4
+
+    - ansible.builtin.debug:
+        msg: "Satellite manifest refresh Task Group failed, retry count: {{ manifest_refresh_retry_count }}"
+
+    - ansible.builtin.include_tasks: satellite_manifest_subtasks_retry.yml
+...

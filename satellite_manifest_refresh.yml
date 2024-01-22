@@ -1,48 +1,9 @@
 ---
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
+- name: Satellite manifest refresh
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   vars:
-    refresh_timeout: 14400
+    refresh_timeout: 120
   tasks:
-    - name: Create tempfile for Satellite production.log asynchronous tail
-      tempfile:
-        state: file
-      register: sat_prodlog_tempfile
-
-    - name: Asynchronous tail Satellite production.log to tempfile 
-      shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
-      async: "{{ refresh_timeout }}"
-      poll: 0
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  connection: local
-  gather_facts: no
-  vars:
-    refresh_timeout: 14400
-  tasks:
-    - name: refresh manifest
-      redhat.satellite.subscription_manifest:
-        organization: "Default Organization"
-        state: refreshed
-      async: "{{ refresh_timeout }}"
-      poll: 0
-      register: refresh_async
-      delegate_to: localhost
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
-  vars:
-    refresh_timeout: 14400
-  tasks:
-    - name: >
-        Watch the temp file until ManifestRefresh result ==> success appears before continuing...
-      wait_for:
-        path: "{{ sat_prodlog_tempfile.path }}"
-        search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
-        timeout: 1500
-        sleep: 20
-
-    - name: Remove tempfile
-      file:
-        path: "{{ sat_prodlog_tempfile.path }}"
-        state: absent
+    - name: Satellite manifest refresh workloads Task Group
+      ansible.builtin.include_tasks: satellite_manifest_subtasks_init.yml
+...

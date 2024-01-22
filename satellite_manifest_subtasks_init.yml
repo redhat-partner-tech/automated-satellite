@@ -1,0 +1,7 @@
+---
+- name: Initialize manifest_refresh_retry_count
+  ansible.builtin.set_fact:
+    manifest_refresh_retry_count: 0
+
+- ansible.builtin.include_tasks: satellite_manifest_subtasks_retry.yml
+...

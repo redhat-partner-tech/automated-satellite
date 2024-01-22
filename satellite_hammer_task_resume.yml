@@ -1,6 +1,6 @@
 ---
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
+- name: Satellite task resume via hammer
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   tasks:
     - name: Satellite - resume paused/errored tasks
       ansible.builtin.command: >-
