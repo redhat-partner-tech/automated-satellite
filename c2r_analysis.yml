@@ -13,7 +13,7 @@
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
   tasks:
-    - name: verify operating system
+    - name: Verify operating system
       ansible.builtin.assert:
         that:
           - "ansible_distribution == 'CentOS'"
