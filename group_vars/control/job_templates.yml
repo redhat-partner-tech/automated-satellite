@@ -975,7 +975,7 @@ controller_templates:
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 
-  - name: SETUP / Satellite / Conversion-Upgrade Config-as-Code
+  - name: SETUP / Satellite / Upgrade scenario Config-as-Code
     project: Automated Management
     playbook: setup_satellite_via_varsfiles.yml
     inventory: Workshop Inventory
@@ -993,16 +993,15 @@ controller_templates:
       name: ''
       description: ''
       spec:
-        - question_name: Choose conversion/upgrade scenario to prepare on Satellite
+        - question_name: Choose RHEL upgrade scenario to prepare on Satellite
           type: multiplechoice
           variable: satellite_cac_scenario
           choices:
-            - CentOS7_to_RHEL7
             - RHEL7_to_RHEL8
             - RHEL8_to_RHEL9
           required: true
 
-  - name: SETUP / Controller / vars files
+  - name: SETUP / Controller / RHEL version Config-as-Code
     project: Automated Management
     playbook: setup_controller_via_varsfiles.yml
     inventory: Workshop Inventory
@@ -1012,8 +1011,21 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
     extra_vars:
-      controller_configuration_async_retries: 60
+      controller_configuration_async_retries: 72
       controller_configuration_async_delay": 5
+    ask_variables_on_launch: true
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose RHEL version to prepare on Controller
+          type: multiplechoice
+          variable: controller_cac_scenario
+          choices:
+            - RHEL8
+            - RHEL9
+          required: true
 
   - name: UTILITY / Extend partition and resize physical volume
     project: Automated Management

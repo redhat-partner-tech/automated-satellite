@@ -16,9 +16,15 @@
     - ansible.builtin.set_fact:
         workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
 
-    - name: Include Controller CaC via vars files
+    - name: Include Controller RHEL8 CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/controller/rhel_8_inventories
+      when: controller_cac_scenario == 'RHEL8'
+
+    - name: Include Controller RHEL9 CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/controller/rhel_9_inventories
+      when: controller_cac_scenario == 'RHEL9'
 
   roles:
     - {role: infra.controller_configuration.inventories, when: controller_inventories is defined}
