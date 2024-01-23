@@ -1013,7 +1013,7 @@ controller_templates:
     notification_templates_error: Telemetry
     extra_vars:
       controller_configuration_async_retries: 72
-      controller_configuration_async_delay": 5
+      controller_configuration_async_delay: 5
     ask_variables_on_launch: true
     survey_enabled: true
     survey:
