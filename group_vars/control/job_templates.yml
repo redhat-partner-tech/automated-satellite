@@ -252,6 +252,20 @@ controller_templates:
             - repositories
           required: true
 
+  - name: SERVER / Unregister 
+    project: Automated Management
+    playbook: server_unregister.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    extra_vars:
+      org_id: Default_Organization
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    ask_limit_on_launch: true
+
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
