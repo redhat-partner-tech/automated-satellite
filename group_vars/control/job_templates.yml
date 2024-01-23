@@ -226,6 +226,32 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
+  - name: SATELLITE / Resource Info
+    project: Automated Management
+    playbook: query_satellite_resource_info_survey.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Satellite resource info type
+          type: multiplechoice
+          variable: resource_info_survey
+          choices:
+            - hosts
+            - content_views
+            - lifecycle_environments
+            - activation_keys
+            - repositories
+          required: true
+
   - name: SERVER / RHEL7 - Patch
     project: Automated Management
     playbook: server_patch.yml
@@ -786,7 +812,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: LEAPP / 01 Analysis
+  - name: LEAPP / RHEL7to8 / 01 Analysis
     project: Automated Management
     playbook: leapp_analysis.yml
     inventory: EC2 Dynamic Inventory
@@ -820,6 +846,38 @@ controller_templates:
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 
+  - name: LEAPP / RHEL8to9 / 01 Analysis
+    project: Automated Management
+    playbook: leapp_analysis.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+    extra_vars:
+      leapp_upgrade_type: satellite
+      satellite_organization: 'Default_Organization'
+      satellite_activation_key_pre_leapp: 'RHEL8_Dev'
+      satellite_activation_key_leapp: 'RHEL8IPU_Dev'
+      leapp_repos_enabled:
+        - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
+      analysis_packages_el7:
+        - leapp-upgrade
+      leapp_preupg_opts: '--target 9.0'
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+
   - name: OS / Remediation
     project: Automated Management
     playbook: leapp_remediate.yml
@@ -841,7 +899,7 @@ controller_templates:
           required: true
     ask_limit_on_launch: true
 
-  - name: OS / Upgrade
+  - name: OS / Upgrade / RHEL7to8
     project: Automated Management
     playbook: leapp_upgrade.yml
     inventory: EC2 Dynamic Inventory
@@ -869,6 +927,37 @@ controller_templates:
       leapp_repos_enabled:
         - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
       leapp_upgrade_opts: '--target 8.8'
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+
+  - name: OS / Upgrade / RHEL8to9
+    project: Automated Management
+    playbook: leapp_upgrade.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    extra_vars:
+      leapp_upgrade_type: satellite
+      satellite_organization: 'Default_Organization'
+      satellite_activation_key_pre_leapp: 'RHEL8_Dev'
+      satellite_activation_key_leapp: 'RHEL8IPU_Dev'
+      satellite_activation_key_post_leapp: 'RHEL9_Dev'
+      leapp_repos_enabled:
+        - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
+      leapp_upgrade_opts: '--target 9.0'
     ask_variables_on_launch: true
     ask_limit_on_launch: true
 
