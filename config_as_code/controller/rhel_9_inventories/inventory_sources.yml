@@ -1,0 +1,94 @@
+---
+controller_inventory_sources:
+  - name: RHEL9 Development
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL9
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: RHEL9 QA
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL9
+        tag:Environment: QA
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: RHEL9 Production
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: RHEL9
+        tag:Environment: Prod
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+        - tag:Name
+        - private-dns-name
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+...
