@@ -45,7 +45,7 @@
         - "'rhui' in yum_repolist.stdout"
 
     - name: Include randomized delay before starting analysis
-      command: |
+      ansible.builtin.command: |
         python3 -c 'import time;import random;zzzzz=random.uniform(15.0,30.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
