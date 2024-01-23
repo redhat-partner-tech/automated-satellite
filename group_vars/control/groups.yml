@@ -1,0 +1,11 @@
+---
+controller_groups:
+- name: centos
+  inventory: Workshop Inventory
+  variables:
+    ansible_user: ec2-user
+  hosts:
+   - node4.example.com
+   - node5.example.com
+   - node6.example.com
+...
