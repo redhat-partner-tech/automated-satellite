@@ -1,0 +1,15 @@
+---
+- name: Satellite resource info
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  vars:
+    organization: "Default Organization"
+    validate_certs: false
+  tasks:
+    - name: Get all existing "{{ resource_info_survey }}" resource_info for org "Default Organization"
+      redhat.satellite.resource_info:
+        resource: "{{ resource_info_survey }}"
+      register: resource_info_result
+    - ansible.builtin.debug:
+        var: resource_info_result
+...
