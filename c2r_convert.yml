@@ -13,16 +13,16 @@
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
   tasks:
-  - name: verify operating system
-    ansible.builtin.assert:
-      that:
-        - "ansible_distribution == 'CentOS'"
-        - "ansible_distribution_major_version | int  == 7"
-        - "ansible_distribution_version.split('.')[1] | int >= 9"
-      fail_msg: "CentOS 7 minor release must be >= 9"
-      success_msg: "CentOS 7 minor release minimum requirement met, continue..."
+    - name: verify operating system
+      ansible.builtin.assert:
+        that:
+          - "ansible_distribution == 'CentOS'"
+          - "ansible_distribution_major_version | int  == 7"
+          - "ansible_distribution_version.split('.')[1] | int >= 9"
+        fail_msg: "CentOS 7 minor release must be >= 9"
+        success_msg: "CentOS 7 minor release minimum requirement met, continue..."
 
-  - name: Execute conversion via infra.convert2rhel.convert role
-    ansible.builtin.import_role:
-      name: infra.convert2rhel.convert
+    - name: Execute conversion via infra.convert2rhel.convert role
+      ansible.builtin.import_role:
+        name: infra.convert2rhel.convert
 ...

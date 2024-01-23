@@ -13,34 +13,34 @@
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
   tasks:
-  - name: verify operating system
-    ansible.builtin.assert:
-      that:
-        - "ansible_distribution == 'CentOS'"
-        - "ansible_distribution_major_version | int  == 7"
-        - "ansible_distribution_version.split('.')[1] | int >= 9"
-      fail_msg: "CentOS 7 minor release must be >= 9"
-      success_msg: "CentOS 7 minor release minimum requirement met, continue..."
+    - name: verify operating system
+      ansible.builtin.assert:
+        that:
+          - "ansible_distribution == 'CentOS'"
+          - "ansible_distribution_major_version | int  == 7"
+          - "ansible_distribution_version.split('.')[1] | int >= 9"
+        fail_msg: "CentOS 7 minor release must be >= 9"
+        success_msg: "CentOS 7 minor release minimum requirement met, continue..."
 
-  - name: Install convert2rhel utility
-    ansible.builtin.import_role:
-      name: infra.convert2rhel.common
+    - name: Install convert2rhel utility
+      ansible.builtin.import_role:
+        name: infra.convert2rhel.common
 
-  - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
-    ansible.builtin.get_url:
-      url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
-      dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
-      mode: '0440'
-      validate_certs: false
+    - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
+      ansible.builtin.get_url:
+        url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+        dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
+        mode: '0440'
+        validate_certs: false
 
-  # - name: "Add {{ ansible_distribution_major_version }}Server to file /etc/yum/vars/releasever if it does not exist on this CentOS {{ ansible_distribution_major_version }} system"
-  #   ansible.builtin.lineinfile:
-  #     path: /etc/yum/vars/releasever
-  #     line: "{{ ansible_distribution_major_version }}Server"
-  #     create: yes
-  #   when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7')
+    # - name: "Add {{ ansible_distribution_major_version }}Server to file /etc/yum/vars/releasever if it does not exist on this CentOS {{ ansible_distribution_major_version }} system"
+    #   ansible.builtin.lineinfile:
+    #     path: /etc/yum/vars/releasever
+    #     line: "{{ ansible_distribution_major_version }}Server"
+    #     create: yes
+    #   when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6') or (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7')
 
-  - name: Generate pre-conversion analysis report
-    ansible.builtin.import_role:
-      name: infra.convert2rhel.analysis
+    - name: Generate pre-conversion analysis report
+      ansible.builtin.import_role:
+        name: infra.convert2rhel.analysis
 ...
