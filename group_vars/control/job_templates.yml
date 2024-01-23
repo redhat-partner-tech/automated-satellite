@@ -12,6 +12,7 @@ controller_templates:
       rhsm_enabled_repos:
         - rhel-7-server-rpms
         - rhel-7-server-extras-rpms
+        - rhel-7-server-satellite-client-6-rpms
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
