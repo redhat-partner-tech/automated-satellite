@@ -8,6 +8,7 @@
       - infra.controller_configuration.inventories
       - infra.controller_configuration.inventory_sources
       - infra.controller_configuration.notification_templates
+      - infra.controller_configuration.groups
       - infra.controller_configuration.job_templates
       - infra.controller_configuration.workflow_job_templates
     controller_hostname: "{{ lookup('env', 'TOWER_HOST') }}"
