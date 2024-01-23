@@ -452,16 +452,43 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 02 - convert2rhel
-    description: Convert OS to RHEL OS via targetted LE
+  - name: CONVERT2RHEL / 02 - analysis
+    description: Pre-conversion analysis of EL systems
     project: Automated Management
-    playbook: c2r.yml
+    playbook: c2r_analysis.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     extra_vars:
       org_id: "Default_Organization"
-      product_name_or_regex: "Red Hat Enterprise Linux Server"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select CentOS Group to analyze
+          variable: centos_lifecycle_environment
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          required: true
+        - question_name: Select RHEL Lifecycle Environment to use for analysis
+          variable: rhel_lifecycle_environment
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+
+  - name: CONVERT2RHEL / 03 - convert
+    description: Convert OS to RHEL OS via targetted LE
+    project: Automated Management
+    playbook: c2r_convert.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      org_id: "Default_Organization"
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -475,13 +502,13 @@ controller_templates:
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
           required: true
-        - question_name: Select target RHEL Group to convert to
+        - question_name: Select target RHEL Lifecycle Environment to convert to
           variable: rhel_lifecycle_environment
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
 
-  - name: CONVERT2RHEL / 96 - Three Tier App deployment
+  - name: CONVERT2RHEL / 98 - Three Tier App deployment
     description: Deploy three tier app
     project: Three Tier App / Dev
     playbook: Configure_3TA_AWS.yml
@@ -496,7 +523,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 97 - Three Tier App smoke test
+  - name: CONVERT2RHEL / 99 - Three Tier App smoke test
     description: Smoke test three tier app
     project: Three Tier App / Dev
     playbook: SmokeTest_3TA_AWS.yml
@@ -511,10 +538,27 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 98 - Revert node state via snapshot
-    description: Revert via snapshot - selection via EC2 instance tags
+  - name: UTILITY / Z archive / Take EC2 EBS snapshot of node
+    description: Take node snapshot - selection via EC2 instance tags
     project: Automated Management
-    playbook: snapshot_revert.yml
+    playbook: snapshot_instance_ec2.yml
+    inventory: Workshop Inventory
+    limit: control
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      instances:
+        tags:
+          short_name: node*
+          guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+          Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
+  - name: UTILITY / Z archive / Revert node EC2 EBS snapshot
+    description: Revert snapshot - selection via EC2 instance tags
+    project: Automated Management
+    playbook: snapshot_revert_ec2.yml
     inventory: Workshop Inventory
     limit: control
     extra_vars:
@@ -528,10 +572,10 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 99 - Delete snapshot
+  - name: UTILITY / Z archive / Delete node EC2 EBS snapshot
     description: Delete snapshot - selection via EC2 snapshot tags
     project: Automated Management
-    playbook: snapshot_delete.yml
+    playbook: snapshot_delete_ec2.yml
     inventory: Workshop Inventory
     limit: control
     extra_vars:
