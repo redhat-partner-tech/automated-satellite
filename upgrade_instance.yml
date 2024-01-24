@@ -1,5 +1,5 @@
 ---
-- name: Upgrade OS and reboot
+- name: Update OS and reboot
   hosts: all
   gather_facts: false
   become: true
@@ -11,7 +11,7 @@
         delay: 5
         timeout: 300
 
-    - name: Upgrade OS to latest packages available
+    - name: Update OS to latest packages available
       ansible.builtin.yum:
         name: '*'
         state: latest # noqa package-latest
