@@ -25,4 +25,9 @@
     - name: Execute conversion via infra.convert2rhel.convert role
       ansible.builtin.import_role:
         name: infra.convert2rhel.convert
+
+    - name: Update system facts on Satellite
+      ansible.builtin.command: >-
+        subscription-manager facts --update
+      ignore_errors: true
 ...
