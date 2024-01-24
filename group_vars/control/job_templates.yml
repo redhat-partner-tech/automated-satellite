@@ -548,6 +548,8 @@ controller_templates:
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
 
   - name: CONVERT2RHEL / 98 - Three Tier App deployment
     description: Deploy three tier app
