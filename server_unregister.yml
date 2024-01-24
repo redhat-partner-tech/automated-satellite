@@ -29,6 +29,7 @@
     - name: Subscription manager - unregister
       ansible.builtin.command: >-
         subscription-manager unregister
+      ignore_errors: true
 
     - name: Subscription manager - clean
       ansible.builtin.command: >-
