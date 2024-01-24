@@ -1,6 +1,6 @@
 ---
 - name: Update OS and reboot
-  hosts: all
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   gather_facts: false
   become: true
   tasks:
