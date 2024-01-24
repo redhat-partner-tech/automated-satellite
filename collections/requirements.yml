@@ -12,7 +12,10 @@ collections:
 - name: infra.lvm_snapshots
   version: "2.0.1" # Version range identifiers (default: ``*``)
   source: https://galaxy.ansible.com # The Galaxy URL to pull the collection from (default: ``--api-server`` from cmdline)
-- name: https://github.com/oamg/infra.convert2rhel.git
+#- name: https://github.com/oamg/infra.convert2rhel.git
+#  type: git
+#  version: main
+- name: https://github.com/heatmiser/infra.convert2rhel.git
   type: git
-  version: main
+  version: dev-2024-01-21.01
 ...
