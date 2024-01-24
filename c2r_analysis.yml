@@ -33,16 +33,14 @@
         mode: '0440'
         validate_certs: false
 
-    # - name: Download centos-release package locally
-    #   ansible.builtin.command: >-
-    #     yumdownloader -v --destdir=/root centos-release-7-9.2009.1.el7.centos.x86_64
+    - name: Create tempdir for package download
+      ansible.builtin.tempfile:
+        state: directory
+      register: package_dl_tempdir
 
     - name: Download centos-release package locally
-      ansible.builtin.yum:
-        name: centos-release
-        state: latest
-        download_only: true
-        download_dir: /root
+      ansible.builtin.command: >-
+        yumdownloader -v --destdir="{{ package_dl_tempdir.path }}" centos-release
 
     - name: Remove centos-release package
       ansible.builtin.command: >-
@@ -52,8 +50,23 @@
       ansible.builtin.import_role:
         name: infra.convert2rhel.analysis
 
-    - name: Reinstall centos-release package
+    - name: Find all rpm files in tempdir "{{ package_dl_tempdir.path }}"
+      ansible.builtin.find:
+        paths: "{{ package_dl_tempdir.path }}"
+        patterns: "*.rpm"
+      register: centos_rpm_find
+    
+    - name: Setting centos_rpm_list from centos_rpm_find
+      ansible.builtin.set_fact:
+        centos_rpm_list: "{{ centos_rpm_find.files | map(attribute='path') | list }}"
+
+    - name: Installing the rpm files
       ansible.builtin.yum:
-        name: /root/centos-release*.rpm
+        name: "{{ centos_rpm_list }}"
         state: present
+
+    - name: Remove tempdir
+      ansible.builtin.file:
+        path: "{{ package_dl_tempdir.path }}"
+        state: absent
 ...
