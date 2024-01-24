@@ -483,7 +483,7 @@ controller_templates:
   - name: CONVERT2RHEL / 01 - Update OS to latest release
     description: Update OS to latest available packages
     project: Automated Management
-    playbook: upgrade_instance.yml
+    playbook: update_instance.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
