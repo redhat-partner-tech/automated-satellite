@@ -1,13 +1,14 @@
 ---
 - name: Create/revert/remove/check LVM snapshots of node
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
-  become: yes
+  become: true
   environment:
     LANG: en_US.UTF-8
     LC_ALL: en_US.UTF-8
     TERM: linux
   tasks:
-    - ansible.builtin.set_fact:
+    - name: Set snaphot action set_name facts
+      ansible.builtin.set_fact:
         snapshot_create_set_name: "{{ snapshot_set_name }}"
         snapshot_remove_set_name: "{{ snapshot_set_name }}"
         snapshot_revert_set_name: "{{ snapshot_set_name }}"
