@@ -1,23 +1,6 @@
 ---
-- name: Dynamically add ansible-1 to inventory
-  hosts: all[0]
-  gather_facts: false
-  tasks:
-    - name: Dynamically add ansible-1.example.com to inventory
-      ansible.builtin.add_host:
-        name: ansible-1.example.com
-
-- name: Ensure nodes are started
-  hosts: ansible-1.example.com
-  connection: local
-  gather_facts: false
-  tasks:
-    - name: Ensure instances in "env_{{ instances.tags.ContentView }}_{{ instances.tags.Environment }}" are running in region "{{ ec2_region }}"
-      ansible.builtin.include_role:
-        name: ec2_node_tools
-
-- name: Confirm node startup
-  hosts: all:!ansible-1.example.com
+- name: Upgrade OS and reboot
+  hosts: all
   gather_facts: false
   become: true
   tasks:
@@ -31,7 +14,7 @@
     - name: Upgrade OS to latest packages available
       ansible.builtin.yum:
         name: '*'
-        state: latest
+        state: latest # noqa package-latest
 
     - name: Reboot server
       ansible.builtin.reboot:
