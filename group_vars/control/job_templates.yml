@@ -1058,4 +1058,26 @@ controller_templates:
     extra_vars:
       full_storage_device_name: /dev/nvme0n1
       perform_resize: true
+
+  - name: Z / SETUP / Miscellaneous host config
+    project: Project Leapp
+    playbook: misc_host_config.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_content_views'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+    extra_vars: ''
+    ask_limit_on_launch: true
+
+  - name: Demo Job Template
+    state: absent
 ...
