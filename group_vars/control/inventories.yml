@@ -8,4 +8,8 @@ controller_inventories:
 
   - name: EXAMPLE dynamic project inventory
     organization: Default
+
+  - name: Demo Inventory
+    organization: Default
+    state: absent
 ...

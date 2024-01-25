@@ -14,4 +14,10 @@ controller_projects:
     scm_update_on_launch: true
     scm_update_cache_timeout: 3600
     default_environment: auto_satellite workshop execution environment
+
+  - name: Demo Project
+    organization: Default
+    # scm_type: git
+    # scm_url: 'https://github.com/ansible/ansible-tower-samples.git'
+    state: absent
 ...
