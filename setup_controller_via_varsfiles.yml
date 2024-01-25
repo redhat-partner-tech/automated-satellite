@@ -26,9 +26,14 @@
             dir: config_as_code/satellite/leapp_7_to_8
       when: controller_cac_scenario == 'RHEL8'
 
-    - name: Include Controller RHEL9 CaC via vars files
-      ansible.builtin.include_vars:
-        dir: config_as_code/controller/rhel_9_inventories
+    - name: Include RHEL9 CaC via vars files
+      block:
+        - name: Include Controller rhel_9_inventories CaC via vars files
+          ansible.builtin.include_vars:
+            dir: config_as_code/controller/rhel_9_inventories
+        - name: Include Satellite leapp_8_to_9 CaC via vars files
+          ansible.builtin.include_vars:
+            dir: config_as_code/satellite/leapp_8_to_9
       when: controller_cac_scenario == 'RHEL9'
 
   roles:
