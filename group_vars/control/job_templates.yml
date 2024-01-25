@@ -1060,7 +1060,7 @@ controller_templates:
       perform_resize: true
 
   - name: Z / SETUP / Miscellaneous host config
-    project: Project Leapp
+    project: Automated Management
     playbook: misc_host_config.yml
     inventory: Workshop Inventory
     credentials:
