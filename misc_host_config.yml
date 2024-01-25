@@ -1,6 +1,6 @@
 ---
 - name: Miscellaneous host configuration
-  hosts: "{{ rhel_inventory_group | default(omit) }}"
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   strategy: free
   gather_facts: true
   become: true
