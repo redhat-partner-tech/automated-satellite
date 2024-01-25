@@ -6,4 +6,8 @@ satellite_products:
         releasever: "9.0"
       - name: "Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)"
         releasever: "9.0"
+      - name: "Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)"
+        releasever: "9.2"
+      - name: "Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)"
+        releasever: "9.2"
 ...
