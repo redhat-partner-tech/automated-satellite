@@ -26,9 +26,9 @@ satellite_content_views:
       - "RHEL9_QA"
       - "RHEL9_Prod"
     repositories:
-      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.2
         product: Red Hat Enterprise Linux for x86_64
-      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.2
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
         product: Red Hat Enterprise Linux for x86_64
