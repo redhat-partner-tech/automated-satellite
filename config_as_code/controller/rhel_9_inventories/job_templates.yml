@@ -1,0 +1,24 @@
+---
+controller_templates:
+  - name: SATELLITE / RHEL - Publish Content View
+    project: Automated Management
+    playbook: satellite_publish.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+    extra_vars:
+      env: Dev
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select Content View
+          variable: content_view
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_content_views'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['ansible-1.example.com']['satellite_content_views'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list }}"
+          required: true
+...
