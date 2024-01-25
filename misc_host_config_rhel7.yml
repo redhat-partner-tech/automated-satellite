@@ -1,0 +1,21 @@
+---
+- name: Wait for connection...
+  ansible.builtin.wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+
+- name: Configure /etc/default/grub
+  ansible.builtin.lineinfile:
+    dest: /etc/default/grub
+    regexp: '^\s*{{ item.var }}\s*=(.*)$'
+    line: "{{ item.var }}={{ item.value }}"
+    backup: true
+  loop:
+    - var: GRUB_SERIAL_COMMAND
+      value: '"serial --speed=115200"'
+    - var: GRUB_TERMINAL
+      value: '"serial console"'
+  notify: Rebuild grub.cfg
+...
