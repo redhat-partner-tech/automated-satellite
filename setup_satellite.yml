@@ -10,22 +10,9 @@
         body: "ifq&entry.1569353616=smart_mgmt &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
       ignore_errors: true
 
-    - name: check satellite status
+    - name: Check satellite status
       redhat.satellite.status_info:
         validate_certs: false
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  become: true
-- name: satellite disconnected mode
-  import_playbook: satellite_disconnected_mode.yml
-  vars:
-    disconnected_mode: "false"
-  when: refresh_satellite_manifest
-
-- name: satellite set bulk_load_size
-  import_playbook: satellite_set_bulk_load_size.yml
-  vars:
-    bulk_load_size: 1000
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   become: true
@@ -44,12 +31,6 @@
           async: "{{ refresh_timeout }}"
           poll: 0
       when: refresh_satellite_manifest
-
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
-  connection: local
-  gather_facts: false
-  tasks:
-    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
@@ -88,3 +69,10 @@
           path: "{{ sat_prodlog_tempfile.path }}"
           state: absent
       when: refresh_satellite_manifest
+
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
+...
