@@ -12,6 +12,7 @@
     rhsm_password: ""
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
+    rhsm_activation_key_pre_convert: "{{ centos_lifecycle_environment }}"
   tasks:
     - name: Verify operating system
       ansible.builtin.assert:
