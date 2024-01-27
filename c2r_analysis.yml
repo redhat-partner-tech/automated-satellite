@@ -72,14 +72,16 @@
         state: absent
 
     - name: Get paths to CentOS repos
-      ansible.builtin.command:
-        cmd: ls /etc/yum.repos.d/CentOS*
+      ansible.builtin.find:
+        paths: /etc/yum.repos.d
+        patterns: 'CentOS*.repo'
       register: centos_repos
-      changed_when: false
 
     - name: Remove CentOS repos that were placed by infra.convert2rhel analysis role
       ansible.builtin.file:
         path: "{{ item }}"
         state: absent
-      loop: "{{ repos.stdout_lines }}"
+      with_items: "{{ centos_repos.files | default([]) }}"
+      loop_control:
+        loop_var: path
 ...
