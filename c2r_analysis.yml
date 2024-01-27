@@ -79,9 +79,7 @@
 
     - name: Remove CentOS repos that were placed by infra.convert2rhel analysis role
       ansible.builtin.file:
-        path: "{{ path }}"
+        path: "{{ item.path }}"
         state: absent
       with_items: "{{ centos_repos.files | default([]) }}"
-      loop_control:
-        loop_var: path
 ...
