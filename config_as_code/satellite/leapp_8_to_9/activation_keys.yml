@@ -8,10 +8,13 @@ satellite_activation_keys:
   - name: "RHEL9_Dev"
     lifecycle_environment: "RHEL9_Dev"
     content_view: "RHEL9"
+    release_version: "9.2"
   - name: "RHEL9_QA"
     lifecycle_environment: "RHEL9_QA"
     content_view: "RHEL9"
+    release_version: "9.2"
   - name: "RHEL9_Prod"
     lifecycle_environment: "RHEL9_Prod"
     content_view: "RHEL9"
+    release_version: "9.2"
 ...
