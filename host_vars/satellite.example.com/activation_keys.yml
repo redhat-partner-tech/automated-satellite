@@ -33,13 +33,4 @@ satellite_activation_keys:
   - name: "CentOS7_Prod"
     lifecycle_environment: "CentOS7_Prod"
     content_view: "CentOS7"
-  # Community Enterprise Linux 8
-  - name: "CentOS8_Dev"
-    lifecycle_environment: "CentOS8_Dev"
-    content_view: "CentOS8"
-  - name: "CentOS8_QA"
-    lifecycle_environment: "CentOS8_QA"
-    content_view: "CentOS8"
-  - name: "CentOS8_Prod"
-    lifecycle_environment: "CentOS8_Prod"
-    content_view: "CentOS8"
+...

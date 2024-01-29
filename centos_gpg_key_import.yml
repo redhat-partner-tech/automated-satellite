@@ -17,14 +17,6 @@
     register: getcentos7gpgkey
     until: getcentos7gpgkey is succeeded
 
-  - name: Pull down CentOS 8 GPG key
-    get_url:
-      url: https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official
-      dest: /etc/pki/rpm-gpg/import
-      mode: '0440'
-    register: getcentos8gpgkey
-    until: getcentos8gpgkey is succeeded
-
   - name: hammer org list
     command: >-
       hammer --output json organization list
@@ -52,16 +44,4 @@
   - name: RPM-GPG-KEY-CentOS-7 key creation output 
     debug:
       msg: "{{ hammer_centos7_gpgkey_result.stdout }}"
-
-  - name: hammer create RPM-GPG-KEY-CentOS-8 key
-    command: >-
-      hammer content-credentials create --organization-id {{ sat_org_id[0] }}
-      --key "/etc/pki/rpm-gpg/import/RPM-GPG-KEY-CentOS-Official"
-      --name "RPM-GPG-KEY-CentOS-8"
-      --content-type gpg_key
-    register: hammer_centos8_gpgkey_result
-    ignore_errors: true
-
-  - name: RPM-GPG-KEY-CentOS-8 key creation output 
-    debug:
-      msg: "{{ hammer_centos8_gpgkey_result.stdout }}"
+...

@@ -18,15 +18,6 @@ satellite_products:
       - name: CentOS-7 - Extras RPMs x86_64
         content_type: yum
         url: http://mirror.centos.org/centos/7/extras/x86_64/
-  - name: Community Enterprise OS 8
-    repositories:
-      - name: CentOS-8 for x86_64 - BaseOS RPMs
-        content_type: yum
-        url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
-        gpg_key: RPM-GPG-KEY-CentOS-8
-      - name: CentOS-8 for x86_64 - AppStream RPMs
-        content_type: yum
-        url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
   - name: Extra Packages for Enterprise Linux 7
     repositories:
       - name:  Extra Packages for Enterprise Linux 7 x86_64
@@ -42,6 +33,4 @@ satellite_products:
       - name: Foreman Client CentOS 7
         url: https://yum.theforeman.org/client/latest/el7/x86_64/
         content_type: yum
-      - name: Foreman Client CentOS 8
-        url: https://yum.theforeman.org/client/latest/el8/x86_64/
-        content_type: yum
+...

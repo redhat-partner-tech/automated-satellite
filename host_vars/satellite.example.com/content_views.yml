@@ -48,17 +48,4 @@ satellite_content_views:
       product: 'Community Enterprise OS 7'
     - name: CentOS-7 - Updates RPMs x86_64
       product: 'Community Enterprise OS 7'
-  # Community Enterprise Linux 8
-  - name: CentOS8
-    content_view: CentOS8
-    content_view_update: true
-    lifecycle_environments:
-      - "CentOS8_Dev"
-      - "CentOS8_QA"
-      - "CentOS8_Prod"
-    repositories:
-    - name: CentOS-8 for x86_64 - BaseOS RPMs
-      product: Community Enterprise OS 8
-    - name: CentOS-8 for x86_64 - AppStream RPMs
-      product: Community Enterprise OS 8
 ...
