@@ -1,31 +1,65 @@
 ---
-- hosts: "env_{{ lifecycle_stage }}"
-  become: yes
+- name: Patch/Update OS 
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  gather_facts: false
+  become: true
   vars:
-    check_only: yes
-
+    update_check_only: true
+    include_kernel_updates: true
+    exclude_package_list: []
   tasks:
-  - name: check operating system
-    assert:
-      that: "ansible_os_family == 'RedHat'"
+    - name: Wait for connection...and gather facts
+      ansible.builtin.setup:
+        gather_timeout: 60
+      register: setup_result
+      ignore_errors: true
+      until: "setup_result is not failed"
+      retries: 10
+      delay: 10
 
-  - name: check for updates
-    yum:
-      name: '*'
-      state: latest
-      exclude: kernel*
-    check_mode: "{{ check_only }}"
-    throttle: 1
-    register: updates
+    - name: Set exclude_package_list for kernel-related packages
+      ansible.builtin.set_fact:
+        exclude_package_list: "kernel*"
+      when: not include_kernel_updates
 
-  - name: output updates dictionary
-    debug:
-      msg: "{{ updates }}"
-    
-  - name: updated package list
-    debug:
-      msg: "{% if item[0] in packages %}{{ packages[item[0]][0].version }}-{{ packages[item[0]][0].release }}.{{ packages[item[0]][0].arch }} >>> {{ item[1] }} {% else %} {{ item[1] }}{% endif %}"
-    loop: "{{ updates.changes.updated }}"
-    loop_control:
-      label: "{{ item[0] }}"
-    when: updates.changes is defined
+    - name: Update EL 7 OS to latest packages available
+      ansible.builtin.yum:
+        name: '*'
+        state: latest # noqa package-latest
+        exclude: "{{ exclude_package_list }}"
+      check_mode: "{{ update_check_only }}"
+      register: package_updates_register
+      when: ansible_distribution_major_version | int == 7
+
+    - name: Update RHEL 8/9 OS to latest packages available
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest # noqa package-latest
+        exclude: "{{ exclude_package_list | }}"
+      check_mode: "{{ update_check_only }}"
+      register: package_updates_register
+      when: ansible_distribution_major_version | int >= 8
+
+    - name: Reboot server
+      ansible.builtin.reboot:
+      register: reboot_result
+
+    - name: Wait for connection...
+      ansible.builtin.wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 300
+
+    - name: Output package updates dictionary
+      ansible.builtin.debug:
+        msg: "{{ package_updates_register }}"
+
+    - name: Updated package list
+      ansible.builtin.debug:
+        msg: "{% if item[0] in packages %}{{ packages[item[0]][0].version }}-{{ packages[item[0]][0].release }}.{{ packages[item[0]][0].arch }} >>> {{ item[1] }} {% else %} {{ item[1] }}{% endif %}"
+      loop: "{{ package_updates_register.changes.updated }}"
+      loop_control:
+        label: "{{ item[0] }}"
+      when: package_updates_register.changes is defined
+...
