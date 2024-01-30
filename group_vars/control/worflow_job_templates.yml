@@ -1,5 +1,90 @@
 ---
 controller_workflows:
+  - name: CONVERT2RHEL / 02 Convert
+    description: Workflow for Snapshot and Convert2RHEL
+    extra_vars:
+      org_id: "Default_Organization"
+      convert_convert2rhel_opts: '--no-rpm-va'
+      convert_reboot_requested: true
+      lvm_snapshots_action": create
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select CentOS Group to convert
+          variable: centos_lifecycle_environment
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          required: true
+        - question_name: Select target RHEL Lifecycle Environment to convert to
+          variable: rhel_lifecycle_environment
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    ask_variables_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Convert / CentOS7 to RHEL7
+      - identifier: OS / Convert / CentOS7 to RHEL7
+        unified_job_template: OS / Convert / CentOS7 to RHEL7
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes: []
+
+  - name: CONVERT2RHEL / 04 Commit
+    description: Workflow for Snapshot delete and Update instance tags
+    extra_vars:
+      lvm_snapshots_action: remove
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: rhel_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - EC2 / Set instance tags based on Satellite facts
+      - identifier: EC2 / Set instance tags based on Satellite facts
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - CentOS7 Development
+      - identifier: CentOS7 Development
+        unified_job_template: CentOS7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL7 Development
+      - identifier: RHEL7 Development
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes: []
+
   - name: SETUP / Insights
     description: this workflow configures insights for this workshop
     extra_vars:

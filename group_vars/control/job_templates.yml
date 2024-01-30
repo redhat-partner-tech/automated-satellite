@@ -267,7 +267,7 @@ controller_templates:
     notification_templates_error: Telemetry
     ask_limit_on_launch: true
 
-  - name: SERVER / RHEL7 - Patch
+  - name: OS / Patch OS to latest
     project: Automated Management
     playbook: server_patch.yml
     inventory: EC2 Dynamic Inventory
@@ -285,36 +285,7 @@ controller_templates:
         - question_name: Select Environment
           type: multiplechoice
           variable: lifecycle_stage
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
-          required: true
-        - question_name: Check
-          type: multiplechoice
-          variable: check_only
-          choices:
-            - 'yes'
-            - 'no'
-          required: true
-    ask_limit_on_launch: true
-
-  - name: SERVER / CentOS7 - Patch
-    project: Automated Management
-    playbook: server_patch.yml
-    inventory: EC2 Dynamic Inventory
-    use_fact_cache: true
-    credentials:
-      - Workshop Credential
-    notification_templates_started: Telemetry
-    notification_templates_success: Telemetry
-    notification_templates_error: Telemetry
-    survey_enabled: true
-    survey:
-      name: ''
-      description: ''
-      spec:
-        - question_name: Select Environment
-          type: multiplechoice
-          variable: lifecycle_stage
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list }}"
           required: true
         - question_name: Check
           type: multiplechoice
@@ -385,6 +356,33 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
+  - name: CONVERT2RHEL / 03 Rollback
+    description: Revert node snapshot - selection via dynamic inventory group
+    project: Automated Management
+    playbook: snapshot_instance_lvm.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      snapshot_set_name: snap01
+      snapshot_create_boot_backup: true
+      lvm_snapshots_action: revert
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    
   - name: UTILITY / Snapshot Instance
     description: Take node snapshot - selection via dynamic inventory group
     project: Automated Management
@@ -504,7 +502,7 @@ controller_templates:
           required: true
     ask_limit_on_launch: true
 
-  - name: CONVERT2RHEL / 02 - analysis
+  - name: CONVERT2RHEL / 01 Analysis
     description: Pre-conversion analysis of EL systems
     project: Automated Management
     playbook: c2r_analysis.yml
@@ -532,7 +530,7 @@ controller_templates:
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
 
-  - name: CONVERT2RHEL / 03 - convert
+  - name: OS / Convert / CentOS7 to RHEL7
     description: Convert OS to RHEL OS via targetted LE
     project: Automated Management
     playbook: c2r_convert.yml
@@ -644,7 +642,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: EC2 / Set instance tags based on Satellite(Foreman) facts
+  - name: EC2 / Set instance tags based on Satellite facts
     description: Set instance tags - selection via existing EC2 instance tags
     project: Automated Management
     playbook: query_satellite_resource_info_hosts_set_instance_tags.yml
@@ -714,16 +712,6 @@ controller_templates:
           Workshop: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
       student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
       workshop_dns_zone: "{{ lookup('env', 'AWX_HOST').split('.',2)[2] }}"
-    notification_templates_started: Telemetry
-    notification_templates_success: Telemetry
-    notification_templates_error: Telemetry
-
-  - name: CONTROLLER / Update CentOS7 Dev inventories
-    project: Automated Management
-    playbook: controller_inventory_source_update_centos7_dev.yml
-    inventory: Workshop Inventory
-    credentials:
-      - Controller Credential
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
