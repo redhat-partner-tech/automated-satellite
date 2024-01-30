@@ -181,31 +181,6 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: SATELLITE / Transfer converted host(s) to another LE
-    project: Automated Management
-    playbook: satellite_transfer_host.yml
-    inventory: EC2 Dynamic Inventory
-    credentials:
-      - Satellite Credential
-    notification_templates_started: Telemetry
-    notification_templates_success: Telemetry
-    notification_templates_error: Telemetry
-    survey_enabled: true
-    survey:
-      name: ''
-      description: ''
-      spec:
-        - question_name: Select CentOS Lifecycle Environment to transfer nodes from
-          variable: centos_lifecycle_environment
-          type: multiplechoice
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
-          required: true
-        - question_name: Select target RHEL Lifecycle Environment
-          variable: rhel_lifecycle_environment
-          type: multiplechoice
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
-          required: true
-
   - name: SATELLITE / Refresh manifest
     project: Automated Management
     playbook: satellite_manifest_refresh.yml
