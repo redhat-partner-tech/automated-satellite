@@ -1,3 +1,77 @@
 ---
-controller_workflows: []
+controller_workflows:
+  - name: LEAPP / RHEL7to8 / 02 Upgrade
+    description: Workflow for Snapshot and Leapp Upgrade
+    extra_vars:
+      lvm_snapshots_action: create
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_content_views'] | selectattr('name', 'match', '^RHEL7.*$') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Upgrade / RHEL7to8
+      - identifier: OS / Upgrade / RHEL7to8
+        unified_job_template: OS / Upgrade / RHEL7to8
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes: []
+  - name: LEAPP / RHEL7to8 / 04 Commit
+    description: Workflow for Snapshot delete and Update instance tags
+    extra_vars:
+      lvm_snapshots_action: remove
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_content_views'] | selectattr('name', 'match', '^RHEL7.*$') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - EC2 / Set instance tags based on Satellite facts
+      - identifier: EC2 / Set instance tags based on Satellite facts
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL7 Development
+      - identifier: RHEL7 Development
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL8 Development
+      - identifier: RHEL8 Development
+        unified_job_template: RHEL8 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes: []
 ...

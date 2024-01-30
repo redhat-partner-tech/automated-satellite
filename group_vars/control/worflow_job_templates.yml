@@ -54,7 +54,7 @@ controller_workflows:
       spec:
         - question_name: Select inventory group
           type: multiplechoice
-          variable: rhel_inventory_group
+          variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
           required: true
     ask_limit_on_launch: true
