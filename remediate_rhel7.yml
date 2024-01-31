@@ -11,6 +11,7 @@
     kernel_modules_to_unload:
       - floppy
       - pata_acpi
+      - btrfs
 
 - name: Kernel modules defined by kernel_modules_to_unload are unloaded
   community.general.modprobe:
