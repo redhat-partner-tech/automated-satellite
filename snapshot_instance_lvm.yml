@@ -26,16 +26,4 @@
         name: "infra.lvm_snapshots.snapshot_{{ lvm_snapshots_action }}"
         # Additional snapshot_* vars provided via AAP2 job template and associated surveys
       when: (lvm_snapshots_action == "create") or (lvm_snapshots_action == "remove") or (lvm_snapshots_action == "revert")
-
-    - name: Generate current repo configuration
-      ansible.builtin.command: >-
-        subscription-manager repos
-      ignore_errors: true
-      when: lvm_snapshots_action == "revert"
-
-    - name: Update system facts on Satellite
-      ansible.builtin.command: >-
-        subscription-manager facts --update
-      ignore_errors: true
-      when: lvm_snapshots_action == "revert"
 ...
