@@ -890,7 +890,7 @@ controller_templates:
   - name: Z / SETUP / Miscellaneous host config
     project: Automated Management
     playbook: misc_host_config.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     survey_enabled: true
