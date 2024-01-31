@@ -40,4 +40,5 @@
     - {role: infra.controller_configuration.inventories, when: controller_inventories is defined}
     - {role: infra.controller_configuration.inventory_sources, when: controller_inventory_sources is defined}
     - {role: infra.controller_configuration.job_templates, when: controller_templates is defined}
+    - {role: infra.controller_configuration.workflow_job_templates, when: controller_workflows is defined}
 ...
