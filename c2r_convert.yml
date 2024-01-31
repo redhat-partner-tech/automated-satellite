@@ -1,6 +1,6 @@
 ---
 - name: Convert2rhel conversion
-  hosts: "{{ centos_lifecycle_environment | default(omit) }}"
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   strategy: free
   gather_facts: true
   become: true

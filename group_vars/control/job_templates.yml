@@ -510,7 +510,7 @@ controller_templates:
       description: ''
       spec:
         - question_name: Select CentOS Group to convert
-          variable: centos_lifecycle_environment
+          variable: dynamic_inventory_group
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
           required: true
