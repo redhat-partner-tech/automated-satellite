@@ -7,6 +7,7 @@ controller_workflows:
       convert_convert2rhel_opts: '--no-rpm-va'
       convert_reboot_requested: true
       lvm_snapshots_action: create
+      dynamic_inventory_group: !unsafe '{{ centos_lifecycle_environment }}'
     inventory: EC2 Dynamic Inventory
     state: present
     organization: Default
