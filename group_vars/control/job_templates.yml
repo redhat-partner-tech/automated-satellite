@@ -489,6 +489,7 @@ controller_templates:
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
+    ask_limit_on_launch: true
 
   - name: OS / Convert / CentOS7 to RHEL7
     description: Convert OS to RHEL OS via targetted LE
