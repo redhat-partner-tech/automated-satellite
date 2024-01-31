@@ -1,6 +1,6 @@
 ---
 - name: Unregister host and remove from Satellite
-  hosts: all
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   gather_facts: false
   become: true
   vars:
