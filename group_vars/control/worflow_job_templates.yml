@@ -6,7 +6,7 @@ controller_workflows:
       org_id: "Default_Organization"
       convert_convert2rhel_opts: '--no-rpm-va'
       convert_reboot_requested: true
-      lvm_snapshots_action": create
+      lvm_snapshots_action: create
     inventory: EC2 Dynamic Inventory
     state: present
     organization: Default
