@@ -59,7 +59,6 @@
         owner: root
         group: root
         state: link
-        force: true
 
     - name: Include randomized delay before starting analysis
       ansible.builtin.command: |
