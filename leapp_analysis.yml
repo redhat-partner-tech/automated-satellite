@@ -44,6 +44,22 @@
         - ansible_product_uuid|regex_search('^ec2') or ansible_product_uuid|regex_search('^EC2')
         - "'rhui' in yum_repolist.stdout"
 
+    - name: Create dedicated directory for leapp
+      ansible.builtin.file:
+        path: /leapp
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+
+    - name: Create symbolic link for /var/lib/leapp
+      ansible.builtin.file:
+        src: /leapp
+        dest: /var/lib/leapp
+        owner: root
+        group: root
+        state: link
+
     - name: Include randomized delay before starting analysis
       ansible.builtin.command: |
         python3 -c 'import time;import random;zzzzz=random.uniform(15.0,30.0);time.sleep(zzzzz);print(zzzzz)'
