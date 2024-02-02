@@ -35,4 +35,12 @@
     - {key: "PasswordAuthentication", value: "no"}
   notify:
     - Restart sshd
+
+- name: Command - dnf clean all
+  ansible.builtin.command: >-
+    dnf clean all
+
+- name: Delete /var/cache/yum/*
+  ansible.builtin.command: >-
+    rm -rf /var/cache/yum/*
 ...
