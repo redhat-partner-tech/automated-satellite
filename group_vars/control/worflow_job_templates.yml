@@ -47,6 +47,7 @@ controller_workflows:
       snapshot_create_boot_backup: true
       lvm_snapshots_action: revert
       org_id: "Default_Organization"
+      product_name_or_regex: "Community Enterprise OS 7"
     state: present
     organization: Default
     survey_enabled: true
