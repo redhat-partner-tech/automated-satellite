@@ -40,6 +40,46 @@ controller_workflows:
         all_parents_must_converge: false
         success_nodes: []
 
+  - name: CONVERT2RHEL / 03 Rollback
+    description: Revert node snapshot - selection via dynamic inventory group
+    extra_vars:
+      snapshot_set_name: snap01
+      snapshot_create_boot_backup: true
+      lvm_snapshots_action: revert
+      org_id: "Default_Organization"
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - SERVER / Unregister
+      - identifier: SERVER / Unregister
+        unified_job_template: SERVER / Unregister
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - SERVER / Register
+      - identifier: SERVER / Register
+        unified_job_template: SERVER / Register
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes: []
+
   - name: CONVERT2RHEL / 04 Commit
     description: Workflow for Snapshot delete and Update instance tags
     extra_vars:
