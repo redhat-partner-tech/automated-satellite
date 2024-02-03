@@ -42,7 +42,15 @@
   ansible.builtin.command: >-
     yum clean all
 
-- name: Delete /var/cache/yum/*
+- name: Get list of current yum cache directories
   ansible.builtin.command: >-
-    rm -rf /var/cache/yum/*
+    ls /var/cache/yum/
+  register: yum_cache_directories
+  changed_when: false
+
+- name: Remove current yum cache directories
+  ansible.builtin.file:
+    path: "/var/cache/yum/{{ item }}"
+    state: absent
+  loop: "{{ yum_cache_directories.stdout_lines }}"
 ...
