@@ -7,3 +7,4 @@
     sat_url: satellite.example.com
   roles:
     - rhsm_register
+...
