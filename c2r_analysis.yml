@@ -49,7 +49,7 @@
 
     - name: Include randomized delay before starting analysis
       ansible.builtin.command: |
-        python3 -c 'import time;import random;zzzzz=random.uniform(15.0,60.0);time.sleep(zzzzz);print(zzzzz)'
+        python3 -c 'import time;import random;zzzzz=random.uniform(60.0,120.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
 
