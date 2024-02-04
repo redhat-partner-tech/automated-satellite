@@ -1,6 +1,6 @@
 ---
 controller_workflows:
-  - name: LEAPP / RHEL8to9 / 02 Upgrade
+  - name: LEAPP / 02 Upgrade
     description: Workflow for Snapshot and Leapp Upgrade
     extra_vars:
       lvm_snapshots_action: create
@@ -24,13 +24,13 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - OS / Upgrade / RHEL8to9
-      - identifier: OS / Upgrade / RHEL8to9
-        unified_job_template: OS / Upgrade / RHEL8to9
+          - OS / Upgrade
+      - identifier: OS / Upgrade
+        unified_job_template: OS / Upgrade
         organization: Default
         all_parents_must_converge: false
         success_nodes: []
-  - name: LEAPP / RHEL8to9 / 04 Commit
+  - name: LEAPP / 04 Commit
     description: Workflow for Snapshot delete and Update instance tags
     extra_vars:
       lvm_snapshots_action: remove
