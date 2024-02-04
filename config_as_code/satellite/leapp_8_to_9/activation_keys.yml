@@ -1,9 +1,9 @@
 ---
 satellite_activation_keys:
   # Leapp AK for RHEL 8 to RHEL 9
-  - name: "RHEL8IPU_Dev"
-    lifecycle_environment: "RHEL8IPU_Dev"
-    content_view: "RHEL8IPU"
+  - name: "RHEL8IPU92_Dev"
+    lifecycle_environment: "RHEL8IPU92_Dev"
+    content_view: "RHEL8IPU92"
     release_version: "8.8"
   # Red Hat Enterprise Linux 9
   - name: "RHEL9_Dev"

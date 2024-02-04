@@ -1,7 +1,7 @@
 ---
 satellite_lifecycle_environments:
   # Red Hat Enterprise Linux 8
-  - name: "RHEL8IPU_Dev"
+  - name: "RHEL8IPU92_Dev"
     prior: "Library"
   # Red Hat Enterprise Linux 9
   - name: "RHEL9_Dev"

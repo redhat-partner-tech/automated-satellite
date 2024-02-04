@@ -32,10 +32,10 @@ satellite_activation_key_pre_leapp: |-
     RHEL8_Dev
   {%- endif -%}
 satellite_activation_key_leapp: |-
-  {%- if ansible_distribution_major_version == '7' and leapp_target_version == '8.8' -%}
-    RHEL7IPU_Dev
-  {%- elif ansible_distribution_major_version == '8' and leapp_target_version == '9.2' -%}
-    RHEL8IPU_Dev
+  {%- if ansible_distribution_major_version == '7' -%}
+    RHEL7IPU88_Dev
+  {%- elif ansible_distribution_version == '8.8' -%}
+    RHEL8IPU92_Dev
   {%- endif %}
 satellite_activation_key_post_leapp: |-
   {%- if ansible_distribution_version == '8.8' -%}

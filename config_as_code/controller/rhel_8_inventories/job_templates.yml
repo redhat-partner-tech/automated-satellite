@@ -52,6 +52,8 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+    extra_vars:
+      org_id: "Default_Organization"
     survey_enabled: true
     survey:
       name: ''
@@ -61,12 +63,6 @@ controller_templates:
           type: multiplechoice
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL7.*$') | map(attribute='name') | list }}"
-          required: true
-        - question_name: Leapp target version
-          type: multiplechoice
-          variable: leapp_target_version
-          choices:
-            - '8.8'
           required: true
     ask_limit_on_launch: true
 ...

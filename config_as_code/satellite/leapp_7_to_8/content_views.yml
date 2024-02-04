@@ -1,11 +1,11 @@
 ---
 satellite_content_views:
   # Red Hat Enterprise Linux IPU 7 to 8
-  - name: RHEL7IPU
-    content_view: RHEL7IPU
+  - name: RHEL7IPU88
+    content_view: RHEL7IPU88
     content_view_update: true
     lifecycle_environments:
-      - "RHEL7IPU_Dev"
+      - "RHEL7IPU88_Dev"
     repositories:
       - name: Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server
         product: 'Red Hat Enterprise Linux Server'
