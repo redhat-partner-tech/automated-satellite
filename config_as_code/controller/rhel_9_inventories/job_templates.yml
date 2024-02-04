@@ -124,15 +124,12 @@ controller_templates:
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL8.*$') | map(attribute='name') | list }}"
           required: true
-    extra_vars:
-      leapp_upgrade_type: satellite
-      satellite_organization: 'Default_Organization'
-      satellite_activation_key_pre_leapp: 'RHEL8_Dev'
-      satellite_activation_key_leapp: 'RHEL8IPU_Dev'
-      satellite_activation_key_post_leapp: 'RHEL9_Dev'
-      leapp_repos_enabled:
-        - !unsafe 'satellite-client-6-for-rhel-{{ ansible_distribution_major_version | int + 1 }}-x86_64-rpms'
-      leapp_upgrade_opts: '--target 9.2'
-    ask_variables_on_launch: true
+        - question_name: Leapp target version
+          type: multiplechoice
+          variable: leapp_target_version
+          choices:
+            - '8.8'
+            - '9.2'
+          required: true
     ask_limit_on_launch: true
 ...
