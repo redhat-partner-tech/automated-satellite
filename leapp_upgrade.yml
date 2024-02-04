@@ -6,6 +6,8 @@
   force_handlers: true
   # vars:
   #   ansible_python_interpreter: /usr/libexec/platform-python
+  vars_files:
+    - leapp_vars.yml
   tasks:
     - name: Include randomized delay before beginning upgrade
       ansible.builtin.command: |

@@ -19,6 +19,12 @@ leapp_preupg_opts: |-
   {%- elif ansible_distribution_version == '8.8' -%}
     --target 9.2
   {%- endif -%}
+leapp_upgrade_opts: |-
+  {%- if ansible_distribution_major_version == '7' -%}
+    --target 8.8
+  {%- elif ansible_distribution_version == '8.8' -%}
+    --target 9.2
+  {%- endif -%}
 satellite_activation_key_pre_leapp: |-
   {%- if ansible_distribution_major_version == '7' -%}
     RHEL7_Dev
