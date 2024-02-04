@@ -1,6 +1,7 @@
 ---
 - name: Unregister host and remove from Satellite
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
   gather_facts: false
   become: true
   vars:
