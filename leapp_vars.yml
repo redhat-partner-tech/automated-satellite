@@ -14,27 +14,27 @@ analysis_packages_el8:
   - cockpit-leapp
   - vdo
 leapp_preupg_opts: >-
-{% if ansible_distribution_major_version == '7' -%}
-  --target 8.8
-{% elif ansible_distribution_version == '8.8' -%}
-  --target 9.2
-{% endif -%}
+  {% if ansible_distribution_major_version == '7' -%}
+    --target 8.8
+  {% elif ansible_distribution_version == '8.8' -%}
+    --target 9.2
+  {% endif -%}
 satellite_activation_key_pre_leapp: >-
-{% if ansible_distribution_major_version == '7' -%}
-  RHEL7_Dev
-{% elif ansible_distribution_major_version == '8' -%}
-  RHEL8_Dev
-{% endif -%}
+  {% if ansible_distribution_major_version == '7' -%}
+    RHEL7_Dev
+  {% elif ansible_distribution_major_version == '8' -%}
+    RHEL8_Dev
+  {% endif -%}
 satellite_activation_key_leapp: >-
-{% if ansible_distribution_major_version == '7' and leapp_target_version == '8.8' -%}
-  RHEL7IPU_Dev
-{% if ansible_distribution_major_version == '8' and leapp_target_version == '9.2' -%}
-  RHEL8IPU_Dev
-{% endif %}
+  {% if ansible_distribution_major_version == '7' and leapp_target_version == '8.8' -%}
+    RHEL7IPU_Dev
+  {% if ansible_distribution_major_version == '8' and leapp_target_version == '9.2' -%}
+    RHEL8IPU_Dev
+  {% endif %}
 satellite_activation_key_post_leapp: >-
-{% if ansible_distribution_major_version == '7' -%}
-  RHEL8_Dev
-{% elif ansible_distribution_version == '8.8' -%}
-  RHEL9_Dev
-{% endif -%}
+  {% if ansible_distribution_major_version == '7' -%}
+    RHEL8_Dev
+  {% elif ansible_distribution_version == '8.8' -%}
+    RHEL9_Dev
+  {% endif -%}
 ...
