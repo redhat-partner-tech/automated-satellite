@@ -101,6 +101,13 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
+          - RHEL7 Development
+      - identifier: RHEL7 Development
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
           - RHEL8 Development
       - identifier: RHEL8 Development
         unified_job_template: RHEL8 Development
