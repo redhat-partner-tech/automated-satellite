@@ -69,6 +69,13 @@ controller_templates:
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL8.*$') | map(attribute='name') | list}}"
           required: true
+        - question_name: Leapp target version
+          type: multiplechoice
+          variable: leapp_target_version
+          choices:
+            - '8.8'
+            - '9.2'
+          required: true
     ask_limit_on_launch: true
 
   - name: LEAPP / 03 Rollback
