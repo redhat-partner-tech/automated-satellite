@@ -6,7 +6,7 @@
   become: true
   force_handlers: true
   vars_files:
-    - leapp_vars.yml
+    - leapp_vars_88_92.yml
   pre_tasks:
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |

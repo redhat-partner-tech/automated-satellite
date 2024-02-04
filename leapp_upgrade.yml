@@ -7,7 +7,7 @@
   # vars:
   #   ansible_python_interpreter: /usr/libexec/platform-python
   vars_files:
-    - leapp_vars.yml
+    - leapp_vars_88_92.yml
   tasks:
     - name: Include randomized delay before beginning upgrade
       ansible.builtin.command: |
