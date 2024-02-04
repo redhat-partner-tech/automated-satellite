@@ -41,7 +41,7 @@ controller_workflows:
         success_nodes: []
 
   - name: CONVERT2RHEL / 03 Rollback
-    description: Revert node snapshot - selection via dynamic inventory group
+    description: Revert node workflow - selection via dynamic inventory group
     extra_vars:
       snapshot_set_name: snap01
       snapshot_create_boot_backup: true
