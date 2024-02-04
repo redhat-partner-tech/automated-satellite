@@ -1,5 +1,6 @@
 ---
 - hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
   become: yes
   vars:
     env: Dev

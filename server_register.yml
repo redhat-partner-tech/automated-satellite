@@ -1,5 +1,6 @@
 ---
 - hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
+  strategy: ansible.builtin.free
   become: yes
   vars:
     env: Dev
@@ -7,3 +8,4 @@
     sat_url: satellite.example.com
   roles:
     - rhsm_register
+...
