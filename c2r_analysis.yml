@@ -47,9 +47,11 @@
       ansible.builtin.command: >-
         rpm -e --nodeps --justdb centos-release
 
-    - name: Pause time generated from node number
-      ansible.builtin.pause:
-        seconds: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
+    - name: Include delay before starting analysis
+      ansible.builtin.command: |
+        python3 -c 'import time;time.sleep("{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}")'
+      delegate_to: localhost
+      connection: local
 
     - name: Generate pre-conversion analysis report
       ansible.builtin.import_role:
