@@ -1,14 +1,14 @@
 ---
 - name: Remediate
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
-  strategy: free
+  strategy: ansible.builtin.free
   gather_facts: true
   become: true
   force_handlers: true
   tasks:
     - name: Include randomized delay before beginning remediation
       ansible.builtin.command: |
-        python3 -c 'import time;import random;zzzzz=random.uniform(15.0,30.0);time.sleep(zzzzz);print(zzzzz)'
+        python3 -c 'import time;import random;zzzzz=random.uniform(15.0,60.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
     - name: "Remediate rhel7 systems"
