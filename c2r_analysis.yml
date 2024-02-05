@@ -53,7 +53,7 @@
 
     - name: Include delay before starting analysis
       ansible.builtin.command: |
-        python3 -c 'import time;time.sleep("{{ node_delay_time }}")'
+        python3 -c 'import time;time.sleep({{ node_delay_time }})'
       delegate_to: localhost
       connection: local
 
