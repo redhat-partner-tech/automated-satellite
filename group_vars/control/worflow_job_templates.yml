@@ -127,7 +127,7 @@ controller_workflows:
         success_nodes: []
 
   - name: Z / SETUP / Insights
-    description: this workflow configures insights for this workshop
+    description: Configures Insights for this workshop
     extra_vars:
       manifest_name: smrtmgmt-wrksp
       offline_token: value
@@ -155,7 +155,7 @@ controller_workflows:
             - Prod
           required: true
     simplified_workflow_nodes:
-      - identifier: Z / INSIGHTS / Replace Satellite Manifest
+      - identifier: INSIGHTS / Replace Satellite Manifest
         all_parents_must_converge: false
         unified_job_template: Z / INSIGHTS / Replace Satellite Manifest
         success_nodes:
@@ -166,19 +166,19 @@ controller_workflows:
         success_nodes:
           - INSIGHTS / Install and Register
         organization: Default
-      - identifier: Z / INSIGHTS / Install and Register
+      - identifier: INSIGHTS / Install and Register
         all_parents_must_converge: false
         unified_job_template: Z / INSIGHTS / Install and Register
         success_nodes:
           - INSIGHTS / Create Insights Credential
         organization: Default
-      - identifier: Z / INSIGHTS / Create Insights Credential
+      - identifier: INSIGHTS / Create Insights Credential
         all_parents_must_converge: false
         unified_job_template: Z / INSIGHTS / Create Insights Credential
         success_nodes:
           - INSIGHTS / Create Insights Project
         organization: Default
-      - identifier: Z / INSIGHTS / Create Insights Project
+      - identifier: INSIGHTS / Create Insights Project
         all_parents_must_converge: false
         unified_job_template: Z / INSIGHTS / Create Insights Project
         organization: Default
