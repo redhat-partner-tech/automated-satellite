@@ -853,7 +853,7 @@ controller_templates:
         - question_name: Select inventory group
           type: multiplechoice
           variable: dynamic_inventory_group
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list + [ 'aws_ec2' ] }}"
           required: true
     extra_vars: ''
     ask_limit_on_launch: true
