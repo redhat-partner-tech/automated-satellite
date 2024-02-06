@@ -214,7 +214,7 @@ controller_workflows:
         success_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
-      - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Deve
+      - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
         organization: Default
         all_parents_must_converge: false
