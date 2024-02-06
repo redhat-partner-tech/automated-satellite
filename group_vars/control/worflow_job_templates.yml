@@ -126,7 +126,7 @@ controller_workflows:
         type: inventory_source
         success_nodes: []
 
-  - name: SETUP / Insights
+  - name: Z / SETUP / Insights
     description: this workflow configures insights for this workshop
     extra_vars:
       manifest_name: smrtmgmt-wrksp
@@ -155,9 +155,9 @@ controller_workflows:
             - Prod
           required: true
     simplified_workflow_nodes:
-      - identifier: INSIGHTS / Replace Satellite Manifest
+      - identifier: Z / INSIGHTS / Replace Satellite Manifest
         all_parents_must_converge: false
-        unified_job_template: INSIGHTS / Replace Satellite Manifest
+        unified_job_template: Z / INSIGHTS / Replace Satellite Manifest
         success_nodes:
           - SERVER / RHEL7 - Register
         organization: Default
@@ -166,20 +166,112 @@ controller_workflows:
         success_nodes:
           - INSIGHTS / Install and Register
         organization: Default
-      - identifier: INSIGHTS / Install and Register
+      - identifier: Z / INSIGHTS / Install and Register
         all_parents_must_converge: false
-        unified_job_template: INSIGHTS / Install and Register
+        unified_job_template: Z / INSIGHTS / Install and Register
         success_nodes:
           - INSIGHTS / Create Insights Credential
         organization: Default
-      - identifier: INSIGHTS / Create Insights Credential
+      - identifier: Z / INSIGHTS / Create Insights Credential
         all_parents_must_converge: false
-        unified_job_template: INSIGHTS / Create Insights Credential
+        unified_job_template: Z / INSIGHTS / Create Insights Credential
         success_nodes:
           - INSIGHTS / Create Insights Project
         organization: Default
-      - identifier: INSIGHTS / Create Insights Project
+      - identifier: Z / INSIGHTS / Create Insights Project
         all_parents_must_converge: false
-        unified_job_template: INSIGHTS / Create Insights Project
+        unified_job_template: Z / INSIGHTS / Create Insights Project
         organization: Default
         success_nodes: []
+
+  - name: Z / SETUP / Workshop deployment
+    description: Workflow for workshop deployment
+    inventory: Workshop Inventory
+    state: present
+    organization: Default
+    survey_enabled: false
+    simplified_workflow_nodes:
+      - identifier: Satellite CaC - CENTOS7_to_RHEL7
+        unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          satellite_cac_scenario: "CENTOS7_to_RHEL7"
+        success_nodes:
+          - Register CentOS7 nodes to Satellite AK CentOS7_Dev
+          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+      - identifier: Setup Cockpit Web Console
+        unified_job_template: Z / SETUP / Cockpit - Web Console
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Extend partition and resize physical volume
+      - identifier: Extend partition and resize physical volume
+        unified_job_template: UTILITY / Extend partition and resize physical volume
+        organization: Default
+        limit: centos7,rhel7
+        all_parents_must_converge: false
+        success_nodes:
+          - Register CentOS7 nodes to Satellite AK CentOS7_Dev
+          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+      - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Deve
+        unified_job_template: SERVER / RHEL7 - Register
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          PREFIX: node
+          env: Dev
+        success_nodes:
+          - Set instance tags based on Satellite facts
+      - identifier: Register CentOS7 nodes to Satellite AK CentOS7_Dev
+        unified_job_template: SERVER / CentOS7 - Register
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          PREFIX: node
+          env: Dev
+        success_nodes:
+          - Set instance tags based on Satellite facts
+      - identifier: Set instance tags based on Satellite facts
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL7 Development inventory source
+      - identifier: RHEL7 Development inventory source
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - CentOS7 Development inventory source
+      - identifier: CentOS7 Development inventory source
+        unified_job_template: CentOS7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes: Setup miscellaneous host configuration
+      - identifier: Setup miscellaneous host configuration
+        unified_job_template: Z / SETUP / Miscellaneous host config
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "aws_ec2"
+        success_nodes:
+          - Patch OS to latest - RHEL7_Dev
+          - Patch OS to latest - CentOS7_Dev
+      - identifier: Patch OS to latest - RHEL7_Dev
+        unified_job_template: OS / Patch OS to latest
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "RHEL7_Dev"
+        success_nodes: []
+      - identifier: Patch OS to latest - CentOS7_Dev
+        unified_job_template: OS / Patch OS to latest
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "CentOS7_Dev"
+        success_nodes: []
+...
