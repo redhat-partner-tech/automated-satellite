@@ -250,7 +250,8 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
-        success_nodes: Setup miscellaneous host configuration
+        success_nodes:
+          - Setup miscellaneous host configuration
       - identifier: Setup miscellaneous host configuration
         unified_job_template: Z / SETUP / Miscellaneous host config
         organization: Default
