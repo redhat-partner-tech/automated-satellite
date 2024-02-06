@@ -424,51 +424,6 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: UTILITY / Snapshot Instance / static Workshop Inventory
-    description: Take node snapshot - selection via static Workshop Inventory 
-    project: Automated Management
-    playbook: snapshot_instance_lvm_inv_hosts.yml
-    inventory: Workshop Inventory
-    credentials:
-      - Workshop Credential
-    extra_vars:
-      snapshot_set_name: snap01
-      snapshot_create_snapshot_autoextend_threshold: 70
-      snapshot_create_snapshot_autoextend_percent: 20
-      snapshot_create_boot_backup: true
-      snapshot_create_volumes:
-        - vg: VolGroup00
-          lv: rootVol
-          size: 3G
-        - vg: VolGroup00
-          lv: varVol
-          size: 5G
-        - vg: VolGroup00
-          lv: logVol
-          size: 500M
-        - vg: VolGroup00
-          lv: auditVol
-          size: 100M
-    survey_enabled: true
-    survey:
-      name: ''
-      description: ''
-      spec:
-        - question_name: Snapshot action
-          type: multiplechoice
-          variable: lvm_snapshots_action
-          choices:
-            - check
-            - create
-            - revert
-            - remove
-          required: true
-    ask_variables_on_launch: true
-    ask_limit_on_launch: true
-    notification_templates_started: Telemetry
-    notification_templates_success: Telemetry
-    notification_templates_error: Telemetry
-
   - name: CONVERT2RHEL / 01 Analysis
     description: Pre-conversion analysis of EL systems
     project: Automated Management
@@ -560,7 +515,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: UTILITY / Z archive / Take EC2 EBS snapshot of node
+  - name: ZZ / UTILITY / Take EC2 EBS snapshot of node
     description: Take node snapshot - selection via EC2 instance tags
     project: Automated Management
     playbook: snapshot_instance_ec2.yml
@@ -577,7 +532,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: UTILITY / Z archive / Revert node EC2 EBS snapshot
+  - name: ZZ / UTILITY / Revert node EC2 EBS snapshot
     description: Revert snapshot - selection via EC2 instance tags
     project: Automated Management
     playbook: snapshot_revert_ec2.yml
@@ -594,7 +549,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: UTILITY / Z archive / Delete node EC2 EBS snapshot
+  - name: ZZ / UTILITY / Delete node EC2 EBS snapshot
     description: Delete snapshot - selection via EC2 snapshot tags
     project: Automated Management
     playbook: snapshot_delete_ec2.yml
@@ -712,7 +667,7 @@ controller_templates:
             - Prod
           required: true
 
-  - name: SETUP / Satellite
+  - name: Z / CaC / Satellite
     project: Automated Management
     playbook: setup_satellite.yml
     inventory: Workshop Inventory
@@ -727,7 +682,7 @@ controller_templates:
     notification_templates_error: Telemetry
     ask_variables_on_launch: true
 
-  - name: SETUP / Cockpit - Web Console
+  - name: Z / SETUP / Cockpit - Web Console
     description: Install and configure Cockpit Web Console for all nodes
     project: Automated Management
     playbook: setup_cockpit.yml
@@ -745,7 +700,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: INSIGHTS / Replace Satellite Manifest
+  - name: Z / INSIGHTS / Replace Satellite Manifest
     project: Automated Management
     playbook: insights_replace_satellite_manifest.yml
     inventory: Workshop Inventory
@@ -760,7 +715,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: INSIGHTS / Install and Register
+  - name: Z / INSIGHTS / Install and Register
     project: Automated Management
     playbook: insights_install.yml
     inventory: Workshop Inventory
@@ -771,7 +726,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: INSIGHTS / Create Insights Credential
+  - name: Z / INSIGHTS / Create Insights Credential
     project: Automated Management
     playbook: insights_setup_aap_creds.yml
     execution_environment: Insights execution environment
@@ -786,7 +741,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: INSIGHTS / Create Insights Project
+  - name: Z / INSIGHTS / Create Insights Project
     project: Automated Management
     playbook: insights_create_insights_project.yml
     execution_environment: Insights execution environment
@@ -819,7 +774,7 @@ controller_templates:
           required: true
     ask_limit_on_launch: true
 
-  - name: SETUP / Satellite / Upgrade scenario Config-as-Code
+  - name: Z / CaC / Satellite / C2R - RIPU scenario
     project: Automated Management
     playbook: setup_satellite_via_varsfiles.yml
     inventory: Workshop Inventory
@@ -837,7 +792,7 @@ controller_templates:
       name: ''
       description: ''
       spec:
-        - question_name: Choose RHEL upgrade scenario to prepare on Satellite
+        - question_name: Choose RHEL conversion-upgrade scenario to prepare on Satellite
           type: multiplechoice
           variable: satellite_cac_scenario
           choices:
@@ -846,7 +801,7 @@ controller_templates:
             - RHEL8_to_RHEL9
           required: true
 
-  - name: SETUP / Controller / RHEL version Config-as-Code
+  - name: Z / CaC / Controller / RIPU scenario
     project: Automated Management
     playbook: setup_controller_via_varsfiles.yml
     inventory: Workshop Inventory
@@ -864,7 +819,7 @@ controller_templates:
       name: ''
       description: ''
       spec:
-        - question_name: Choose RHEL version to prepare on Controller
+        - question_name: Choose RIPU version to prepare on Controller
           type: multiplechoice
           variable: controller_cac_scenario
           choices:
