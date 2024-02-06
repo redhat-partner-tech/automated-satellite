@@ -6,13 +6,15 @@
     delay: 5
     timeout: 300
 
-- name: Configure yum system releasever
-  ansible.builtin.copy:
-    content: "{{ yum_system_releasever | default(8.8) }}"
-    dest: "/etc/yum/vars/releasever"
-    owner: root
-    group: root
-    mode: '0644'
+# Not necessary for hosts registered to Satellite
+# releasever is handled by Activation Key
+# - name: Configure yum system releasever
+#   ansible.builtin.copy:
+#     content: "{{ yum_system_releasever | default(8.8) }}"
+#     dest: "/etc/yum/vars/releasever"
+#     owner: root
+#     group: root
+#     mode: '0644'
 
 - name: Clearing yum cache...
   ansible.builtin.command: >-
