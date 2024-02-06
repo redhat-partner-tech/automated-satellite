@@ -217,7 +217,7 @@ controller_workflows:
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
         organization: Default
-        all_parents_must_converge: false
+        all_parents_must_converge: true
         extra_data:
           PREFIX: node
           env: Dev
@@ -226,7 +226,7 @@ controller_workflows:
       - identifier: Register CentOS7 nodes to Satellite AK CentOS7_Dev
         unified_job_template: SERVER / CentOS7 - Register
         organization: Default
-        all_parents_must_converge: false
+        all_parents_must_converge: true
         extra_data:
           PREFIX: node
           env: Dev
