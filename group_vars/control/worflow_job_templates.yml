@@ -198,6 +198,14 @@ controller_workflows:
         extra_data:
           satellite_cac_scenario: "CENTOS7_to_RHEL7"
         success_nodes:
+          - Satellite CaC - RHEL7_to_RHEL8
+      - identifier: Satellite CaC - RHEL7_to_RHEL8
+        unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          satellite_cac_scenario: "RHEL7_to_RHEL8"
+        success_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Setup Cockpit Web Console
