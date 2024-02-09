@@ -266,21 +266,5 @@ controller_workflows:
         all_parents_must_converge: false
         extra_data:
           dynamic_inventory_group: "aws_ec2"
-        success_nodes:
-          - Patch OS to latest - RHEL7_Dev
-          - Patch OS to latest - CentOS7_Dev
-      - identifier: Patch OS to latest - RHEL7_Dev
-        unified_job_template: OS / Patch OS to latest
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          dynamic_inventory_group: "RHEL7_Dev"
-        success_nodes: []
-      - identifier: Patch OS to latest - CentOS7_Dev
-        unified_job_template: OS / Patch OS to latest
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          dynamic_inventory_group: "CentOS7_Dev"
         success_nodes: []
 ...
