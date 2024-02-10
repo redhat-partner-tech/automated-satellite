@@ -1,6 +1,7 @@
 ---
 - hosts: "{{ HOSTS }}"
-  become: yes
+  gather_facts: false
+  become: true
   tasks:
     - name: Check for presence of satellite.facts
       ansible.builtin.stat:
