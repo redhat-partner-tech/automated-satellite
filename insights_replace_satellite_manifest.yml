@@ -78,3 +78,4 @@
         state: present
         manifest_path: "{{ playbook_dir }}/manifest_insights.zip"
       register: imported_manifest
+...

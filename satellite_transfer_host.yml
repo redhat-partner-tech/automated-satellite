@@ -25,3 +25,4 @@
     register: transfer_hosts_result
   - debug:
       var: transfer_hosts_result
+...

@@ -32,3 +32,4 @@
     until: job_result.finished
     retries: "{{ ( publish_timeout / publish_retry_interval ) | int }}"
     delay: "{{ publish_retry_interval }}"
+...

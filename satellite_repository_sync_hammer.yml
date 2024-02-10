@@ -67,3 +67,4 @@
   - name: Repo sync output 
     debug:
       msg: "{{ hammer_repo_sync_result.stdout }}"
+...

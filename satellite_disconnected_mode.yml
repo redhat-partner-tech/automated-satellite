@@ -13,3 +13,4 @@
     - name: hammer disconnected mode switch output 
       debug:
         msg: "{{ hammer_disconnect }}"
+...

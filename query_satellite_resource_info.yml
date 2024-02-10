@@ -13,3 +13,4 @@
     register: resource_info_result
   - debug:
       var: resource_info_result
+...

@@ -82,3 +82,4 @@
     when:
       - instances_details is not none
       - student == 'student1'
+...

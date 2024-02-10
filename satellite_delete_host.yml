@@ -13,3 +13,4 @@
     register: remove_hosts_result
   - debug:
       var: remove_hosts_result
+...

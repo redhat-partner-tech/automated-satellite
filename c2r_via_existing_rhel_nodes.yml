@@ -126,3 +126,4 @@
       env: "{{ rhel_lifecycle_environment.split('_')[1] }}"
       activation_key: "{{ rhel_lifecycle_environment }}"
       sat_url: satellite.example.com
+...

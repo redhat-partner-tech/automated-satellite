@@ -13,3 +13,4 @@
     - name: hammer set bulk_load_size output 
       debug:
         msg: "{{ hammer_bulk_load_size }}"
+...

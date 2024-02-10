@@ -95,3 +95,4 @@
 #  - name: show templating results
 #    ansible.builtin.debug:
 #      msg: "{{ lookup('template', 'openscap_client_config.yaml.j2') }}"
+...

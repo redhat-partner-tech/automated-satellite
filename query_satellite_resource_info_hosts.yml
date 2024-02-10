@@ -11,3 +11,4 @@
     register: resource_info_hosts_result
   - debug:
       var: resource_info_hosts_result
+...

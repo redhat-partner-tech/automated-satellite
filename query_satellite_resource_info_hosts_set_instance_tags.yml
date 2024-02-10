@@ -80,3 +80,4 @@
         NodeName: "{{ item }}"
     with_items: "{{ resource_info_hosts_result | to_json | from_json | json_query(ansible_host_name_query) | list }}"
     when: instances_details is not none
+...

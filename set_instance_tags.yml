@@ -43,3 +43,4 @@
         AnsibleGroup: "{{ item.value }}"
     loop: "{{ lookup('dict', group_tag_map) }}"
     when: instances_details is not none
+...

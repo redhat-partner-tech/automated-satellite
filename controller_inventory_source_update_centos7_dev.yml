@@ -18,3 +18,4 @@
       name: "inventory_centos7_dev.aws_ec2"
       inventory: "ALL Development"
       organization: Default
+...

@@ -6,3 +6,4 @@
     command: /bin/sleep "{{ ( inventory_hostname | hash | list | map('int',0,16) | sum ) % 60 }}"
   - debug:
       var=ansible_date_time.time
+...

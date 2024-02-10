@@ -11,3 +11,4 @@
   - name: Debug output - instances_details
     debug:
       msg: "{{ instances_details }}"
+...

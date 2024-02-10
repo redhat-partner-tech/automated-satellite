@@ -11,3 +11,4 @@
     register: resource_info_lifecycle_environments_result
   - debug:
       var: resource_info_lifecycle_environments_result
+...
