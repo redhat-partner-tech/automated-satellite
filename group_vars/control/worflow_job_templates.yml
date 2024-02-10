@@ -191,6 +191,12 @@ controller_workflows:
     organization: Default
     survey_enabled: false
     simplified_workflow_nodes:
+      - identifier: Disable transparent huge pages on Satellite
+        unified_job_template: Z / SETUP / Disable transparent hugepages
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Satellite CaC - CENTOS7_to_RHEL7
       - identifier: Satellite CaC - CENTOS7_to_RHEL7
         unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
         organization: Default
