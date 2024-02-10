@@ -858,6 +858,15 @@ controller_templates:
     extra_vars: ''
     ask_limit_on_launch: true
 
+  - name: Z / SETUP / Disable transparent hugepages
+    project: Automated Management
+    playbook: disable_transparent_hugepages.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      HOSTS: satellite.example.com
+
   - name: Demo Job Template
     state: absent
 ...
