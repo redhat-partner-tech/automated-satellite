@@ -8,19 +8,13 @@
         path: /etc/rhsm/facts/satellite.facts
       register: satellite_facts_path
 
-    - name: Configure /etc/default/grub
+    - name: Disable transparent hugepages
       ansible.builtin.lineinfile:
-        dest: /etc/default/grub
-        regexp: '^\s*{{ item.var }}\s*=(.*)$'
-        line: "{{ item.var }}={{ item.value }}"
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX="((?:(?!transparent_hugepage=never).)*?)"$'
+        line: 'GRUB_CMDLINE_LINUX="\1 transparent_hugepage=never"'
         backup: true
-      loop:
-        - var: GRUB_CMDLINE_LINUX
-          value: '"transparent_hugepage=never"'
-        - var: GRUB_SERIAL_COMMAND
-          value: '"serial --speed=115200"'
-        - var: GRUB_TERMINAL
-          value: '"serial console"'
+        backrefs: true
       when: satellite_facts_path.stat.exists
 #      notify: Rebuild grub.cfg
 
