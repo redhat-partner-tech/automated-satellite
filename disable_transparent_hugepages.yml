@@ -40,7 +40,7 @@
       ansible.builtin.command: >-
         satellite-maintain service status --brief
       register: satellite_service_health
-      until: satellite_service_health.stdout.find("All services are running                                            [OK]") != -1
+      until: satellite_service_health.stdout.find("All services are running                                            \u001b[32m\u001b[1m[OK]") != -1
       retries: 15
       delay: 20
 ...
