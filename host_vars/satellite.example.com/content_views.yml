@@ -42,10 +42,14 @@ satellite_content_views:
       - "OL7_QA"
       - "OL7_Prod"
     repositories:
-    - name: CentOS-7 - Base RPMs x86_64
-      product: 'Oracle OS 7'
-    - name: CentOS-7 - Extras RPMs x86_64
-      product: 'Oracle OS 7'
-    - name: CentOS-7 - Updates RPMs x86_64
-      product: 'Oracle OS 7'
+    - name: Oracle Linux 7Server Latest x86_64
+      product: 'Oracle Linux 7'
+    - name: Oracle Linux 7Server Optional Latest x64_64
+      product: 'Oracle Linux 7'
+    - name: Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7Server x86_64
+      product: 'Oracle Linux 7'
+    - name: Latest Unbreakable Enterprise Kernel Release 5 for Oracle Linux 7Server x86_64
+      product: 'Oracle Linux 7'
+    - name: Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7Server x86_64
+      product: 'Oracle Linux 7'
 ...
