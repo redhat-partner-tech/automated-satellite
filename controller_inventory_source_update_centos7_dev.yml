@@ -7,10 +7,10 @@
     controller_validate_certs: false
 
   tasks:
-  - name: Update inventory via source ==> EC2 Dynamic Source - CentOS7 Development
+  - name: Update inventory via source ==> EC2 Dynamic Source - OL7 Development
     ansible.controller.inventory_source_update:
-      name: "EC2 Dynamic Source - CentOS7 Development"
-      inventory: "CentOS7 Development"
+      name: "EC2 Dynamic Source - OL7 Development"
+      inventory: "OL7 Development"
       organization: Default
 
   - name: Update inventory via source ==> inventory_centos7_dev.aws_ec2

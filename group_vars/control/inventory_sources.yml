@@ -16,7 +16,7 @@ controller_inventory_sources:
         - prefix: os
           key: satellite_operatingsystem_name
 
-  - name: CentOS7 Development
+  - name: OL7 Development
     inventory: EC2 Dynamic Inventory
     execution_environment: Default execution environment
     source: ec2
@@ -24,7 +24,7 @@ controller_inventory_sources:
       regions:
         - "{{ workshop_ec2_region }}"
       filters:
-        tag:ContentView: CentOS7
+        tag:ContentView: OL7
         tag:Environment: Dev
         tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
         tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
@@ -47,7 +47,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: CentOS7 QA
+  - name: OL7 QA
     inventory: EC2 Dynamic Inventory
     execution_environment: Default execution environment
     source: ec2
@@ -55,7 +55,7 @@ controller_inventory_sources:
       regions:
         - "{{ workshop_ec2_region }}"
       filters:
-        tag:ContentView: CentOS7
+        tag:ContentView: OL7
         tag:Environment: QA
         tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
         tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
@@ -78,7 +78,7 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
-  - name: CentOS7 Production
+  - name: OL7 Production
     inventory: EC2 Dynamic Inventory
     execution_environment: Default execution environment
     source: ec2
@@ -86,7 +86,7 @@ controller_inventory_sources:
       regions:
         - "{{ workshop_ec2_region }}"
       filters:
-        tag:ContentView: CentOS7
+        tag:ContentView: OL7
         tag:Environment: Prod
         tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
         tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"

@@ -17,19 +17,19 @@ satellite_content_views:
       product: 'Red Hat Enterprise Linux Server'
     - name: Red Hat Satellite Utils 6.11 for RHEL 7 Server RPMs x86_64
       product: 'Red Hat Enterprise Linux Server'
-  # Community Enterprise Linux 7
-  - name: CentOS7
-    content_view: CentOS7
+  # Oracle Linux 7
+  - name: OL7
+    content_view: OL7
     content_view_update: true
     lifecycle_environments:
-      - "CentOS7_Dev"
-      - "CentOS7_QA"
-      - "CentOS7_Prod"
+      - "OL7_Dev"
+      - "OL7_QA"
+      - "OL7_Prod"
     repositories:
     - name: CentOS-7 - Base RPMs x86_64
-      product: 'Community Enterprise OS 7'
+      product: 'Oracle OS 7'
     - name: CentOS-7 - Extras RPMs x86_64
-      product: 'Community Enterprise OS 7'
+      product: 'Oracle OS 7'
     - name: CentOS-7 - Updates RPMs x86_64
-      product: 'Community Enterprise OS 7'
+      product: 'Oracle OS 7'
 ...

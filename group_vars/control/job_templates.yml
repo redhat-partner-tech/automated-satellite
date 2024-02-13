@@ -34,7 +34,7 @@ controller_templates:
             - Prod
           required: true
 
-  - name: SERVER / CentOS7 - Register
+  - name: SERVER / OL7 - Register
     project: Automated Management
     playbook: server_register.yml
     inventory: Workshop Inventory
@@ -43,7 +43,7 @@ controller_templates:
     limit: centos7
     extra_vars:
       org_id: "Default_Organization"
-      product_name_or_regex: "Community Enterprise OS 7"
+      product_name_or_regex: "Oracle OS 7"
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -176,7 +176,7 @@ controller_templates:
     credentials:
       - Satellite Credential
     extra_vars:
-      node_group: env_CentOS7_Dev
+      node_group: env_OL7_Dev
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -327,7 +327,7 @@ controller_templates:
     notification_templates_error: Telemetry
     limit: cv_RHEL7
 
-  - name: SERVER / CentOS7 - Fact Scan
+  - name: SERVER / OL7 - Fact Scan
     project: Fact Scan
     playbook: scan_facts.yml
     inventory: EC2 Dynamic Inventory
@@ -338,7 +338,7 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    limit: cv_CentOS7
+    limit: cv_OL7
 
   - name: SERVER / Start node via ec2_node_tools
     description: Start node - selection via EC2 instance tags
@@ -453,7 +453,7 @@ controller_templates:
           required: true
     ask_limit_on_launch: true
 
-  - name: OS / Convert / CentOS7 to RHEL7
+  - name: OS / Convert / OL7 to RHEL7
     description: Convert OS to RHEL OS via targetted LE
     project: Automated Management
     playbook: c2r_convert.yml

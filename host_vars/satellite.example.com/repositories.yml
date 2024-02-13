@@ -6,7 +6,7 @@ satellite_products:
         releasever: "8.8"
       - name: "Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)"
         releasever: "8.8"
-  - name: Community Enterprise OS 7
+  - name: Oracle OS 7
     repositories:
       - name: CentOS-7 - Base RPMs x86_64
         content_type: yum

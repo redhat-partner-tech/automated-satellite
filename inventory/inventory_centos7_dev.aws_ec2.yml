@@ -3,7 +3,7 @@ plugin: aws_ec2
 regions:
   - us-east-1
 filters:
-  tag:ContentView: CentOS7
+  tag:ContentView: OL7
   tag:Environment: Dev
   tag:Student: STUDENT_NAME_WITH_NUM
   tag:guid: EC2_NAME_PREFIX

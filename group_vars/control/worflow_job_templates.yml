@@ -33,9 +33,9 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - OS / Convert / CentOS7 to RHEL7
-      - identifier: OS / Convert / CentOS7 to RHEL7
-        unified_job_template: OS / Convert / CentOS7 to RHEL7
+          - OS / Convert / OL7 to RHEL7
+      - identifier: OS / Convert / OL7 to RHEL7
+        unified_job_template: OS / Convert / OL7 to RHEL7
         organization: Default
         all_parents_must_converge: false
         success_nodes: []
@@ -47,7 +47,7 @@ controller_workflows:
       snapshot_create_boot_backup: true
       lvm_snapshots_action: revert
       org_id: "Default_Organization"
-      product_name_or_regex: "Community Enterprise OS 7"
+      product_name_or_regex: "Oracle OS 7"
     state: present
     organization: Default
     survey_enabled: true
@@ -111,9 +111,9 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - CentOS7 Development
-      - identifier: CentOS7 Development
-        unified_job_template: CentOS7 Development
+          - OL7 Development
+      - identifier: OL7 Development
+        unified_job_template: OL7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
@@ -212,7 +212,7 @@ controller_workflows:
         extra_data:
           satellite_cac_scenario: "RHEL7_to_RHEL8"
         success_nodes:
-          - Register CentOS7 nodes to Satellite AK CentOS7_Dev
+          - Register OL7 nodes to Satellite AK OL7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
@@ -226,7 +226,7 @@ controller_workflows:
         limit: centos7,rhel7
         all_parents_must_converge: false
         success_nodes:
-          - Register CentOS7 nodes to Satellite AK CentOS7_Dev
+          - Register OL7 nodes to Satellite AK OL7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
@@ -237,8 +237,8 @@ controller_workflows:
           env: Dev
         success_nodes:
           - Set instance tags based on Satellite facts
-      - identifier: Register CentOS7 nodes to Satellite AK CentOS7_Dev
-        unified_job_template: SERVER / CentOS7 - Register
+      - identifier: Register OL7 nodes to Satellite AK OL7_Dev
+        unified_job_template: SERVER / OL7 - Register
         organization: Default
         all_parents_must_converge: true
         extra_data:
@@ -258,9 +258,9 @@ controller_workflows:
         all_parents_must_converge: false
         type: inventory_source
         success_nodes:
-          - CentOS7 Development inventory source
-      - identifier: CentOS7 Development inventory source
-        unified_job_template: CentOS7 Development
+          - OL7 Development inventory source
+      - identifier: OL7 Development inventory source
+        unified_job_template: OL7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
