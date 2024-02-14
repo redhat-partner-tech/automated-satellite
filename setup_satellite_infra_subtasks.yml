@@ -9,22 +9,27 @@
     ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
     when: infra_subtasks_retry_count | int != 0
 
-  - name: execute redhat.satellite.repositories role
+  - name: Execute redhat.satellite.content_credentials role
+    ansible.builtin.import_role:
+      name: "redhat.satellite.content_credentials"
+    delegate_to: localhost
+
+  - name: Execute redhat.satellite.repositories role
     ansible.builtin.import_role:
       name: "redhat.satellite.repositories"
     delegate_to: localhost
 
-  - name: execute redhat.satellite.lifecycle_environments role
+  - name: Execute redhat.satellite.lifecycle_environments role
     ansible.builtin.import_role:
       name: "redhat.satellite.lifecycle_environments"
     delegate_to: localhost
 
-  - name: execute content_views role
+  - name: Execute content_views role
     ansible.builtin.import_role:
       name: "content_views"
     delegate_to: localhost
 
-  - name: execute redhat.satellite.activation_keys role
+  - name: Execute redhat.satellite.activation_keys role
     ansible.builtin.import_role:
       name: "redhat.satellite.activation_keys"
     delegate_to: localhost
