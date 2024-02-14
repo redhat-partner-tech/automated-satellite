@@ -1,0 +1,17 @@
+---
+satellite_lifecycle_environments:
+  # Red Hat Enterprise Linux 7
+  - name: "RHEL7_Dev"
+    prior: "Library"
+  - name: "RHEL7_QA"
+    prior: "RHEL7_Dev"
+  - name: "RHEL7_Prod"
+    prior: "RHEL7_QA"
+  # Oracle Linux 7
+  - name: "OL7_Dev"
+    prior: "Library"
+  - name: "OL7_QA"
+    prior: "OL7_Dev"
+  - name: "OL7_Prod"
+    prior: "OL7_QA"
+...

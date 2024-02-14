@@ -196,13 +196,13 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - Satellite CaC - CENTOS7_to_RHEL7
-      - identifier: Satellite CaC - CENTOS7_to_RHEL7
+          - Satellite CaC - ORACLE7_to_RHEL7
+      - identifier: Satellite CaC - ORACLE7_to_RHEL7
         unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
         organization: Default
         all_parents_must_converge: false
         extra_data:
-          satellite_cac_scenario: "CENTOS7_to_RHEL7"
+          satellite_cac_scenario: "ORACLE7_to_RHEL7"
         success_nodes:
           - Satellite CaC - RHEL7_to_RHEL8
       - identifier: Satellite CaC - RHEL7_to_RHEL8
@@ -223,7 +223,7 @@ controller_workflows:
       - identifier: Extend partition and resize physical volume
         unified_job_template: UTILITY / Extend partition and resize physical volume
         organization: Default
-        limit: centos7,rhel7
+        limit: ol7,rhel7
         all_parents_must_converge: false
         success_nodes:
           - Register OL7 nodes to Satellite AK OL7_Dev
