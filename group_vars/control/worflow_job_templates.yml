@@ -212,7 +212,6 @@ controller_workflows:
         extra_data:
           satellite_cac_scenario: "RHEL7_to_RHEL8"
         success_nodes:
-          - Register OL7 nodes to Satellite AK OL7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
@@ -226,19 +225,9 @@ controller_workflows:
         limit: ol7,rhel7
         all_parents_must_converge: false
         success_nodes:
-          - Register OL7 nodes to Satellite AK OL7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
-        organization: Default
-        all_parents_must_converge: true
-        extra_data:
-          PREFIX: node
-          env: Dev
-        success_nodes:
-          - Set instance tags based on Satellite facts
-      - identifier: Register OL7 nodes to Satellite AK OL7_Dev
-        unified_job_template: SERVER / OL7 - Register
         organization: Default
         all_parents_must_converge: true
         extra_data:
