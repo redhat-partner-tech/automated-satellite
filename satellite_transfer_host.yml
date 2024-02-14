@@ -14,8 +14,8 @@
     validate_certs: false
   tasks:
   - set_fact:
-      node_group: "env_{{ centos_lifecycle_environment }}"
-  - name: Transfer hosts in Satellite LE "{{ centos_lifecycle_environment }}" to LE "{{ rhel_lifecycle_environment }}"
+      node_group: "env_{{ oracle_lifecycle_environment }}"
+  - name: Transfer hosts in Satellite LE "{{ oracle_lifecycle_environment }}" to LE "{{ rhel_lifecycle_environment }}"
     redhat.satellite.host:
       name: "{{ item }}"
       lifecycle_environment: "{{ rhel_lifecycle_environment }}"

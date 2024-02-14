@@ -1,5 +1,5 @@
 ---
-- hosts: "env_{{ centos_lifecycle_environment }}"
+- hosts: "env_{{ oracle_lifecycle_environment }}"
   become: true
   environment:
     CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1

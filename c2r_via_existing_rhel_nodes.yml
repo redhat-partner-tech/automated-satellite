@@ -42,7 +42,7 @@
 
   run_once: yes
 
-- hosts: "env_{{ centos_lifecycle_environment }}"
+- hosts: "env_{{ oracle_lifecycle_environment }}"
   become: true
   vars:
     convert2rhel_timeout: 14400
