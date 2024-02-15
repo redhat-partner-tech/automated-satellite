@@ -40,6 +40,7 @@
       resource: "{{ host_ec2_instance_id[item.key] }}"
       state: present
       tags:
+        NodeName: "{{ item.key }}"
         Environment: "{{ item.value }}"
         ContentView: "OL7"
         satellite_operatingsystem_name: "OracleLinux_7_9"
