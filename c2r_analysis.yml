@@ -17,79 +17,28 @@
     - name: Verify operating system
       ansible.builtin.assert:
         that:
-          - "ansible_distribution == 'OracleLinux'"
+          - ("ansible_distribution == 'CentOS'") or ("ansible_distribution == 'OracleLinux'")
+        fail_msg: "OS must be CentOS or OracleLinux"
+        success_msg: "CentOS or OracleLinux requirement met, continue..."
+
+    - name: Verify major and minor versions
+      ansible.builtin.assert:
+        that:
           - "ansible_distribution_major_version | int  == 7"
           - "ansible_distribution_version.split('.')[1] | int >= 9"
-        fail_msg: "OracleLinux 7 minor release must be >= 9"
-        success_msg: "OracleLinux 7 minor release minimum requirement met, continue..."
+        fail_msg: "Release version must be >= 7.9"
+        success_msg: "Release version requirement met, continue..."
 
-    - name: Install convert2rhel utility
-      ansible.builtin.import_role:
-        name: infra.convert2rhel.common
-
-    - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
-      ansible.builtin.get_url:
-        url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
-        dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
-        mode: '0440'
-        validate_certs: false
-
-    - name: Create tempdir for package download
-      ansible.builtin.tempfile:
-        state: directory
-      register: package_dl_tempdir
-
-    - name: Download centos-release package locally
-      ansible.builtin.command: >-
-        yumdownloader -v --destdir="{{ package_dl_tempdir.path }}" centos-release
-
-    - name: Remove centos-release package
-      ansible.builtin.command: >-
-        rpm -e --nodeps --justdb centos-release
-
-    - name: Set delay time via gather_facts
-      ansible.builtin.set_fact:
-        node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
-
-    - name: Include delay before starting analysis
-      ansible.builtin.command: |
-        python3 -c 'import time;time.sleep({{ node_delay_time }})'
-      delegate_to: localhost
-      connection: local
-
-    - name: Generate pre-conversion analysis report
-      ansible.builtin.import_role:
-        name: infra.convert2rhel.analysis
-
-    - name: Find all rpm files in tempdir "{{ package_dl_tempdir.path }}"
-      ansible.builtin.find:
-        paths: "{{ package_dl_tempdir.path }}"
-        patterns: "*.rpm"
-      register: centos_rpm_find
-    
-    - name: Setting centos_rpm_list from centos_rpm_find
-      ansible.builtin.set_fact:
-        centos_rpm_list: "{{ centos_rpm_find.files | map(attribute='path') | list }}"
-
-    - name: Installing the rpm files
-      ansible.builtin.yum:
-        name: "{{ centos_rpm_list }}"
-        state: present
-
-    - name: Remove tempdir
-      ansible.builtin.file:
-        path: "{{ package_dl_tempdir.path }}"
-        state: absent
-
-    - name: Get paths to Oracle repos
-      ansible.builtin.find:
-        paths: /etc/yum.repos.d
-        patterns: '*.repo'
-      register: centos_repos
-
-    - name: Remove Oracle repos that were placed by infra.convert2rhel analysis role
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: absent
-      with_items: "{{ centos_repos.files | default([]) }}"
+    - name: Analyze CentOS 7.9 systems
+      when:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+        - "ansible_distribution_version.split('.')[1] | int >= 9"
+      ansible.builtin.import_tasks: c2r_analysis_centos.yml
+    - name: Analyze Oracle Linux 7.9 systems
+      when:
+        - "ansible_distribution == 'OracleLinux'"
+        - "ansible_distribution_major_version | int  == 7"
+        - "ansible_distribution_version.split('.')[1] | int >= 9"
+      ansible.builtin.import_tasks: c2r_analysis_oracle.yml
 ...
