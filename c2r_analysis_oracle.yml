@@ -1,0 +1,26 @@
+---
+- name: Install convert2rhel utility
+  ansible.builtin.import_role:
+    name: infra.convert2rhel.common
+
+- name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
+  ansible.builtin.get_url:
+    url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+    dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
+    mode: '0440'
+    validate_certs: false
+
+- name: Set delay time via gather_facts
+  ansible.builtin.set_fact:
+    node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
+
+- name: Include delay before starting analysis
+  ansible.builtin.command: |
+    python3 -c 'import time;time.sleep({{ node_delay_time }})'
+  delegate_to: localhost
+  connection: local
+
+- name: Generate pre-conversion analysis report
+  ansible.builtin.import_role:
+    name: infra.convert2rhel.analysis
+...
