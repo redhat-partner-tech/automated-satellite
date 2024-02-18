@@ -62,14 +62,14 @@ controller_workflows:
           required: true
     ask_limit_on_launch: true
     simplified_workflow_nodes:
-      - identifier: UTILITY / Snapshot Instance
-        unified_job_template: UTILITY / Snapshot Instance
+      - identifier: SERVER / Unregister
+        unified_job_template: SERVER / Unregister
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - SERVER / Unregister
-      - identifier: SERVER / Unregister
-        unified_job_template: SERVER / Unregister
+          - UTILITY / Snapshot Instance
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
         organization: Default
         all_parents_must_converge: false
         success_nodes:
