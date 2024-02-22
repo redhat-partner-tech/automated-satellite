@@ -1,0 +1,139 @@
+- name: Install and configure Cockpit/Web Console on Controller
+  hosts: control
+  become: true
+  gather_facts: true
+  tasks:
+    # Gather EC2 metadata facts
+    - amazon.aws.ec2_metadata_facts:
+  
+    - set_fact:
+        workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
+
+    - name: "Get instance details"
+      ansible.builtin.import_role:
+        name: ec2_node_tools
+        tasks_from: get_instance_details
+
+    - name: Grab ec2_instance_info for node1
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node1": "{{ instances.tags.Workshop | lower }}-node1"
+      delegate_to: localhost
+      become: false
+      register: node1_node_facts
+
+    - name: Grab ec2_instance_info for node2
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node2": "{{ instances.tags.Workshop | lower }}-node2"
+      delegate_to: localhost
+      become: false
+      register: node2_node_facts
+
+    - name: Grab ec2_instance_info for node3
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node3": "{{ instances.tags.Workshop | lower }}-node3"
+      delegate_to: localhost
+      become: false
+      register: node3_node_facts
+
+    - name: Grab ec2_instance_info for node4
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node4": "{{ instances.tags.Workshop | lower }}-node4"
+      delegate_to: localhost
+      become: false
+      register: node4_node_facts
+
+    - name: Grab ec2_instance_info for node5
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node5": "{{ instances.tags.Workshop | lower }}-node5"
+      delegate_to: localhost
+      become: false
+      register: node5_node_facts
+
+    - name: Grab ec2_instance_info for node6
+      amazon.aws.ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_node6": "{{ instances.tags.Workshop | lower }}-node6"
+      delegate_to: localhost
+      become: false
+      register: node6_node_facts
+
+    - name: Install cockpit console
+      ansible.builtin.package:
+        name: 
+          - cockpit
+          - cockpit-system
+        state: present
+
+    - name: Generate 99-webui.json
+      template:
+        src: "cockpit_machines/cockpit_machines.j2"
+        dest: "/etc/cockpit/machines.d/99-webui.json"
+
+    - name: Copy controller key to cockpit 
+      ansible.builtin.copy:
+        src: "/home/student/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/privkey.pem"
+        dest: "/etc/cockpit/ws-certs.d/00-signed.key"
+        remote_src: true
+
+    - name: Copy controller cert to cockpit 
+      ansible.builtin.copy:
+        src: "/home/student/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/cert.pem"
+        dest: "/etc/cockpit/ws-certs.d/00-signed.cert"
+        remote_src: true
+
+    - name: Populate ssh host keys to known_hosts
+      become: yes
+      become_user: student
+      become_method: su
+      become_exe: sudo su -
+      shell: >
+        ssh-keyscan -tecdsa-sha2-nistp256 {{ item.tags.short_name }} >> ~/.ssh/known_hosts
+      with_items:
+        - "{{ node1_node_facts.instances }}"
+        - "{{ node2_node_facts.instances }}"
+        - "{{ node3_node_facts.instances }}"
+        - "{{ node4_node_facts.instances }}"
+        - "{{ node5_node_facts.instances }}"
+        - "{{ node6_node_facts.instances }}"
+
+    - name: Enable and start cockpit console service
+      ansible.builtin.service:
+        name: cockpit.socket
+        enabled: true
+        state: started
+
+- name: Install Cockpit/Web Console on system nodes
+  hosts: node*.example.com
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install Cockpit
+      ansible.builtin.package:
+        name:
+          - cockpit
+          - cockpit-system
+        state: present
+
+    - name: Enable and start cockpit console service
+      ansible.builtin.service:
+        name: cockpit.socket
+        enabled: true
+        state: started
+...

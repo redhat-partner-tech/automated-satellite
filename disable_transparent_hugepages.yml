@@ -1,0 +1,46 @@
+---
+- hosts: "{{ HOSTS }}"
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Check for presence of satellite.facts
+      ansible.builtin.stat:
+        path: /etc/rhsm/facts/satellite.facts
+      register: satellite_facts_path
+
+    - name: Disable transparent hugepages
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX="((?:(?!transparent_hugepage=never).)*?)"$'
+        line: 'GRUB_CMDLINE_LINUX="\1 transparent_hugepage=never"'
+        backup: true
+        backrefs: true
+      when: satellite_facts_path.stat.exists
+      notify:
+        - Rebuild grub.cfg
+        - Reboot host and wait
+
+  handlers:
+    - name: Rebuild grub.cfg
+      ansible.builtin.command: >-
+        grub2-mkconfig -o /boot/grub2/grub.cfg
+
+    - name: Reboot host and wait
+      ansible.builtin.reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+      changed_when: true
+      notify: Check Satellite services health
+
+    - name: Check Satellite services health
+      ansible.builtin.command: >-
+        satellite-maintain service status --brief
+      register: satellite_service_health
+      until: satellite_service_health.stdout.find("All services are running                                            \u001b[32m\u001b[1m[OK]") != -1
+      retries: 15
+      delay: 20
+...
