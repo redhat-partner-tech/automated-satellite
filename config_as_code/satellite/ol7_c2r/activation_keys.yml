@@ -10,14 +10,4 @@ satellite_activation_keys:
   - name: "RHEL7_Prod"
     lifecycle_environment: "RHEL7_Prod"
     content_view: "RHEL7"
-  # Community Enterprise Linux 7
-  - name: "CentOS7_Dev"
-    lifecycle_environment: "CentOS7_Dev"
-    content_view: "CentOS7"
-  - name: "CentOS7_QA"
-    lifecycle_environment: "CentOS7_QA"
-    content_view: "CentOS7"
-  - name: "CentOS7_Prod"
-    lifecycle_environment: "CentOS7_Prod"
-    content_view: "CentOS7"
 ...
