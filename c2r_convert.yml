@@ -16,11 +16,28 @@
     - name: Verify operating system
       ansible.builtin.assert:
         that:
-          - "ansible_distribution == 'CentOS'"
+          - ("ansible_distribution == 'CentOS'") or ("ansible_distribution == 'OracleLinux'")
+        fail_msg: "OS must be CentOS or OracleLinux"
+        success_msg: "CentOS or OracleLinux requirement met, continue..."
+
+    - name: Verify major and minor versions
+      ansible.builtin.assert:
+        that:
           - "ansible_distribution_major_version | int  == 7"
           - "ansible_distribution_version.split('.')[1] | int >= 9"
-        fail_msg: "CentOS 7 minor release must be >= 9"
-        success_msg: "CentOS 7 minor release minimum requirement met, continue..."
+        fail_msg: "Release version must be >= 7.9"
+        success_msg: "Release version requirement met, continue..."
+
+    - name: Install convert2rhel utility
+      ansible.builtin.import_role:
+        name: infra.convert2rhel.common
+
+    - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
+      ansible.builtin.get_url:
+        url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+        dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
+        mode: '0440'
+        validate_certs: false
 
     - name: Set delay time via gather_facts
       ansible.builtin.set_fact:
