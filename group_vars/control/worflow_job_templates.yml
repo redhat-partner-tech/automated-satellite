@@ -330,9 +330,6 @@ controller_workflows:
         unified_job_template: EC2 / Set instance tag - OracleLinux7
         organization: Default
         all_parents_must_converge: true
-        extra_data:
-          PREFIX: node
-          env: Dev
         success_nodes:
           - Set instance tags based on Satellite facts
       - identifier: Set instance tags based on Satellite facts
