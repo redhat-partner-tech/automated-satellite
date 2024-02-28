@@ -15,10 +15,10 @@ controller_workflows:
       name: ''
       description: ''
       spec:
-        - question_name: Select CentOS Group to convert
+        - question_name: Select EL Group to convert
           variable: dynamic_inventory_group
           type: multiplechoice
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}"
           required: true
         - question_name: Select target RHEL Lifecycle Environment to convert to
           variable: rhel_lifecycle_environment
@@ -33,9 +33,9 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - OS / Convert / CentOS7 to RHEL7
-      - identifier: OS / Convert / CentOS7 to RHEL7
-        unified_job_template: OS / Convert / CentOS7 to RHEL7
+          - OS / Convert to RHEL7
+      - identifier: OS / Convert to RHEL7
+        unified_job_template: OS / Convert to RHEL7
         organization: Default
         all_parents_must_converge: false
         success_nodes: []
@@ -96,7 +96,7 @@ controller_workflows:
         - question_name: Select inventory group
           type: multiplechoice
           variable: dynamic_inventory_group
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list }}"
           required: true
     ask_limit_on_launch: true
     simplified_workflow_nodes:
@@ -114,6 +114,13 @@ controller_workflows:
           - CentOS7 Development
       - identifier: CentOS7 Development
         unified_job_template: CentOS7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - OL7 Development
+      - identifier: OL7 Development
+        unified_job_template: OL7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
@@ -184,7 +191,7 @@ controller_workflows:
         organization: Default
         success_nodes: []
 
-  - name: Z / SETUP / Workshop deployment
+  - name: Z / SETUP / Workshop - CentOS7
     description: Workflow for workshop deployment
     inventory: Workshop Inventory
     state: present
@@ -261,6 +268,88 @@ controller_workflows:
           - CentOS7 Development inventory source
       - identifier: CentOS7 Development inventory source
         unified_job_template: CentOS7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - Setup miscellaneous host configuration
+      - identifier: Setup miscellaneous host configuration
+        unified_job_template: Z / SETUP / Miscellaneous host config
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "aws_ec2"
+        success_nodes: []
+
+  - name: Z / SETUP / Workshop - OL7
+    description: Workflow for workshop deployment
+    inventory: Workshop Inventory
+    state: present
+    organization: Default
+    survey_enabled: false
+    simplified_workflow_nodes:
+      - identifier: Disable transparent huge pages on Satellite
+        unified_job_template: Z / SETUP / Disable transparent hugepages
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Satellite CaC - RHEL7_to_RHEL8
+      - identifier: Satellite CaC - RHEL7_to_RHEL8
+        unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          satellite_cac_scenario: "RHEL7_to_RHEL8"
+        success_nodes:
+          - Set OL7 EC2 instance tags
+          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+      - identifier: Setup Cockpit Web Console
+        unified_job_template: Z / SETUP / Cockpit - Web Console
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Extend partition and resize physical volume
+      - identifier: Extend partition and resize physical volume
+        unified_job_template: UTILITY / Extend partition and resize physical volume
+        organization: Default
+        limit: centos7,rhel7
+        all_parents_must_converge: false
+        success_nodes:
+          - Set OL7 EC2 instance tags
+          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+      - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
+        unified_job_template: SERVER / RHEL7 - Register
+        organization: Default
+        all_parents_must_converge: true
+        extra_data:
+          PREFIX: node
+          env: Dev
+        success_nodes:
+          - Set instance tags based on Satellite facts
+      - identifier: Set OL7 EC2 instance tags
+        unified_job_template: EC2 / Set instance tag - OracleLinux7
+        organization: Default
+        all_parents_must_converge: true
+        extra_data:
+          PREFIX: node
+          env: Dev
+        success_nodes:
+          - Set instance tags based on Satellite facts
+      - identifier: Set instance tags based on Satellite facts
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL7 Development inventory source
+      - identifier: RHEL7 Development inventory source
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - OL7 Development inventory source
+      - identifier: OL7 Development inventory source
+        unified_job_template: OL7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
