@@ -19,9 +19,9 @@
       redhat.satellite.status_info:
         validate_certs: "{{ satellite_validate_certs }}"
 
-    - name: Include CONVERT2RHEL Satellite CaC via vars files
+    - name: Include CentOS7 CONVERT2RHEL Satellite CaC via vars files
       ansible.builtin.include_vars:
-        dir: config_as_code/satellite/convert2rhel
+        dir: config_as_code/satellite/centos7_c2r
       when: satellite_cac_scenario == 'CENTOS7_to_RHEL7'
 
     - name: Include RHEL7 to RHEL8 IPU Satellite CaC via vars files
