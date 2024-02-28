@@ -599,6 +599,26 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
+  - name: EC2 / Set instance tag - OracleLinux7
+    description: Set instance tag for OL7 instances via provided extra_vars dict
+    project: Automated Management
+    playbook: set_instance_tags_ol7.yml
+    inventory: Workshop Inventory
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      instances:
+        tags:
+          guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+          Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+          short_name: node*
+      group_tag_map:
+        node4.example.com: Dev
+        node5.example.com: Dev
+        node6.example.com: Dev
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: EC2 / Get instance details via ec2_node_tools role
     description: Utilize ec2_node_tools role to display info available per instance/node
     project: Automated Management
