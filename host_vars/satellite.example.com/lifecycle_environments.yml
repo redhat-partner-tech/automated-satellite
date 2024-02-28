@@ -21,4 +21,11 @@ satellite_lifecycle_environments:
     prior: "CentOS7_Dev"
   - name: "CentOS7_Prod"
     prior: "CentOS7_QA"
+  # Oracle Linux 7
+  - name: "OL7_Dev"
+    prior: "Library"
+  - name: "OL7_QA"
+    prior: "OL7_Dev"
+  - name: "OL7_Prod"
+    prior: "OL7_QA"
 ...
