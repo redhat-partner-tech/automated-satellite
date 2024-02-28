@@ -1,6 +1,6 @@
 ---
 - name: Convert2rhel pre-conversion analysis
-  hosts: "{{ centos_lifecycle_environment | default(omit) }}"
+  hosts: "{{ dynamic_lifecycle_environment | default(omit) }}"
   strategy: ansible.builtin.free
   gather_facts: true
   become: true
@@ -12,7 +12,7 @@
     rhsm_password: ""
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
-    rhsm_activation_key_pre_convert: "{{ centos_lifecycle_environment }}"
+    rhsm_activation_key_pre_convert: "{{ dynamic_lifecycle_environment }}"
   tasks:
     - name: Verify operating system
       ansible.builtin.assert:
