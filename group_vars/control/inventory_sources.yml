@@ -111,6 +111,101 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
+  - name: OL7 Development
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: OL7
+        tag:Environment: Dev
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: OL7 QA
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: OL7
+        tag:Environment: QA
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
+  - name: OL7 Production
+    inventory: EC2 Dynamic Inventory
+    execution_environment: Default execution environment
+    source: ec2
+    source_vars:
+      regions:
+        - "{{ workshop_ec2_region }}"
+      filters:
+        tag:ContentView: OL7
+        tag:Environment: Prod
+        tag:Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+        tag:guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      hostnames:
+        - tag:NodeName
+        - tag:Name
+        - private-dns-name
+      keyed_groups:
+        - prefix: cv
+          key: tags['ContentView']
+        - key: tags['ContentView'] ~ '_' ~ tags['Environment']
+          separator: ''
+        - prefix: os
+          key: tags['satellite_operatingsystem_name']
+        - prefix: AnsibleGroup
+          key: tags['AnsibleGroup']
+      compose:
+        # set the ansible_host variable to connect with the private IP address without changing the hostname
+        ansible_host: private_ip_address
+        ansible_user: "'ec2-user'"
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
   - name: RHEL7 Development
     inventory: EC2 Dynamic Inventory
     execution_environment: Default execution environment
@@ -213,6 +308,16 @@ controller_inventory_sources:
     update_on_launch: false
     update_cache_timeout: 0
 
+  - name: inventory_ol7_dev.aws_ec2
+    inventory: EXAMPLE dynamic project inventory
+    source: scm
+    execution_environment: auto_satellite workshop execution environment
+    source_project: Automated Management
+    source_path: inventory/inventory_ol7_dev.aws_ec2.yml
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+
   - name: inventory_rhel7_dev.aws_ec2
     inventory: EXAMPLE dynamic project inventory
     source: scm
@@ -222,3 +327,4 @@ controller_inventory_sources:
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
+...
