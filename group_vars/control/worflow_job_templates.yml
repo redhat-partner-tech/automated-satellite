@@ -232,7 +232,7 @@ controller_workflows:
         organization: Default
         limit: centos7,rhel7
         all_parents_must_converge: false
-        success_nodes:
+        always_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
@@ -314,7 +314,7 @@ controller_workflows:
         organization: Default
         limit: centos7,rhel7
         all_parents_must_converge: false
-        success_nodes:
+        always_nodes:
           - Set OL7 EC2 instance tags
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
