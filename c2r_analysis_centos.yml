@@ -57,13 +57,13 @@
     path: "{{ package_dl_tempdir.path }}"
     state: absent
 
-- name: Get paths to Oracle repos
+- name: Get paths to CentOS repos
   ansible.builtin.find:
     paths: /etc/yum.repos.d
     patterns: '*.repo'
   register: centos_repos
 
-- name: Remove Oracle repos that were placed by infra.convert2rhel analysis role
+- name: Remove CentOS repos that were placed by infra.convert2rhel analysis role
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
