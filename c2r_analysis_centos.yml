@@ -1,7 +1,16 @@
 ---
-- name: Install convert2rhel utility
-  ansible.builtin.import_role:
-    name: infra.convert2rhel.common
+# - name: Install convert2rhel utility
+#   ansible.builtin.import_role:
+#     name: infra.convert2rhel.common
+
+- name: Create /usr/share/convert2rhel/subscription-manager directory for katello-ca-consumer
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /usr/share/convert2rhel
+    - /usr/share/convert2rhel/subscription-manager
 
 - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
   ansible.builtin.get_url:
