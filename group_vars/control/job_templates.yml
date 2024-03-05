@@ -9,6 +9,10 @@ controller_templates:
     limit: rhel7
     extra_vars:
       org_id: "Default_Organization"
+      rhsm_enabled_repos:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-satellite-client-6-rpms
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -575,7 +579,7 @@ controller_templates:
             - Prod
           required: true
 
-  - name: SETUP / Satellite
+  - name: Z / CaC / Satellite
     project: Automated Management
     playbook: setup_satellite.yml
     inventory: Workshop Inventory
@@ -584,11 +588,10 @@ controller_templates:
       - Workshop Credential
     extra_vars:
       refresh_satellite_manifest: false
-      bulk_load_size: 1000
+    ask_variables_on_launch: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
-    ask_variables_on_launch: true
 
   - name: Insights / Replace Satellite Manifest
     project: Automated Management
@@ -642,6 +645,33 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+
+  - name: Z / SETUP / Cockpit - Web Console
+    description: Install and configure Cockpit Web Console for all nodes
+    project: Automated Management
+    playbook: setup_cockpit.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      instances:
+        tags:
+          Workshop: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+      workshop_dns_zone: "{{ lookup('env', 'AWX_HOST').split('.',2)[2] }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
+  - name: Z / SETUP / Disable transparent hugepages
+    project: Automated Management
+    playbook: disable_transparent_hugepages.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      HOSTS: satellite.example.com
 
   - name: Demo Job Template
     state: absent

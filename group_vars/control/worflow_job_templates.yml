@@ -57,3 +57,21 @@ controller_workflows:
         unified_job_template: Insights / Create Insights Project
         organization: Default
         success_nodes: []
+  - name: Z / SETUP / Workshop deployment
+    description: Workflow for workshop deployment
+    inventory: Workshop Inventory
+    state: present
+    organization: Default
+    survey_enabled: false
+    simplified_workflow_nodes:
+      - identifier: Disable transparent huge pages on Satellite
+        unified_job_template: Z / SETUP / Disable transparent hugepages
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes: []
+      - identifier: Setup Cockpit Web Console
+        unified_job_template: Z / SETUP / Cockpit - Web Console
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes: []
+...

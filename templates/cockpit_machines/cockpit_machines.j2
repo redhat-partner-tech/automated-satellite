@@ -1,0 +1,50 @@
+{
+{% for vm in node1_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  },
+{% for vm in node2_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  },
+{% for vm in node3_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  },
+{% for vm in node4_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  },
+{% for vm in node5_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  },
+{% for vm in node6_node_facts.instances %}
+  "{{ vm.tags.short_name }}" : {
+    "visible" : true,
+    "color" : "#67d300",
+    "user" : "ec2-user",
+    "address" : "{{ vm.tags.short_name }}"
+{% endfor %}
+  }
+}
