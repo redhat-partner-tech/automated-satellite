@@ -611,7 +611,7 @@ controller_templates:
           guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
           Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
           short_name: node*
-      group_tag_map:
+      environment_tag_map:
         node4.example.com: Dev
         node5.example.com: Dev
         node6.example.com: Dev
