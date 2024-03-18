@@ -1,0 +1,44 @@
+---
+- name: Clear yum cache
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Verify operating system
+      ansible.builtin.assert:
+        that:
+          - "ansible_distribution_major_version | int  == 7"
+        fail_msg: "EL major release must be = 7"
+        success_msg: "EL major version requirement met, continue..."
+
+    - name: Command - yum clean all
+      ansible.builtin.command: >-
+        yum clean all
+
+    - name: Get list of current yum cache directories
+      ansible.builtin.command: >-
+        ls /var/cache/yum/
+      register: yum_cache_directories
+      changed_when: false
+
+    - name: Remove current yum cache directories
+      ansible.builtin.file:
+        path: "/var/cache/yum/{{ item }}"
+        state: absent
+      loop: "{{ yum_cache_directories.stdout_lines }}"
+
+    - name: Get paths for user tmp yum cache directories
+      ansible.builtin.find:
+        paths: /var/tmp
+        recurse: false
+        file_type: directory
+        patterns: 'yum*'
+      register: user_tmp_yum_cache_dir
+
+    - name: Remove user tmp yum cache directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ user_tmp_yum_cache_dir.files | default([]) }}"
+...
