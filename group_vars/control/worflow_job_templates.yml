@@ -28,6 +28,12 @@ controller_workflows:
     ask_limit_on_launch: true
     ask_variables_on_launch: true
     simplified_workflow_nodes:
+      - identifier: UTILITY / Clear yum cache
+        unified_job_template: UTILITY / Clear yum cache
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - UTILITY / Snapshot Instance
       - identifier: UTILITY / Snapshot Instance
         unified_job_template: UTILITY / Snapshot Instance
         organization: Default
