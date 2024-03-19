@@ -54,6 +54,14 @@
       ansible.builtin.assert:
         that: "ansible_distribution == 'OracleLinux'"
 
+    - name: Create /etc/pki/entitlement directory
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - /etc/pki/entitlement
+
     - name: Unslurp via Copy content "{{ item['source'] }}" from control to centos node
       ansible.builtin.copy:
         content: "{{ item['content'] | b64decode }}"
