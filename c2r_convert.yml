@@ -12,6 +12,28 @@
     rhsm_password: ""
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
+
+# Adding OracleLinux repo check for forward looking functionality
+  pre_tasks:
+    - name: Register output of 'yum repolist' with specifics for OracleLinux
+      ansible.builtin.shell: |
+        set -o pipefail
+        yum repolist all --verbose | grep Repo-baseurl | grep -v convert2rhel
+      args:
+        executable: /bin/bash
+      register: yum_repolist_for_oracle
+      changed_when: yum_repolist_for_oracle.rc != 0
+
+    # Determine if node is an EC2 Marketplace instance utilizing Oracle repo infrastructure
+    - name: Set fact for Oracle repo utilization
+      ansible.builtin.set_fact:
+        oracle_marketplace_repo_in_use: true
+      when:
+        - ansible_system_vendor == "Amazon EC2" or ansible_system_vendor == "Xen"
+        - ansible_product_uuid|regex_search('^ec2') or ansible_product_uuid|regex_search('^EC2')
+        - "'yum.oracle.com' in yum_repolist_for_oracle.stdout"
+        - ansible_distribution_major_version|int == 7
+
   tasks:
     - name: Verify operating system
       ansible.builtin.assert:
