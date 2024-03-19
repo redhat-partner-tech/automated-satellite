@@ -448,6 +448,7 @@ controller_templates:
     playbook: c2r_analysis.yml
     inventory: EC2 Dynamic Inventory
     credentials:
+      - Satellite Credential
       - Workshop Credential
     extra_vars:
       org_id: "Default_Organization"
