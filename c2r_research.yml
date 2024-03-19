@@ -28,6 +28,7 @@
           ansible.builtin.slurp: src="{{ item }}"
           register: slurped_files
           with_items:
+          - "/etc/rhsm/ca/katello-server-ca.pem"
           - "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
           - "/etc/yum.repos.d/redhat.repo"
           - "{{ entitlement_certs_files | map(attribute='path') | list }}"
@@ -60,6 +61,7 @@
         state: directory
         mode: 0755
       with_items:
+        - /etc/rhsm/ca
         - /etc/pki/entitlement
 
     - name: Unslurp via Copy content "{{ item['source'] }}" from control to centos node
