@@ -836,6 +836,7 @@ controller_templates:
           variable: satellite_cac_scenario
           choices:
             - CENTOS7_to_RHEL7
+            - ORACLE7_to_RHEL7
             - RHEL7_to_RHEL8
             - RHEL8_to_RHEL9
           required: true

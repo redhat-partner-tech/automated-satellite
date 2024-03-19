@@ -24,6 +24,11 @@
         dir: config_as_code/satellite/centos7_c2r
       when: satellite_cac_scenario == 'CENTOS7_to_RHEL7'
 
+    - name: Include Oracle7 CONVERT2RHEL Satellite CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/satellite/ol7_c2r
+      when: satellite_cac_scenario == 'ORACLE7_to_RHEL7'
+
     - name: Include RHEL7 to RHEL8 IPU Satellite CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/satellite/leapp_7_to_8
