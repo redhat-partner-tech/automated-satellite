@@ -1,0 +1,62 @@
+---
+- name: Convert2rhel research Satellite certs
+  hosts: RHEL7_Dev
+  strategy: ansible.builtin.free
+  gather_facts: true
+  become: false
+  tasks:
+    - name: Interrogate one RHEL node to get requisite files for convert2rhel requirements
+      block:
+        - name: Verify operating system
+          ansible.builtin.assert:
+            that: "ansible_distribution == 'RedHat'"
+
+        - name: Find and register PKI entitlement certificates
+          ansible.builtin.find: paths="/etc/pki/entitlement" recurse=yes patterns="*.pem"
+          register: entitlement_certs
+
+        - ansible.builtin.set_fact:
+            entitlement_certs_files: "{{ entitlement_certs.files }}"
+          delegate_to: "{{ item }}"
+          delegate_facts: True
+          with_items: "{{ groups['all'] }}"
+
+        - ansible.builtin.debug:
+            msg: "entitlement_certs_files ==> {{ entitlement_certs_files | map(attribute='path') | list }}"
+
+        - name: Slurp "{{ item }}" from rhel node to control
+          ansible.builtin.slurp: src="{{ item }}"
+          register: slurped_files
+          with_items:
+          - "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+          - "/etc/yum.repos.d/redhat.repo"
+          - "{{ entitlement_certs_files | map(attribute='path') | list }}"
+
+        - ansible.builtin.set_fact:
+            slurped_files_list: "{{ slurped_files }}"
+          delegate_to: "{{ item }}"
+          delegate_facts: True
+          with_items: "{{ groups['all'] }}"
+
+        - ansible.builtin.debug:
+            msg:
+              - "Source  ==> {{ item['source'] }}"
+              - "Content ==> {{ item['content'] | b64decode }}"
+          with_items: "{{ slurped_files['results'] }}"
+
+  run_once: yes
+
+- name: Convert2rhel research Oracle placement
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  become: true
+  tasks:
+    - name: Verify operating system
+      ansible.builtin.assert:
+        that: "ansible_distribution == 'OracleLinux'"
+
+    - name: Unslurp via Copy content "{{ item['source'] }}" from control to centos node
+      ansible.builtin.copy:
+        content: "{{ item['content'] | b64decode }}"
+        dest: "{{ item['source'] }}"
+      with_items: "{{ slurped_files_list['results'] }}"
+...
