@@ -33,4 +33,14 @@ satellite_activation_keys:
   - name: "CentOS7_Prod"
     lifecycle_environment: "CentOS7_Prod"
     content_view: "CentOS7"
+  # Oracle Linux 7
+  - name: "OL7_Dev"
+    lifecycle_environment: "OL7_Dev"
+    content_view: "OL7"
+  - name: "OL7_QA"
+    lifecycle_environment: "OL7_QA"
+    content_view: "OL7"
+  - name: "OL7_Prod"
+    lifecycle_environment: "OL7_Prod"
+    content_view: "OL7"
 ...
