@@ -7,6 +7,16 @@
     update_check_only: true
     include_kernel_updates: true
     exclude_package_list: []
+  pre_tasks:
+    - name: Register output of 'yum repolist all'
+      ansible.builtin.shell: |
+        set -o pipefail
+        yum repolist all --verbose | grep Repo-baseurl | grep -v convert2rhel
+      args:
+        executable: /bin/bash
+      register: yum_repolist_for_baseurl
+      changed_when: yum_repolist_for_baseurl.rc != 0
+
   tasks:
     - name: Wait for connection...and gather facts
       ansible.builtin.setup:
@@ -29,7 +39,23 @@
         exclude: "{{ exclude_package_list }}"
       check_mode: "{{ update_check_only }}"
       register: package_updates_register
-      when: ansible_distribution_major_version | int == 7
+      when:
+        - ansible_distribution_major_version | int == 7
+        - not yum_repolist_for_baseurl.stdout | d('false') | regex_search('pulp\/content\/.*\/' + dynamic_inventory_group + '\/.*Oracle_Linux_7Server')
+
+    - name: Update OracleLinux 7 OS to latest packages available
+      ansible.builtin.yum:
+        name: '*'
+        state: latest # noqa package-latest
+        exclude:
+          - "{{ exclude_package_list }}"
+          - rhn-client-tools
+      check_mode: "{{ update_check_only }}"
+      register: package_updates_register
+      when:
+        - ansible_distribution_major_version | int == 7
+        - yum_repolist_for_baseurl.stdout | d('false') | regex_search('pulp\/content\/.*\/' + dynamic_inventory_group + '\/.*Oracle_Linux_7Server')
+
 
     - name: Update RHEL 8/9 OS to latest packages available
       ansible.builtin.dnf:
