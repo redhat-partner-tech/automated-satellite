@@ -12,13 +12,16 @@
             that: "ansible_distribution == 'RedHat'"
 
         - name: Find and register PKI entitlement certificates
-          ansible.builtin.find: paths="/etc/pki/entitlement" recurse=yes patterns="*.pem"
+          ansible.builtin.find:
+            paths: "/etc/pki/entitlement"
+            recurse: true
+            patterns: "*.pem"
           register: entitlement_certs
 
         - ansible.builtin.set_fact:
             entitlement_certs_files: "{{ entitlement_certs.files }}"
           delegate_to: "{{ item }}"
-          delegate_facts: True
+          delegate_facts: true
           with_items: "{{ groups['all'] }}"
 
         - ansible.builtin.debug:
@@ -36,7 +39,7 @@
         - ansible.builtin.set_fact:
             slurped_files_list: "{{ slurped_files }}"
           delegate_to: "{{ item }}"
-          delegate_facts: True
+          delegate_facts: true
           with_items: "{{ groups['all'] }}"
 
         - ansible.builtin.debug:
@@ -45,7 +48,7 @@
               - "Content ==> {{ item['content'] | b64decode }}"
           with_items: "{{ slurped_files['results'] }}"
 
-  run_once: yes
+  run_once: true
 
 - name: Convert2rhel research Oracle placement
   hosts: node6.example.com
@@ -55,11 +58,23 @@
       ansible.builtin.assert:
         that: "ansible_distribution == 'OracleLinux'"
 
-    - name: Create /etc/pki/entitlement directory
+    - name: Get paths to files in /etc/yum.repos.d
+      ansible.builtin.find:
+        paths: /etc/yum.repos.d
+        patterns: '*repo*'
+      register: yum_repos_files
+
+    - name: Remove /etc/yum.repos.d files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ yum_repos_files.files | default([]) }}"
+
+    - name: Create various rhsm and PKI related directories
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
-        mode: 0755
+        mode: "0755"
       with_items:
         - /etc/rhsm/ca
         - /etc/pki/entitlement
@@ -69,4 +84,32 @@
         content: "{{ item['content'] | b64decode }}"
         dest: "{{ item['source'] }}"
       with_items: "{{ slurped_files_list['results'] }}"
+
+    - name: Uninstall rhn-client-tools package
+      ansible.builtin.yum:
+        name: "rhn-client-tools"
+        state: absent
+
+    - name: Install subscription-manager package
+      ansible.builtin.yum:
+        name: "subscription-manager"
+        state: present
+
+    - name: Install katello-ca-consumer package from satellite server
+      ansible.builtin.yum:
+        name: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+        state: present
+        validate_certs: false
+
+    - name: Remove /etc/yum.repos.d/redhat.repo
+      ansible.builtin.file:
+        path: "/etc/yum.repos.d/redhat.repo"
+        state: absent
+
+    - name: Register to Satellite various activation key
+      community.general.redhat_subscription:
+        state: present
+        activationkey: "{{ dynamic_inventory_group }}"
+        org_id: "{{ satellite_organization }}"
+        # force_register: true
 ...
