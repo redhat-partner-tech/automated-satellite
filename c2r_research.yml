@@ -1,6 +1,6 @@
 ---
 - name: Convert2rhel research Satellite certs
-  hosts: node1.example.com
+  hosts: RHEL7_Dev
   strategy: ansible.builtin.free
   gather_facts: true
   become: false
@@ -18,31 +18,36 @@
             patterns: "*.pem"
           register: entitlement_certs
 
-        - ansible.builtin.set_fact:
+        - name: Record entitlement cert files
+          ansible.builtin.set_fact:
             entitlement_certs_files: "{{ entitlement_certs.files }}"
           delegate_to: "{{ item }}"
           delegate_facts: true
           with_items: "{{ groups['all'] }}"
 
-        - ansible.builtin.debug:
+        - name: Verify entitlement cert files
+          ansible.builtin.debug:
             msg: "entitlement_certs_files ==> {{ entitlement_certs_files | map(attribute='path') | list }}"
 
         - name: Slurp "{{ item }}" from rhel node to control
-          ansible.builtin.slurp: src="{{ item }}"
+          ansible.builtin.slurp:
+            src: "{{ item }}"
           register: slurped_files
           with_items:
-          - "/etc/rhsm/ca/katello-server-ca.pem"
-          - "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
-          - "/etc/yum.repos.d/redhat.repo"
-          - "{{ entitlement_certs_files | map(attribute='path') | list }}"
+            - "/etc/rhsm/ca/katello-server-ca.pem"
+            - "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+            - "/etc/yum.repos.d/redhat.repo"
+            - "{{ entitlement_certs_files | map(attribute='path') | list }}"
 
-        - ansible.builtin.set_fact:
+        - name: Share slurped files list with all hosts
+          ansible.builtin.set_fact:
             slurped_files_list: "{{ slurped_files }}"
           delegate_to: "{{ item }}"
           delegate_facts: true
           with_items: "{{ groups['all'] }}"
 
-        - ansible.builtin.debug:
+        - name: Display slurped source and content of slurp
+          ansible.builtin.debug:
             msg:
               - "Source  ==> {{ item['source'] }}"
               - "Content ==> {{ item['content'] | b64decode }}"
@@ -51,7 +56,7 @@
   run_once: true
 
 - name: Convert2rhel research Oracle placement
-  hosts: node6.example.com
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   become: true
   tasks:
     - name: Verify operating system
@@ -111,6 +116,7 @@
         python3 -c 'import time;import random;zzzzz=random.uniform(10.0,30.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
+      changed_when: false
 
     - name: Register to Satellite various activation key
       community.general.redhat_subscription:
