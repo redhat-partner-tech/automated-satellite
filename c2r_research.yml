@@ -53,7 +53,7 @@
               - "Content ==> {{ item['content'] | b64decode }}"
           with_items: "{{ slurped_files['results'] }}"
 
-  run_once: true
+      run_once: true
 
 - name: Convert2rhel research Oracle placement
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
