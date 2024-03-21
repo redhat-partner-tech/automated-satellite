@@ -1,7 +1,7 @@
 ---
 - name: Convert2rhel research Satellite certs
   hosts: RHEL7_Dev
-  strategy: ansible.builtin.free
+  strategy: ansible.builtin.serial
   gather_facts: true
   become: false
   tasks:
@@ -57,6 +57,7 @@
 
 - name: Convert2rhel research Oracle placement
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
   become: true
   tasks:
     - name: Verify operating system
