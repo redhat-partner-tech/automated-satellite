@@ -420,6 +420,33 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
+  - name: UTILITY / Expand logical volume and associated filesystem
+    description: Expand logical volume - selection via dynamic inventory group
+    project: Automated Management
+    playbook: extend_lvm.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      volume_group_name: "VolGroup00"
+      logical_volume_name: "varVol"
+      extend_logical_volume_mb: 1024
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: UTILITY / Clear yum cache
     description: Take node snapshot - selection via dynamic inventory group
     project: Automated Management
