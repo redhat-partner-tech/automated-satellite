@@ -13,6 +13,7 @@
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
     rhsm_activation_key_pre_convert: "{{ dynamic_inventory_group }}"
+    c2r_include_delay: false
   tasks:
     - name: Verify operating system
       ansible.builtin.assert:

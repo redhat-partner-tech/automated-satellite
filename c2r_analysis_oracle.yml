@@ -13,12 +13,14 @@
 - name: Set delay time via gather_facts
   ansible.builtin.set_fact:
     node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
+  when: c2r_include_delay
 
 - name: Include delay before starting analysis
   ansible.builtin.command: |
     python3 -c 'import time;time.sleep({{ node_delay_time }})'
   delegate_to: localhost
   connection: local
+  when: c2r_include_delay
 
 - name: Generate pre-conversion analysis report
   ansible.builtin.import_role:
@@ -34,6 +36,7 @@
     python3 -c 'import time;import random;zzzzz=random.uniform(10.0,30.0);time.sleep(zzzzz);print(zzzzz)'
   delegate_to: localhost
   connection: local
+  when: c2r_include_delay
 
 - name: Remove host from Satellite satellite.example.com"
   redhat.satellite.host:
