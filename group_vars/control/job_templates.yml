@@ -442,6 +442,30 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
+  - name: UTILITY / Register OracleLinux7 node
+    description: Register OracleLinux7 node to Satellite
+    project: Automated Management
+    playbook: c2r_research.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      satellite_organization: 'Default_Organization'
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    ask_variables_on_launch: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: CONVERT2RHEL / 01 Analysis
     description: Pre-conversion analysis of EL systems
     project: Automated Management
