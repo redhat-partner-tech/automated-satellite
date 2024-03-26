@@ -9,6 +9,6 @@
       community.general.lvol:
         vg: "{{ volume_group_name }}"
         lv: "{{ logical_volume_name }}"
-        size: +"{{ extend_logical_volume_mb }}"M
+        size: "+{{ extend_logical_volume_mb }}M"
         resizefs: true
 ...
