@@ -1,6 +1,6 @@
 ---
-- name: Extend logical volume
-  hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
+- name: Extend logical volume and resize associated filesystem
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   strategy: free
   gather_facts: true
   become: true
@@ -10,4 +10,5 @@
         vg: "{{ volume_group_name }}"
         lv: "{{ logical_volume_name }}"
         size: +"{{ extend_logical_volume_mb }}"M
+        resizefs: true
 ...
