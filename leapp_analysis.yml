@@ -7,6 +7,8 @@
   force_handlers: true
   vars_files:
     - leapp_vars_88_92.yml
+  vars:
+    leapp_include_delay: false
   pre_tasks:
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |
@@ -65,12 +67,14 @@
     - name: Set delay time via gather_facts
       ansible.builtin.set_fact:
         node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
+      when: leapp_include_delay
 
     - name: Include delay before starting analysis
       ansible.builtin.command: |
         python3 -c 'import time;time.sleep({{ node_delay_time }})'
       delegate_to: localhost
       connection: local
+      when: leapp_include_delay
 
   roles:
     - infra.leapp.analysis
