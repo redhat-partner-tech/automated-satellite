@@ -1,0 +1,35 @@
+---
+- name: Register host via Satellite API method
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
+  become: yes
+  vars:
+    env: Dev
+    sr_activation_key: undef
+    sr_satellite_url: satellite.example.com
+  tasks:
+    - name: Retrieve registration script
+      become: false
+      ansible.builtin.uri:
+        url: "{{ sr_satellite_url }}/api/registration_commands"
+        validate_certs: "{{ sr_satellite_tls | default(false) }}"
+        url_username: "{{ sr_satellite_username }}"
+        url_password: "{{ sr_satellite_password }}"
+        force_basic_auth: true
+        method: POST
+        body_format: json
+        return_content: true
+        body:
+          location_id: "{{ sr_satellite_location }}"
+          organization_id: "{{ sr_satellite_org }}"
+          registration_command:
+            smart_proxy_id: "{{ __capsule_id }}"
+            location_id: "{{ __location_id }}"
+            organization_id: "{{ __organization_id }}"
+            setup_insights: "{{ sr_satellite_insights }}"
+            setup_remote_execution: "{{ sr_satellite_rex }}"
+            jwt_expiration: 4
+            insecure: "{{ sr_satellite_tls | default(false) }}"
+            activation_key: "{{ sr_activation_key }}"
+      register: __regcmd
+...
