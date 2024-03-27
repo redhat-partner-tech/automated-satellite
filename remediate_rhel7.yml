@@ -40,7 +40,7 @@
 
 - name: Query for packages that are remnants from OracleLinux7 conversions
   ansible.builtin.command: >-
-    rpm -qa --queryformat '%{vendor}:%{name}"\n"' | grep 'Oracle America'
+    rpm -qa --queryformat '%{vendor}:%{name}\u000A' | grep 'Oracle America'
   register: oracle_vendor_packages
   changed_when: false
 
