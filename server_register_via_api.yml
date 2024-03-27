@@ -26,8 +26,8 @@
             smart_proxy_id: "{{ __capsule_id }}"
             location_id: "{{ __location_id }}"
             organization_id: "{{ __organization_id }}"
-            setup_insights: "{{ sr_satellite_insights }}"
-            setup_remote_execution: "{{ sr_satellite_rex }}"
+            setup_insights: "{{ sr_satellite_insights | default(false) }}"
+            setup_remote_execution: "{{ sr_satellite_rex | default(false) }}"
             jwt_expiration: 4
             insecure: "{{ sr_satellite_tls | default(false) }}"
             activation_key: "{{ sr_activation_key }}"
