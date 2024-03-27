@@ -85,7 +85,7 @@
         - /etc/rhsm/ca
         - /etc/pki/entitlement
 
-    - name: Unslurp via Copy content "{{ item['source'] }}" from control to centos node
+    - name: Unslurp via Copy content "{{ item['source'] }}" from control to Oracle node
       ansible.builtin.copy:
         content: "{{ item['content'] | b64decode }}"
         dest: "{{ item['source'] }}"
