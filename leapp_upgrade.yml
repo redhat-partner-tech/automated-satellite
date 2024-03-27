@@ -8,12 +8,15 @@
   #   ansible_python_interpreter: /usr/libexec/platform-python
   vars_files:
     - leapp_vars_88_92.yml
+  vars:
+    leapp_include_delay: false
   tasks:
     - name: Include randomized delay before beginning upgrade
       ansible.builtin.command: |
         python3 -c 'import time;import random;zzzzz=random.uniform(15.0,60.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
+      when: leapp_include_delay
     - name: Perform OS upgrade
       ansible.builtin.import_role:
         name: infra.leapp.upgrade
