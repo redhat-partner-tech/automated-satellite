@@ -38,6 +38,18 @@
   notify:
     - Restart sshd
 
+- name: Query for packages that are remnants from OracleLinux7 conversions
+  ansible.builtin.command: >-
+    rpm -qa --queryformat '%{vendor}:%{name}\n' | grep 'Oracle America'
+  register: oracle_vendor_packages
+  changed_when: false
+
+- name: Remove OracleLinux7 remnant packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ oracle_vendor_packages.stdout_lines.split(':')[1] }}"
+
 - name: Command - yum clean all
   ansible.builtin.command: >-
     yum clean all
