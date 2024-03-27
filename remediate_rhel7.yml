@@ -44,11 +44,17 @@
   register: oracle_vendor_packages
   changed_when: false
 
-- name: Remove OracleLinux7 remnant packages
-  ansible.builtin.yum:
-    name: "{{ item.split(':')[1] }}"
-    state: absent
-  loop: "{{ oracle_vendor_packages.stdout_lines }}"
+- name: Debug oracle_vendor_packages
+  ansible.builtin.debug:
+    msg:
+      - "OracleLinux7 package  ==> {{ item.split(':')[1] }}"
+  with_items: "{{ oracle_vendor_packages.stdout_lines }}"
+
+# - name: Remove OracleLinux7 remnant packages
+#   ansible.builtin.yum:
+#     name: "{{ item.split(':')[1] }}"
+#     state: absent
+#   loop: "{{ oracle_vendor_packages.stdout_lines }}"
 
 - name: Command - yum clean all
   ansible.builtin.command: >-
