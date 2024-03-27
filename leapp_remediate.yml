@@ -5,12 +5,15 @@
   gather_facts: true
   become: true
   force_handlers: true
+  vars:
+    leapp_include_delay: false
   tasks:
     - name: Include randomized delay before beginning remediation
       ansible.builtin.command: |
         python3 -c 'import time;import random;zzzzz=random.uniform(15.0,60.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost
       connection: local
+      when: leapp_include_delay
     - name: "Remediate rhel7 systems"
       when: ansible_distribution_major_version|int == 7
       ansible.builtin.import_tasks: remediate_rhel7.yml
