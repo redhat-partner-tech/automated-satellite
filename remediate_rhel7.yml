@@ -42,8 +42,10 @@
   ansible.builtin.script: rpm-query-oracle-vendor.sh
   register: oracle_vendor_packages
   changed_when: false
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
+  environment:
+    LANG: en_US.UTF-8
+    LC_ALL: en_US.UTF-8
+    TERM: linux
 
 - name: Debug oracle_vendor_packages
   ansible.builtin.debug:
