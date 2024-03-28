@@ -42,15 +42,12 @@
   ansible.builtin.script: rpm-query-oracle-vendor.sh
   register: oracle_vendor_packages
   changed_when: false
-  environment:
-    LANG: en_US.UTF-8
-    LC_CTYPE: en_US.UTF-8
-    TERM: linux
 
 - name: Debug oracle_vendor_packages
   ansible.builtin.debug:
     msg:
       - "OracleLinux7 package  ==> {{ item.split(':')[1] }}"
+  when: '"Oracle" in item'
   with_items: "{{ oracle_vendor_packages.stdout_lines }}"
 
 # - name: Remove OracleLinux7 remnant packages
