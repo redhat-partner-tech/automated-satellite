@@ -42,7 +42,7 @@
   ansible.builtin.copy:
     src: "rpm-query-oracle-vendor.sh"
     dest: "/tmp/rpm-query-oracle-vendor.sh"
-    mode: '0744'
+    mode: '0755'
 
 - name: Query for packages that are remnants from OracleLinux7 conversions
   ansible.builtin.command: /tmp/rpm-query-oracle-vendor.sh
