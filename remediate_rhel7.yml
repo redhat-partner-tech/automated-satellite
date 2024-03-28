@@ -38,12 +38,8 @@
   notify:
     - Restart sshd
 
-- name: Set fact for rpm vendor query command
-  ansible.builtin.set_fact:
-    rpm_query_command: rpm -qa --queryformat '%{vendor}:%{name}\n' | grep 'Oracle America'
-
 - name: Query for packages that are remnants from OracleLinux7 conversions
-  ansible.builtin.command: "{{ rpm_query_command.replace('\\n', '\n') }}"
+  ansible.builtin.script: rpm-query-oracle-vendor.sh
   register: oracle_vendor_packages
   changed_when: false
 
