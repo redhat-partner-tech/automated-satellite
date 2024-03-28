@@ -60,9 +60,7 @@
   ansible.builtin.yum:
     name: "{{ item.split(':')[1] }}"
     state: absent
-  when:
-    - '"Oracle" in item'
-    - oracle_vendor_packages.stdout_lines | length > 0
+  when: oracle_vendor_packages.stdout is not match("No Oracle America packages present")
   loop: "{{ oracle_vendor_packages.stdout_lines }}"
 
 - name: Command - yum clean all
