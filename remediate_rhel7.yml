@@ -68,6 +68,7 @@
 - name: Command - yum clean all
   ansible.builtin.command: >-
     yum clean all
+  changed_when: false
 
 - name: Get list of current yum cache directories
   ansible.builtin.command: >-
