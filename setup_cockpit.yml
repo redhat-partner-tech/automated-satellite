@@ -86,17 +86,35 @@
         src: "cockpit_machines/cockpit_machines.j2"
         dest: "/etc/cockpit/machines.d/99-webui.json"
 
+    - name: Check if cockpit key exists
+      ansible.builtin.stat:
+        path: "/etc/cockpit/ws-certs.d/00-signed.key"
+      register: cockpit_key_check
+
     - name: Copy controller key to cockpit 
       ansible.builtin.copy:
-        src: "/home/student/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/privkey.pem"
+        src: "/etc/letsencrypt/live/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/privkey.pem"
         dest: "/etc/cockpit/ws-certs.d/00-signed.key"
         remote_src: true
+      when:
+        - cockpit_key_check is defined
+        - cockpit_key_check.stat is defined
+        - not cockpit_key_check.stat.exists
+
+    - name: Check if cockpit cert exists
+      ansible.builtin.stat:
+        path: "/etc/cockpit/ws-certs.d/00-signed.cert"
+      register: cockpit_cert_check
 
     - name: Copy controller cert to cockpit 
       ansible.builtin.copy:
-        src: "/home/student/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/cert.pem"
+        src: "/etc/letsencrypt/live/{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}/cert.pem"
         dest: "/etc/cockpit/ws-certs.d/00-signed.cert"
         remote_src: true
+      when:
+        - cockpit_cert_check is defined
+        - cockpit_cert_check.stat is defined
+        - not cockpit_cert_check.stat.exists
 
     - name: Populate ssh host keys to known_hosts
       become: yes
