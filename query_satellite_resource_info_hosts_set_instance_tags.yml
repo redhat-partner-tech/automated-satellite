@@ -10,25 +10,31 @@
       resource: hosts
     register: resource_info_hosts_result
 
-  - debug:
+  - name: Display instances queried for Satellite org "Default Organization"
+    ansible.builtin.debug:
       msg: "{{ resource_info_hosts_result | to_json | from_json | json_query(ansible_host_name_query) }}"
     vars:
       ansible_host_name_query: "resources[?starts_with(name, 'node')].name"
     when: display_debug_output
 
+  - name: Display complete resource info results for instances in Satellite org "Default Organization"
+    ansible.builtin.debug:
+      msg: "{{ resource_info_hosts_result | to_json | from_json }}"
+    when: display_debug_output
+
   - name: "Get instance details"
-    import_role:
+    ansible.builtin.import_role:
       name: ec2_node_tools
       tasks_from: get_instance_details
 
-  - set_fact:
+  - ansible.builtin.set_fact:
       host_satellite_lifecycle_env: {}
       host_satellite_content_view: {}
       host_satellite_os: {}
       host_ec2_instance_id: {}
 
   - name: "Set facts based on individual host's LE, CV, OS from Satellite and ec2 instance_id"
-    set_fact:
+    ansible.builtin.set_fact:
       host_satellite_lifecycle_env: >
         {{
           host_satellite_lifecycle_env |
@@ -69,7 +75,7 @@
   - name: "Populate EC2 instance tags that reflect current host's LE, CV, OS state on Satellite"
     vars:
       ansible_host_name_query: "resources[?starts_with(name, 'node')].name"
-    ec2_tag:
+    amazon.aws.ec2_tag:
       region: "{{ ec2_region }}"
       resource: "{{ host_ec2_instance_id[item] }}"
       state: present
