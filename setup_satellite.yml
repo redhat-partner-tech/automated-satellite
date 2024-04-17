@@ -20,17 +20,32 @@
     refresh_satellite_manifest: false
     refresh_timeout: 14400
   tasks:
-    - block:
+    - when: refresh_satellite_manifest
+      block:
+        - name: Hammer org list to JSON
+          ansible.builtin.command: >-
+            hammer --output json organization list
+          register: hammer_org_list_result
+          ignore_errors: true
+
+        - name: Set the Organization Label from specific org selection via "{{ organization }}" variable and .Label
+          ansible.builtin.set_fact: sat_org_label={{ hammer_org_list_result.stdout | from_json | json_query(my_query) }}
+          vars:
+            my_query: "[?Label=='{{ organization }}'].Label"
+
+        - name: What is the Org Label?
+          ansible.builtin.debug:
+            msg: "The Org Label selected is: {{ sat_org_label[0] }}"
+
         - name: Create tempfile for Satellite production.log asynchronous tail
-          tempfile:
+          ansible.builtin.tempfile:
             state: file
           register: sat_prodlog_tempfile
 
-        - name: Asynchronous tail Satellite production.log to tempfile 
-          shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
+        - name: Asynchronous tail Satellite production.log to tempfile
+          ansible.builtin.shell: tail -n 0 -f /var/log/foreman/production.log > {{ sat_prodlog_tempfile.path }}
           async: "{{ refresh_timeout }}"
           poll: 0
-      when: refresh_satellite_manifest
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
@@ -39,7 +54,7 @@
     refresh_satellite_manifest: false
     refresh_timeout: 14400
   tasks:
-    - name: refresh manifest
+    - name: Refresh manifest
       redhat.satellite.subscription_manifest:
         organization: "Default Organization"
         state: refreshed
@@ -56,18 +71,18 @@
     refresh_timeout: 14400
   tasks:
     - block:
-      - name: >
-          Watch the temp file until ManifestRefresh result ==> success appears before continuing...
-        wait_for:
-          path: "{{ sat_prodlog_tempfile.path }}"
-          search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
-          timeout: 1500
-          sleep: 20
+        - name: >
+            Watch the temp file until ManifestRefresh result ==> success appears before continuing...
+          ansible.builtin.wait_for:
+            path: "{{ sat_prodlog_tempfile.path }}"
+            search_regex: "^.*ManifestRefresh.*state\ changed.*\ stopped\ \ result.*\ success"
+            timeout: 1500
+            sleep: 20
 
-      - name: Remove tempfile
-        file:
-          path: "{{ sat_prodlog_tempfile.path }}"
-          state: absent
+        - name: Remove tempfile
+          ansible.builtin.file:
+            path: "{{ sat_prodlog_tempfile.path }}"
+            state: absent
       when: refresh_satellite_manifest
 
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
