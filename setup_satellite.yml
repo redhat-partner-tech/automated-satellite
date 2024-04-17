@@ -19,6 +19,7 @@
   vars:
     refresh_satellite_manifest: false
     refresh_timeout: 14400
+    organization_name: "Default Organization"
   tasks:
     - name: Hammer org list to JSON
       ansible.builtin.command: >-
@@ -37,28 +38,28 @@
           ansible.builtin.debug:
             msg: "The current Org Label for {{ organization_name }} is: {{ sat_org_label[0] }}"
 
-        - name: Hammer create temporary Default_Organization
-          ansible.builtin.command: >-
-            hammer organization create --name Default_Organization --label Default_Organization
-          register: hammer_temp_org_create
-          ignore_errors: true
+        # - name: Hammer create temporary Default_Organization
+        #   ansible.builtin.command: >-
+        #     hammer organization create --name Default_Organization --label Default_Organization
+        #   register: hammer_temp_org_create
+        #   ignore_errors: true
 
-        - name: Hammer delete current Default Organization
-          ansible.builtin.command: >-
-            hammer organization delete --name "{{ organization_name }}"
-          register: hammer_org_delete
-          when: hammer_temp_org_create.stdout == "Organization created."
+        # - name: Hammer delete current Default Organization
+        #   ansible.builtin.command: >-
+        #     hammer organization delete --name "{{ organization_name }}"
+        #   register: hammer_org_delete
+        #   when: hammer_temp_org_create.stdout == "Organization created."
 
-        - name: Hammer rename temporary Default_Organization
-          ansible.builtin.command: >-
-            hammer organization update --name Default_Organization --new-name "{{ organization_name }}"
-          register: hammer_temp_org_update
+        # - name: Hammer rename temporary Default_Organization
+        #   ansible.builtin.command: >-
+        #     hammer organization update --name Default_Organization --new-name "{{ organization_name }}"
+        #   register: hammer_temp_org_update
 
-        - name: Confirm rename temporary Default_Organization
-          ansible.builtin.assert:
-            that: hammer_temp_org_update.stdout == "Organization updated."
-            fail_msg: Org {{ organization_name }} reconfiguration failure.
-            success_msg: Org {{ organization_name }} configured correctly.
+        # - name: Confirm rename temporary Default_Organization
+        #   ansible.builtin.assert:
+        #     that: hammer_temp_org_update.stdout == "Organization updated."
+        #     fail_msg: Org {{ organization_name }} reconfiguration failure.
+        #     success_msg: Org {{ organization_name }} configured correctly.
 
     - when: refresh_satellite_manifest
       block:
