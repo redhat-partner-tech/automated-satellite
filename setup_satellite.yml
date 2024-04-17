@@ -26,10 +26,10 @@
       register: hammer_org_list_result
       ignore_errors: true
 
-    - name: Set the Organization Label from specific org selection via "{{ organization }}" variable and .Label
+    - name: Set the Organization Label from specific org selection via "{{ organization_name }}" variable and .Label
       ansible.builtin.set_fact: sat_org_label={{ hammer_org_list_result.stdout | from_json | json_query(my_query) }}
       vars:
-        my_query: "[?Label=='{{ organization }}'].Label"
+        my_query: "[?Label=='{{ organization_name }}'].Label"
 
     - name: What is the Org Label?
       ansible.builtin.debug:
