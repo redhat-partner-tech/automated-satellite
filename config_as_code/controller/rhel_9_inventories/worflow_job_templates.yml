@@ -37,7 +37,7 @@ controller_workflows:
       snapshot_set_name: snap01
       snapshot_create_boot_backup: true
       lvm_snapshots_action: revert
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
     state: present
     organization: Default
     survey_enabled: true

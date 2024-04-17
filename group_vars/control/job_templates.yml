@@ -8,7 +8,7 @@ controller_templates:
       - Workshop Credential
     limit: rhel7
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
       rhsm_enabled_repos:
         - rhel-7-server-rpms
         - rhel-7-server-extras-rpms
@@ -42,7 +42,7 @@ controller_templates:
       - Workshop Credential
     limit: centos7
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
       product_name_or_regex: "Community Enterprise OS 7"
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
@@ -236,7 +236,7 @@ controller_templates:
       - Satellite Credential
       - Workshop Credential
     extra_vars:
-      org_id: Default_Organization
+      org_id: My_Organization
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -260,7 +260,7 @@ controller_templates:
       - Satellite Credential
       - Workshop Credential
     extra_vars:
-      org_id: Default_Organization
+      org_id: My_Organization
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -477,7 +477,7 @@ controller_templates:
     credentials:
       - Workshop Credential
     extra_vars:
-      satellite_organization: 'Default_Organization'
+      satellite_organization: 'My_Organization'
     survey_enabled: true
     survey:
       name: ''
@@ -502,7 +502,7 @@ controller_templates:
       - Satellite Credential
       - Workshop Credential
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -531,7 +531,7 @@ controller_templates:
     credentials:
       - Workshop Credential
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
       convert_convert2rhel_opts: '--no-rpm-va'
       convert_reboot_requested: true
     notification_templates_started: Telemetry

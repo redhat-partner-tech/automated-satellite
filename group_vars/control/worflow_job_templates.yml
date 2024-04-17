@@ -3,7 +3,7 @@ controller_workflows:
   - name: CONVERT2RHEL / 02 Convert
     description: Workflow for Snapshot and Convert2RHEL
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
       convert_convert2rhel_opts: '--no-rpm-va'
       convert_reboot_requested: true
       lvm_snapshots_action: create
@@ -52,7 +52,7 @@ controller_workflows:
       snapshot_set_name: snap01
       snapshot_create_boot_backup: true
       lvm_snapshots_action: revert
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
       product_name_or_regex: "Community Enterprise OS 7"
     state: present
     organization: Default

@@ -53,7 +53,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
     extra_vars:
-      org_id: "Default_Organization"
+      org_id: "My_Organization"
     survey_enabled: true
     survey:
       name: ''
