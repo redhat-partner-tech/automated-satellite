@@ -31,9 +31,11 @@
       vars:
         my_query: "[?Name=='{{ organization_name }}'].Label"
 
-    - name: What is the Org Label?
-      ansible.builtin.debug:
-        msg: "The Org Label selected is: {{ sat_org_label[0] }}"
+    - when: sat_org_label[0] != "Default_Organization"
+      block:
+        - name: Display current Org Label
+          ansible.builtin.debug:
+            msg: "The current Org Label for {{ organization_name }} is: {{ sat_org_label[0] }}"
 
     - when: refresh_satellite_manifest
       block:
