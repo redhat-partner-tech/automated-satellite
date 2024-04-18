@@ -2,10 +2,19 @@
 - hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
   strategy: ansible.builtin.free
   become: yes
+  gather_facts: true
   vars:
     env: Dev
     activation_key: undef
     sat_url: satellite.example.com
-  roles:
-    - rhsm_register
+  tasks:
+    - name: Register system
+      ansible.builtin.include_role:
+        name: rhsm_register
+    - name: Enable all repositories
+      when:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+      command: |
+        yum-config-manager --enable \*
 ...
