@@ -46,6 +46,10 @@
   ansible.builtin.import_role:
     name: infra.convert2rhel.analysis
 
+- name: Enable all repositories
+  command: |
+    yum-config-manager --enable \*
+
 - name: Find all rpm files in tempdir "{{ package_dl_tempdir.path }}"
   ansible.builtin.find:
     paths: "{{ package_dl_tempdir.path }}"
