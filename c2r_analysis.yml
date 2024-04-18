@@ -42,4 +42,10 @@
         - "ansible_distribution_major_version | int  == 7"
         - "ansible_distribution_version.split('.')[1] | int >= 9"
       ansible.builtin.import_tasks: c2r_analysis_oracle.yml
+    - name: Enable all repositories
+      when:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+      ansible.builtin.command: |
+        yum-config-manager --enable \*
 ...
