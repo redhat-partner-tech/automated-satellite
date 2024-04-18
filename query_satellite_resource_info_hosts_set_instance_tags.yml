@@ -65,8 +65,8 @@
         }}
     vars:
       ansible_host_name_query: "resources[?starts_with(name, 'node')].name"
-      ansible_specific_host_name_le_query: "resources[?contains(['{{ item }}'], name)].content_facet_attributes.lifecycle_environment_name | [0]"
-      ansible_specific_host_name_cv_query: "resources[?contains(['{{ item }}'], name)].content_facet_attributes.content_view_name | [0]"
+      ansible_specific_host_name_le_query: "resources[?contains(['{{ item }}'], name)].content_facet_attributes.lifecycle_environment.name | [0]"
+      ansible_specific_host_name_cv_query: "resources[?contains(['{{ item }}'], name)].content_facet_attributes.content_view.name | [0]"
       ansible_specific_host_name_os_query: "resources[?contains(['{{ item }}'], name)].operatingsystem_name | [0]"
       ansible_instance_id_query: "instances[?contains(['{{ item.split('.')[0] | lower }}'], tags.short_name)].instance_id | [0]"
     with_items: "{{ resource_info_hosts_result | to_json | from_json | json_query(ansible_host_name_query) | list }}"
