@@ -575,6 +575,7 @@ controller_templates:
     project: Three Tier App / Dev
     playbook: SmokeTest_3TA_AWS.yml
     inventory: EC2 Dynamic Inventory
+    execution_environment: three tier app execution environment
     credentials:
       - Workshop Credential
     extra_vars:
