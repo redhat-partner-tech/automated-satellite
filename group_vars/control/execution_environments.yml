@@ -4,3 +4,6 @@ controller_execution_environments:
     image: quay.io/acme_corp/auto_satellite_ee:latest
   - name: Insights execution environment
     image: quay.io/bdumont/automated-sm-ee
+  - name: three tier app execution environment
+    image: quay.io/s4v0/ee-automated-satellite-aap2
+...
