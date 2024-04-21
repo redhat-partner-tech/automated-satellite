@@ -8,6 +8,16 @@
     activation_key: undef
     sat_url: satellite.example.com
   tasks:
+    - name: Set delay time via gather_facts
+      ansible.builtin.set_fact:
+        node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
+
+    - name: Include delay before starting analysis
+      ansible.builtin.command: |
+        python3 -c 'import time;time.sleep({{ node_delay_time }})'
+      delegate_to: localhost
+      connection: local
+  
     - name: Register system
       ansible.builtin.include_role:
         name: rhsm_register
