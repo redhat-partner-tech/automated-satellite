@@ -12,7 +12,7 @@
       ansible.builtin.set_fact:
         node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *30 }}"
 
-    - name: Include delay before starting analysis
+    - name: Include delay to offset system registrations
       ansible.builtin.command: |
         python3 -c 'import time;time.sleep({{ node_delay_time }})'
       delegate_to: localhost
