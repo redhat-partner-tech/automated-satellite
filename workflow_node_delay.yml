@@ -1,0 +1,15 @@
+---
+- name: Playbook for workflow node delays
+  hosts: "{{ HOSTS | default('control[0]') }}"
+  strategy: ansible.builtin.free
+  gather_facts: false
+  become: false
+  vars:
+    workflow_node_delay_in_seconds: 60
+  tasks:
+    - name: General delay
+      ansible.builtin.command: |
+        python3 -c 'import time;time.sleep({{ workflow_node_delay_in_seconds }})'
+      delegate_to: localhost
+      connection: local
+...
