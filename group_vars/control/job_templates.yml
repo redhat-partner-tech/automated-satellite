@@ -959,6 +959,20 @@ controller_templates:
     extra_vars:
       HOSTS: satellite.example.com
 
+  - name: UTILITY / Workflow node delay
+    project: Automated Management
+    playbook: workflow_node_delay.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Controller Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    extra_vars:
+      workflow_node_delay_in_seconds: 60
+    ask_variables_on_launch: false
+    survey_enabled: false
+
   - name: Demo Job Template
     state: absent
 ...
