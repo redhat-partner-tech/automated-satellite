@@ -226,7 +226,7 @@ controller_workflows:
           satellite_cac_scenario: "RHEL7_to_RHEL8"
         success_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
-          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+          - Workflow node delay
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
         organization: Default
@@ -240,6 +240,12 @@ controller_workflows:
         all_parents_must_converge: false
         always_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
+          - Workflow node delay
+      - identifier: Workflow node delay
+        unified_job_template: UTILITY / Workflow node delay
+        organization: Default
+        all_parents_must_converge: true
+        success_nodes:
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
