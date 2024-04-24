@@ -9,8 +9,9 @@
   tasks:
     # Gather EC2 metadata facts
     - amazon.aws.ec2_metadata_facts:
-  
-    - set_fact:
+
+    - name: Set workshop_ec2_region from EC2 metadata facts
+      ansible.builtin.set_fact:
         workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
 
     # - name: "Get instance details"
