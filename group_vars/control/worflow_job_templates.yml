@@ -245,6 +245,8 @@ controller_workflows:
         unified_job_template: UTILITY / Workflow node delay
         organization: Default
         all_parents_must_converge: true
+        extra_data:
+          workflow_node_delay_in_seconds: 30
         success_nodes:
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
