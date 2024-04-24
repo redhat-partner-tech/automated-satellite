@@ -13,10 +13,10 @@
     - set_fact:
         workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
 
-    - name: "Get instance details"
-      ansible.builtin.import_role:
-        name: ec2_node_tools
-        tasks_from: get_instance_details
+    # - name: "Get instance details"
+    #   ansible.builtin.import_role:
+    #     name: ec2_node_tools
+    #     tasks_from: get_instance_details
 
     - name: Set Satellite EBS volumes IOPs and Throughput, enable EBS optimize mode
       amazon.aws.ec2_instance:
