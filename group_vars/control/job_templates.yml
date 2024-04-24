@@ -970,7 +970,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
     extra_vars:
-      workflow_node_delay_in_seconds: 300
+      workflow_node_delay_in_seconds: 30
     ask_variables_on_launch: false
     survey_enabled: false
 
