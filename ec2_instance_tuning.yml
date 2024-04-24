@@ -1,0 +1,40 @@
+---
+- name: Tune settings for ec2 instance
+  hosts: control
+  become: true
+  gather_facts: true
+  vars:
+    ebs_volume_iops: 3000
+    ebs_volume_throughput: 250
+  tasks:
+    # Gather EC2 metadata facts
+    - amazon.aws.ec2_metadata_facts:
+  
+    - set_fact:
+        workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
+
+    - name: "Get instance details"
+      ansible.builtin.import_role:
+        name: ec2_node_tools
+        tasks_from: get_instance_details
+
+    - name: Set Satellite EBS volumes IOPs and Throughput, enable EBS optimize mode
+      amazon.aws.ec2_instance:
+        region: "{{ ec2_region }}"
+        filters:
+          instance-state-name: running
+          "tag:Workshop_satellite": "satellite"
+        volumes:
+          - device_name: /dev/sda1
+            ebs:
+              iops: "{{ ebs_volume_iops }}"
+              throughput: "{{ ebs_volume_throughput }}"
+        ebs_optimized: "{{ ebs_optimized_enable | default(false) }}"
+      delegate_to: localhost
+      become: false
+      register: ebs_volume_update
+
+    - name: Display EBS volume update results
+      ansible.builtin.debug:
+        var: ebs_volume_update
+...
