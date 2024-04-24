@@ -974,6 +974,22 @@ controller_templates:
     ask_variables_on_launch: false
     survey_enabled: false
 
+  - name: EC2 / Instance tuning
+    description: Modify EC2 instance performance settings
+    project: Automated Management
+    playbook: ec2_instance_tuning.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Controller Credential
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      ebs_volume_iops: 6000
+      ebs_volume_throughput: 600
+      ebs_optimized_enable: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: Demo Job Template
     state: absent
 ...
