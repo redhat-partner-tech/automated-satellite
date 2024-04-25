@@ -3,6 +3,14 @@
   hosts: "{{ HOSTS | default('control[0]') }}"
   connection: local
   gather_facts: false
+  vars:
+    instances:
+      tags:
+        guid: "{{ x_vars_guid }}"
+        Student: "{{ x_vars_Student }}"
+        short_name: node*
+        ContentView: "{{ content_view }}"
+        Environment: "{{ stage }}"
   tasks:
     - name: Perform instance action in EC2 region "{{ ec2_region }}"
       ansible.builtin.include_role:
