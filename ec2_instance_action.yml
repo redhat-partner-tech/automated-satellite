@@ -1,0 +1,17 @@
+---
+- name: EC2 instance action
+  hosts: "{{ HOSTS | default('control[0]') }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Perform instance action in EC2 region "{{ ec2_region }}"
+      ansible.builtin.include_role:
+        name: ec2_node_tools
+      vars:
+        ec2_instance_action: "{{ instance_action | default('instance_details') }}"
+      register: ec2_instance_action_register
+
+    - name: Display results
+      ansible.builtin.debug:
+        var: ec2_instance_action_register
+...
