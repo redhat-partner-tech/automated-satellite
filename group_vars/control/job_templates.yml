@@ -974,18 +974,44 @@ controller_templates:
     ask_variables_on_launch: false
     survey_enabled: false
 
-  - name: EC2 / Instance tuning
-    description: Modify EC2 instance performance settings
+  - name: EC2 / Instance action
+    description: Perform EC2 instance actions - instance details, start, or stop
     project: Automated Management
-    playbook: ec2_instance_tuning.yml
+    playbook: ec2_instance_action.yml
     inventory: Workshop Inventory
     credentials:
-      - Controller Credential
+      - Workshop Credential
     extra_vars:
       ec2_region: "{{ workshop_ec2_region }}"
-      ebs_volume_iops: 6000
-      ebs_volume_throughput: 600
-      ebs_optimized_enable: true
+      x_vars_guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+      x_vars_Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+    ask_variables_on_launch: true
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select EC2 instance action
+          type: multiplechoice
+          variable: instance_action
+          choices:
+            - instance_details
+            - start
+            - stop
+          required: true
+        - question_name: Select OS target
+          variable: content_view
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_content_views'] | selectattr('name', 'defined') | map(attribute='name') | list}}"
+          required: true
+        - question_name: Select Environment stage
+          type: multiplechoice
+          variable: stage
+          choices:
+            - Dev
+            - QA
+            - Prod
+          required: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
