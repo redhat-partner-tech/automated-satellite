@@ -291,6 +291,16 @@ controller_workflows:
         all_parents_must_converge: false
         extra_data:
           dynamic_inventory_group: "aws_ec2"
+        success_nodes:
+          - EC2 Instance action - stop CentOS7 nodes
+      - identifier: EC2 Instance action - stop CentOS7 nodes
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: CentOS7
+          stage: Dev
         success_nodes: []
 
   - name: Z / SETUP / Workshop - OL7
