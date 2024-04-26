@@ -293,6 +293,8 @@ controller_workflows:
           dynamic_inventory_group: "aws_ec2"
         success_nodes:
           - EC2 Instance action - stop CentOS7 nodes
+          - EC2 Instance action - stop RHEL7 nodes
+          - EC2 Instance action - stop Satellite node
       - identifier: EC2 Instance action - stop CentOS7 nodes
         unified_job_template: EC2 / Instance action
         organization: Default
@@ -301,6 +303,29 @@ controller_workflows:
           instance_action: stop
           content_view: CentOS7
           stage: Dev
+        success_nodes: []
+      - identifier: EC2 Instance action - stop RHEL7 nodes
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: RHEL7
+          stage: Dev
+        success_nodes: []
+      - identifier: EC2 Instance action - stop Satellite node
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: RHEL7
+          stage: Dev
+          instances:
+            tags:
+              guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+              Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+              short_name: satellite
         success_nodes: []
 
   - name: Z / SETUP / Workshop - OL7
