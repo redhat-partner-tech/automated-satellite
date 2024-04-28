@@ -414,15 +414,6 @@ controller_workflows:
     organization: Default
     survey_enabled: false
     simplified_workflow_nodes:
-      - identifier: EC2 Instance action - start CentOS7 nodes
-        unified_job_template: EC2 / Instance action
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          instance_action: start
-          content_view: CentOS7
-          stage: Dev
-        success_nodes: []
       - identifier: EC2 Instance action - start RHEL7 nodes
         unified_job_template: EC2 / Instance action
         organization: Default
