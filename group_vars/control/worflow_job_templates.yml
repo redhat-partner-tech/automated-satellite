@@ -392,6 +392,12 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: true
         success_nodes:
+          - Register OL7 nodes to Satellite
+      - identifier: Register OL7 nodes to Satellite
+        unified_job_template: UTILITY / Register OracleLinux7 node
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
           - Set instance tags based on Satellite facts
       - identifier: Set instance tags based on Satellite facts
         unified_job_template: EC2 / Set instance tags based on Satellite facts
