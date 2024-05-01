@@ -6,6 +6,7 @@
   become: false
   tasks:
     - name: Interrogate one RHEL node to get requisite files for convert2rhel requirements
+      run_once: true
       block:
         - name: Verify operating system
           ansible.builtin.assert:
@@ -52,8 +53,6 @@
               - "Source  ==> {{ item['source'] }}"
               - "Content ==> {{ item['content'] | b64decode }}"
           with_items: "{{ slurped_files['results'] }}"
-
-      run_once: true
 
 - name: Convert2rhel research Oracle placement
   hosts: "{{ dynamic_inventory_group | default(omit) }}"

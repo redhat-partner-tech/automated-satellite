@@ -198,7 +198,7 @@ controller_workflows:
         success_nodes: []
 
   - name: Z / SETUP / Workshop - CentOS7
-    description: Workflow for workshop deployment
+    description: Workflow for workshop deployment with CentOS7 nodes
     inventory: Workshop Inventory
     state: present
     organization: Default
@@ -329,7 +329,7 @@ controller_workflows:
         success_nodes: []
 
   - name: Z / SETUP / Workshop - OL7
-    description: Workflow for workshop deployment
+    description: Workflow for workshop deployment with OracleLinux7 nodes
     inventory: Workshop Inventory
     state: present
     organization: Default
@@ -340,6 +340,14 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
+          - Satellite CaC - ORACLE7_to_RHEL7
+      - identifier: Satellite CaC - ORACLE7_to_RHEL7
+        unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          satellite_cac_scenario: "ORACLE7_to_RHEL7"
+        success_nodes:
           - Satellite CaC - RHEL7_to_RHEL8
       - identifier: Satellite CaC - RHEL7_to_RHEL8
         unified_job_template: Z / CaC / Satellite / C2R - RIPU scenario
@@ -349,7 +357,7 @@ controller_workflows:
           satellite_cac_scenario: "RHEL7_to_RHEL8"
         success_nodes:
           - Set OL7 EC2 instance tags
-          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
+          - Workflow node delay
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
         organization: Default
@@ -363,6 +371,12 @@ controller_workflows:
         all_parents_must_converge: false
         always_nodes:
           - Set OL7 EC2 instance tags
+          - Workflow node delay
+      - identifier: Workflow node delay
+        unified_job_template: UTILITY / Workflow node delay
+        organization: Default
+        all_parents_must_converge: true
+        success_nodes:
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
@@ -377,6 +391,12 @@ controller_workflows:
         unified_job_template: EC2 / Set instance tag - OracleLinux7
         organization: Default
         all_parents_must_converge: true
+        success_nodes:
+          - Register OL7 nodes to Satellite
+      - identifier: Register OL7 nodes to Satellite
+        unified_job_template: UTILITY / Register OracleLinux7 node
+        organization: Default
+        all_parents_must_converge: false
         success_nodes:
           - Set instance tags based on Satellite facts
       - identifier: Set instance tags based on Satellite facts
@@ -405,6 +425,41 @@ controller_workflows:
         all_parents_must_converge: false
         extra_data:
           dynamic_inventory_group: "aws_ec2"
+        success_nodes:
+          - EC2 Instance action - stop OL7 nodes
+          - EC2 Instance action - stop RHEL7 nodes
+          - EC2 Instance action - stop Satellite node
+      - identifier: EC2 Instance action - stop OL7 nodes
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: OL7
+          stage: Dev
+        success_nodes: []
+      - identifier: EC2 Instance action - stop RHEL7 nodes
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: RHEL7
+          stage: Dev
+        success_nodes: []
+      - identifier: EC2 Instance action - stop Satellite node
+        unified_job_template: EC2 / Instance action
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          instance_action: stop
+          content_view: RHEL7
+          stage: Dev
+          instances:
+            tags:
+              guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+              Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+              short_name: satellite
         success_nodes: []
 
   - name: Z / Start workshop instances
