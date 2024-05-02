@@ -143,6 +143,7 @@ controller_workflows:
         - vg: VolGroup00
           lv: auditVol
           size: 100M
+      org_id: "Default_Organization"
     inventory: Workshop Inventory
     state: present
     organization: Default
@@ -181,7 +182,7 @@ controller_workflows:
         success_nodes:
           - CentOS7 conversion to RHEL7
       - identifier: CentOS7 conversion to RHEL7
-        unified_job_template: OS / Convert to RHEL
+        unified_job_template: OS / Convert to RHEL7
         organization: Default
         extra_data:
           dynamic_inventory_group: CentOS7_Dev
