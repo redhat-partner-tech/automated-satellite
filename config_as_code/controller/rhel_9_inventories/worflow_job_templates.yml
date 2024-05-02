@@ -247,19 +247,35 @@ controller_workflows:
           dynamic_inventory_group: RHEL7_Dev
         all_parents_must_converge: false
         success_nodes:
-          - Three Tier App postgresql upgrade RHEL8
-      - identifier: Three Tier App postgresql upgrade RHEL8
+          - Three Tier App postgresql 10 upgrade RHEL8
+      - identifier: Three Tier App postgresql 10 upgrade RHEL8
         unified_job_template: SERVER / Three Tier App postgresql upgrade
         organization: Default
+        extra_data:
+          postgresql_target_stream: 10
         all_parents_must_converge: false
         success_nodes:
-          - Three Tier App smoke test RHEL8
-      - identifier: Three Tier App smoke test RHEL8
+          - Three Tier App smoke test RHEL8 1
+      - identifier: Three Tier App smoke test RHEL8 1
         unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - Set instance tags based on Satellite facts 2 
+          - Three Tier App postgresql 12 upgrade RHEL8
+      - identifier: Three Tier App postgresql 12 upgrade RHEL8
+        unified_job_template: SERVER / Three Tier App postgresql upgrade
+        organization: Default
+        extra_data:
+          postgresql_target_stream: 12
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL8 2
+      - identifier: Three Tier App smoke test RHEL8 2
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Set instance tags based on Satellite facts 2
       - identifier: Set instance tags based on Satellite facts 2
         unified_job_template: EC2 / Set instance tags based on Satellite facts
         organization: Default
