@@ -221,7 +221,6 @@ controller_workflows:
         organization: Default
         extra_data:
           dynamic_inventory_group: RHEL7_Dev
-        limit: node4.example.com,node5.example.com,node6.example.com
         all_parents_must_converge: false
         success_nodes:
           - OS Remediation RHEL7_Dev 
@@ -230,7 +229,6 @@ controller_workflows:
         organization: Default
         extra_data:
           dynamic_inventory_group: RHEL7_Dev
-        limit: node4.example.com,node5.example.com,node6.example.com
         all_parents_must_converge: false
         success_nodes:
           - Post remediation LEAPP Analysis RHEL7_Dev
@@ -239,7 +237,6 @@ controller_workflows:
         organization: Default
         extra_data:
           dynamic_inventory_group: RHEL7_Dev
-        limit: node4.example.com,node5.example.com,node6.example.com
         all_parents_must_converge: false
         success_nodes:
           - OS / Upgrade RHEL7 to RHEL8
@@ -248,7 +245,6 @@ controller_workflows:
         organization: Default
         extra_data:
           dynamic_inventory_group: RHEL7_Dev
-        limit: node4.example.com,node5.example.com,node6.example.com
         all_parents_must_converge: false
         success_nodes:
           - Three Tier App postgresql upgrade RHEL8
