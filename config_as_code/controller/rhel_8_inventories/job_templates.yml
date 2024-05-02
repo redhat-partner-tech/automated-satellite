@@ -65,4 +65,19 @@ controller_templates:
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL7.*$') | map(attribute='name') | list }}"
           required: true
     ask_limit_on_launch: true
+
+  - name: SERVER / Three Tier App postgresql upgrade
+    description: Upgrade postgresql database for three tier app
+    project: Three Tier App / Dev
+    playbook: UpgradePostgres_3TA_AWS.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      pg_db_name: db01
+      pg_db_user: user01
+      pg_db_passwd: Xtr4Sup3rS3cr3tP4ssw0rd?!
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
 ...
