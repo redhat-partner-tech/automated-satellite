@@ -77,6 +77,19 @@ controller_templates:
       pg_db_name: db01
       pg_db_user: user01
       pg_db_passwd: Xtr4Sup3rS3cr3tP4ssw0rd?!
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select target PostgreSQL version
+          type: multiplechoice
+          variable: postgresql_target_stream
+          choices:
+            - 10
+            - 12
+            - 13
+          required: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
