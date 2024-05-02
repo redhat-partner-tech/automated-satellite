@@ -144,7 +144,7 @@ controller_workflows:
           lv: auditVol
           size: 100M
       org_id: "Default_Organization"
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     state: present
     organization: Default
     ask_limit_on_launch: true
@@ -201,16 +201,16 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - RHEL7 Development inventory source 1
-      - identifier: RHEL7 Development inventory source 1
-        unified_job_template: RHEL7 Development
+          - CentOS7 Development inventory source
+      - identifier: CentOS7 Development inventory source
+        unified_job_template: CentOS7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
         success_nodes:
-          - CentOS7 Development inventory source
-      - identifier: CentOS7 Development inventory source
-        unified_job_template: CentOS7 Development
+          - RHEL7 Development inventory source 1
+      - identifier: RHEL7 Development inventory source 1
+        unified_job_template: RHEL7 Development
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
