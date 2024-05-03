@@ -294,5 +294,71 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
+        success_nodes:
+          - Initial LEAPP Analysis RHEL8_Dev
+      - identifier: Initial LEAPP Analysis RHEL8_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS Remediation RHEL8_Dev 
+      - identifier: OS Remediation RHEL8_Dev
+        unified_job_template: OS / Remediation
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Post remediation LEAPP Analysis RHEL8_Dev
+      - identifier: Post remediation LEAPP Analysis RHEL8_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Upgrade RHEL8 to RHEL9
+      - identifier: OS / Upgrade RHEL8 to RHEL9
+        unified_job_template: OS / Upgrade
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App postgresql 13 upgrade RHEL8
+      - identifier: Three Tier App postgresql 13 upgrade RHEL9
+        unified_job_template: SERVER / Three Tier App postgresql upgrade
+        organization: Default
+        extra_data:
+          postgresql_target_stream: 13
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL9 1
+      - identifier: Three Tier App smoke test RHEL9 1
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Set instance tags based on Satellite facts 3
+      - identifier: Set instance tags based on Satellite facts 3
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL8 Development inventory source 2
+      - identifier: RHEL8 Development inventory source 2
+        unified_job_template: RHEL8 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL9 Development inventory source 1
+      - identifier: RHEL9 Development inventory source 1
+        unified_job_template: RHEL9 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
         success_nodes: []
 ...
