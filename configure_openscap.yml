@@ -1,10 +1,13 @@
 ---
 - hosts: "{{ HOSTS }}"
   become: yes
+  strategy: free
+  gather_facts: true
   vars:
     policy_name: all
   pre_tasks:
     - name: Ensure proper version of rubygem-foreman_scap_client version to 0.5.1-1.1.el7sat
+      when: ansible_distribution == 'RedHat'
       ansible.builtin.yum:
         name: rubygem-foreman_scap_client-0.5.1-1.1.el7sat
         state: present
@@ -13,7 +16,7 @@
     - scap_client
   tasks:
     - name: Randomized startup delay...
-      ansible.builtin.pause: seconds="{{ 5 | random }}"
+      ansible.builtin.pause: seconds="{{ 10 | random }}"
 
     - name: "Run SCAP Scan"
       ansible.builtin.shell: "/usr/bin/foreman_scap_client {{ item.id }}"
