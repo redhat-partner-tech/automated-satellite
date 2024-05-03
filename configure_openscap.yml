@@ -12,10 +12,10 @@
         name: rubygem-foreman_scap_client-0.5.1-1.1.el7sat
         state: present
         allow_downgrade: true
-    - name: Ensure proper version of rubygem-foreman_scap_client version to 0:0.5.1-1.el7_9
+    - name: Ensure proper version of rubygem-foreman_scap_client version to 0.5.1-1.el7_9
       when: ansible_distribution == 'CentOS'
       ansible.builtin.yum:
-        name: rubygem-foreman_scap_client-0:0.5.1-1.el7_9
+        name: rubygem-foreman_scap_client-0.5.1-1.el7_9
         state: present
         allow_downgrade: true
   roles:
