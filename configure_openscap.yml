@@ -16,7 +16,10 @@
     - scap_client
   tasks:
     - name: Randomized startup delay...
-      ansible.builtin.pause: seconds="{{ 10 | random }}"
+      ansible.builtin.command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(10.0,30.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
 
     - name: "Run SCAP Scan"
       ansible.builtin.shell: "/usr/bin/foreman_scap_client {{ item.id }}"
