@@ -1,17 +1,34 @@
 ---
-- hosts: "{{ HOSTS }}"
+- hosts: "{{ dynamic_inventory_group | default(omit) }}"
   become: yes
+  strategy: free
+  gather_facts: true
   vars:
     policy_name: all
+  pre_tasks:
+    - name: Ensure proper version of rubygem-foreman_scap_client version to 0.5.1-1.1.el7sat
+      when: ansible_distribution == 'RedHat'
+      ansible.builtin.yum:
+        name: rubygem-foreman_scap_client-0.5.1-1.1.el7sat
+        state: present
+        allow_downgrade: true
+    - name: Ensure proper version of rubygem-foreman_scap_client version to 0.5.1-1.el7_9
+      when: ansible_distribution == 'CentOS'
+      ansible.builtin.yum:
+        name: rubygem-foreman_scap_client-0.5.1-1.el7_9
+        state: present
+        allow_downgrade: true
   roles:
     - scap_client
-
   tasks:
-  - name: Randomized startup delay...
-    pause: seconds="{{ 5 | random }}"
+    - name: Randomized startup delay...
+      ansible.builtin.command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(10.0,30.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
 
-  - name: "Run SCAP Scan"
-    shell: "/usr/bin/foreman_scap_client {{ item.id }}"
-    loop: "{{ policy }}"
-    when: policy_scan == 'all' or item.name in policy_scan
+    - name: "Run SCAP Scan"
+      ansible.builtin.shell: "/usr/bin/foreman_scap_client {{ item.id }}"
+      loop: "{{ policy }}"
+      when: policy_scan == 'all' or item.name in policy_scan
 ...

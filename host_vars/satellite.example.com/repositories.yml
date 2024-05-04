@@ -52,7 +52,7 @@ satellite_products:
         url: https://download.fedoraproject.org/pub/epel/8/Everything/x86_64/
   - name: Foreman Client
     repositories:
-      - name: Foreman Client Enterprise Linux 7 x86_64
-        url: https://yum.theforeman.org/client/latest/el7/x86_64/
+      - name: Foreman Client CentOS 7
+        url: https://yum.theforeman.org/client/3.9/el7/x86_64/
         content_type: yum
 ...

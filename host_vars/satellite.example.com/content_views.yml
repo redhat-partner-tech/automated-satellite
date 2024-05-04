@@ -48,6 +48,8 @@ satellite_content_views:
       product: 'Community Enterprise OS 7'
     - name: CentOS-7 - Updates RPMs x86_64
       product: 'Community Enterprise OS 7'
+    - name: Foreman Client CentOS 7
+      product: 'Foreman Client'
   # Oracle Linux 7
   - name: OL7
     content_view: OL7
