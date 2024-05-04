@@ -3,7 +3,7 @@ controller_projects:
   - name: Fact Scan
     organization: Default
     scm_type: git
-    scm_url: 'https://github.com/ansible/awx-facts-playbooks.git'
+    scm_url: 'https://github.com/heatmiser/awx-facts-playbooks.git'
 
   - name: Three Tier App / Dev
     organization: Default
