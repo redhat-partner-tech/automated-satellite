@@ -75,7 +75,7 @@
     - name: Reboot server
       ansible.builtin.reboot:
       register: reboot_result
-      when: include_kernel_updates and not update_check_only
+      when: include_kernel_updates == 'yes' and not update_check_only
 
     - name: Wait for connection...
       ansible.builtin.wait_for_connection:
