@@ -3,6 +3,7 @@
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
   gather_facts: false
   become: true
+  strategy: free
   vars:
     update_check_only: true
     include_kernel_updates: true
@@ -32,6 +33,12 @@
         exclude_package_list: "kernel*"
       when: not include_kernel_updates
 
+    - name: Randomized startup delay...
+      ansible.builtin.command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(10.0,60.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
+
     - name: Update EL 7 OS to latest packages available
       ansible.builtin.yum:
         name: '*'
@@ -56,7 +63,6 @@
         - ansible_distribution_major_version | int == 7
         - yum_repolist_for_baseurl.stdout | d('false') | regex_search('pulp\/content\/.*\/' + dynamic_inventory_group + '\/.*Oracle_Linux_7Server')
 
-
     - name: Update RHEL 8/9 OS to latest packages available
       ansible.builtin.dnf:
         name: '*'
@@ -69,6 +75,7 @@
     - name: Reboot server
       ansible.builtin.reboot:
       register: reboot_result
+      when: include_kernel_updates and not update_check_only
 
     - name: Wait for connection...
       ansible.builtin.wait_for_connection:
