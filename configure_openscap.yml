@@ -1,6 +1,6 @@
 ---
 - hosts: "{{ dynamic_inventory_group | default(omit) }}"
-  become: yes
+  become: true
   strategy: free
   gather_facts: true
   vars:
