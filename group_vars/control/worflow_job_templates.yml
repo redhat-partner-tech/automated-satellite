@@ -500,15 +500,15 @@ controller_workflows:
     organization: Default
     survey_enabled: false
     simplified_workflow_nodes:
-      - identifier: SATELLITE / RHEL - Publish Content View 1
+      - identifier: Publish Content View 1
         unified_job_template: SATELLITE / RHEL - Publish Content View
         organization: Default
         all_parents_must_converge: false
         extra_data:
           env: Dev
           content_view: RHEL7
-        success_nodes: SATELLITE / RHEL - Promote Content View
-      - identifier: SATELLITE / RHEL - Promote Content View
+        success_nodes: Promote Content View
+      - identifier: Promote Content View
         unified_job_template: SATELLITE / RHEL - Promote Content View
         organization: Default
         all_parents_must_converge: false
@@ -516,8 +516,8 @@ controller_workflows:
           content_view: RHEL7
           current_lifecycle_environment: RHEL7_Dev
           lifecycle_environment: RHEL7_QA
-        success_nodes: SATELLITE / RHEL - Publish Content View 2
-      - identifier: SATELLITE / RHEL - Publish Content View 2
+        success_nodes: Publish Content View 2
+      - identifier: Publish Content View 2
         unified_job_template: SATELLITE / RHEL - Publish Content View
         organization: Default
         all_parents_must_converge: false
