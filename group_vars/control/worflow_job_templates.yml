@@ -292,6 +292,34 @@ controller_workflows:
         extra_data:
           dynamic_inventory_group: "aws_ec2"
         success_nodes:
+          - Publish Content View 1
+      - identifier: Publish Content View 1
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes:
+          - Promote Content View
+      - identifier: Promote Content View
+        unified_job_template: SATELLITE / RHEL - Promote Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          content_view: RHEL7
+          current_lifecycle_environment: RHEL7_Dev
+          lifecycle_environment: RHEL7_QA
+        success_nodes:
+          - Publish Content View 2
+      - identifier: Publish Content View 2
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes:
           - EC2 Instance action - stop CentOS7 nodes
           - EC2 Instance action - stop RHEL7 nodes
           - EC2 Instance action - stop Satellite node
