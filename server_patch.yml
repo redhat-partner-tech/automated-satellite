@@ -1,6 +1,7 @@
 ---
 - name: Patch/Update OS 
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: free
   gather_facts: false
   become: true
   strategy: free
@@ -8,6 +9,7 @@
     update_check_only: true
     include_kernel_updates: true
     exclude_package_list: []
+    include_startup_delay: false
   pre_tasks:
     - name: Register output of 'yum repolist all'
       ansible.builtin.shell: |
@@ -34,6 +36,13 @@
       when: include_kernel_updates == 'no'
 
     - name: Randomized startup delay...
+      ansible.builtin.command: |
+        python3 -c 'import time;import random;zzzzz=random.uniform(10.0,60.0);time.sleep(zzzzz);print(zzzzz)'
+      delegate_to: localhost
+      connection: local
+
+    - name: Randomized startup delay...
+      when: include_startup_delay
       ansible.builtin.command: |
         python3 -c 'import time;import random;zzzzz=random.uniform(10.0,60.0);time.sleep(zzzzz);print(zzzzz)'
       delegate_to: localhost

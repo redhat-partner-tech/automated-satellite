@@ -284,6 +284,9 @@ controller_templates:
     use_fact_cache: true
     credentials:
       - Workshop Credential
+    extra_vars:
+      include_startup_delay: false
+    ask_variables_on_launch: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -295,7 +298,7 @@ controller_templates:
         - question_name: Select inventory group
           type: multiplechoice
           variable: dynamic_inventory_group
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}, 'all'"
           required: true
         - question_name: Include kernel updates? (Kernel update will result in system reboot)
           type: multiplechoice

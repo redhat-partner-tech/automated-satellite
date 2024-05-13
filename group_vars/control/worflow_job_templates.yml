@@ -495,4 +495,39 @@ controller_workflows:
               Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
               short_name: satellite
         success_nodes: []
+
+  - name: Z / Content View Publish and Promote
+    description: Workflow for CV testing
+    inventory: Workshop Inventory
+    state: present
+    organization: Default
+    survey_enabled: false
+    simplified_workflow_nodes:
+      - identifier: Publish Content View 1
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes:
+          - Promote Content View
+      - identifier: Promote Content View
+        unified_job_template: SATELLITE / RHEL - Promote Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          content_view: RHEL7
+          current_lifecycle_environment: RHEL7_Dev
+          lifecycle_environment: RHEL7_QA
+        success_nodes:
+          - Publish Content View 2
+      - identifier: Publish Content View 2
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes: []
 ...
