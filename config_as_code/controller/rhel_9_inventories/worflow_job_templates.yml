@@ -122,4 +122,243 @@ controller_workflows:
         all_parents_must_converge: false
         type: inventory_source
         success_nodes: []
+
+  - name: OS / Conversion plus upgrade CentOS7 to RHEL9
+    description: Workflow for CentOS7 to RHEL9 conversion/upgrade
+    extra_vars:
+      snapshot_set_name: snap01
+      snapshot_create_snapshot_autoextend_threshold: 70
+      snapshot_create_snapshot_autoextend_percent: 20
+      snapshot_create_boot_backup: true
+      snapshot_create_volumes:
+        - vg: VolGroup00
+          lv: rootVol
+          size: 5G
+        - vg: VolGroup00
+          lv: varVol
+          size: 7G
+        - vg: VolGroup00
+          lv: logVol
+          size: 500M
+        - vg: VolGroup00
+          lv: auditVol
+          size: 100M
+      org_id: "Default_Organization"
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    ask_limit_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: Three Tier App smoke test CentOS7
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - CONVERT2RHEL / 01 Analysis
+      - identifier: CONVERT2RHEL / 01 Analysis
+        unified_job_template: CONVERT2RHEL / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: CentOS7_Dev
+          rhel_lifecycle_environment: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - UTILITY / Clear yum cache
+      - identifier: UTILITY / Clear yum cache
+        unified_job_template: UTILITY / Clear yum cache
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: CentOS7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - UTILITY / Snapshot Instance
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: CentOS7_Dev
+          lvm_snapshots_action: create
+        all_parents_must_converge: false
+        success_nodes:
+          - CentOS7 conversion to RHEL7
+      - identifier: CentOS7 conversion to RHEL7
+        unified_job_template: OS / Convert to RHEL7
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: CentOS7_Dev
+          rhel_lifecycle_environment: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL7
+      - identifier: Three Tier App smoke test RHEL7
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Set instance tags based on Satellite facts 1
+      - identifier: Set instance tags based on Satellite facts 1
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - CentOS7 Development inventory source
+      - identifier: CentOS7 Development inventory source
+        unified_job_template: CentOS7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL7 Development inventory source 1
+      - identifier: RHEL7 Development inventory source 1
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - Initial LEAPP Analysis RHEL7_Dev
+      - identifier: Initial LEAPP Analysis RHEL7_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS Remediation RHEL7_Dev 
+      - identifier: OS Remediation RHEL7_Dev
+        unified_job_template: OS / Remediation
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Post remediation LEAPP Analysis RHEL7_Dev
+      - identifier: Post remediation LEAPP Analysis RHEL7_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Upgrade RHEL7 to RHEL8
+      - identifier: OS / Upgrade RHEL7 to RHEL8
+        unified_job_template: OS / Upgrade
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL7_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App postgresql 10 upgrade RHEL8
+      - identifier: Three Tier App postgresql 10 upgrade RHEL8
+        unified_job_template: SERVER / Three Tier App postgresql upgrade
+        organization: Default
+        extra_data:
+          postgresql_target_stream: 10
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL8 1
+      - identifier: Three Tier App smoke test RHEL8 1
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App postgresql 12 upgrade RHEL8
+      - identifier: Three Tier App postgresql 12 upgrade RHEL8
+        unified_job_template: SERVER / Three Tier App postgresql upgrade
+        organization: Default
+        extra_data:
+          postgresql_target_stream: 12
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL8 2
+      - identifier: Three Tier App smoke test RHEL8 2
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Set instance tags based on Satellite facts 2
+      - identifier: Set instance tags based on Satellite facts 2
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL7 Development inventory source 2
+      - identifier: RHEL7 Development inventory source 2
+        unified_job_template: RHEL7 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL8 Development inventory source 1
+      - identifier: RHEL8 Development inventory source 1
+        unified_job_template: RHEL8 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - Initial LEAPP Analysis RHEL8_Dev
+      - identifier: Initial LEAPP Analysis RHEL8_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS Remediation RHEL8_Dev 
+      - identifier: OS Remediation RHEL8_Dev
+        unified_job_template: OS / Remediation
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Post remediation LEAPP Analysis RHEL8_Dev
+      - identifier: Post remediation LEAPP Analysis RHEL8_Dev
+        unified_job_template: LEAPP / 01 Analysis
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Upgrade RHEL8 to RHEL9
+      - identifier: OS / Upgrade RHEL8 to RHEL9
+        unified_job_template: OS / Upgrade
+        organization: Default
+        extra_data:
+          dynamic_inventory_group: RHEL8_Dev
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App postgresql 13 upgrade RHEL9
+      - identifier: Three Tier App postgresql 13 upgrade RHEL9
+        unified_job_template: SERVER / Three Tier App postgresql upgrade
+        organization: Default
+        extra_data:
+          postgresql_target_stream: 13
+        all_parents_must_converge: false
+        success_nodes:
+          - Three Tier App smoke test RHEL9 1
+      - identifier: Three Tier App smoke test RHEL9 1
+        unified_job_template: CONVERT2RHEL / 99 - Three Tier App smoke test
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Set instance tags based on Satellite facts 3
+      - identifier: Set instance tags based on Satellite facts 3
+        unified_job_template: EC2 / Set instance tags based on Satellite facts
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - RHEL8 Development inventory source 2
+      - identifier: RHEL8 Development inventory source 2
+        unified_job_template: RHEL8 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes:
+          - RHEL9 Development inventory source 1
+      - identifier: RHEL9 Development inventory source 1
+        unified_job_template: RHEL9 Development
+        organization: Default
+        all_parents_must_converge: false
+        type: inventory_source
+        success_nodes: []
 ...

@@ -19,7 +19,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node1": "{{ instances.tags.Workshop | lower }}-node1"
+          "tag:Workshop_node1": "node1"
       delegate_to: localhost
       become: false
       register: node1_node_facts
@@ -29,7 +29,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node2": "{{ instances.tags.Workshop | lower }}-node2"
+          "tag:Workshop_node2": "node2"
       delegate_to: localhost
       become: false
       register: node2_node_facts
@@ -39,7 +39,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node3": "{{ instances.tags.Workshop | lower }}-node3"
+          "tag:Workshop_node3": "node3"
       delegate_to: localhost
       become: false
       register: node3_node_facts
@@ -49,7 +49,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node4": "{{ instances.tags.Workshop | lower }}-node4"
+          "tag:Workshop_node4": "node4"
       delegate_to: localhost
       become: false
       register: node4_node_facts
@@ -59,7 +59,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node5": "{{ instances.tags.Workshop | lower }}-node5"
+          "tag:Workshop_node5": "node5"
       delegate_to: localhost
       become: false
       register: node5_node_facts
@@ -69,7 +69,7 @@
         region: "{{ ec2_region }}"
         filters:
           instance-state-name: running
-          "tag:Workshop_node6": "{{ instances.tags.Workshop | lower }}-node6"
+          "tag:Workshop_node6": "node6"
       delegate_to: localhost
       become: false
       register: node6_node_facts

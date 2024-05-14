@@ -10,7 +10,7 @@
   ansible.builtin.lineinfile:
     path: "/etc/firewalld/firewalld.conf"
     regex: "^(#)?{{ item.key }}"
-    line: "{{ item.key }} {{ item.value }}"
+    line: "{{ item.key }}={{ item.value }}"
     state: present
   loop:
     - {key: "AllowZoneDrifting", value: "no"}
