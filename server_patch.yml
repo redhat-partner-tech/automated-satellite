@@ -32,7 +32,7 @@
     - name: Set exclude_package_list for kernel-related packages
       ansible.builtin.set_fact:
         exclude_package_list: "kernel*"
-      when: include_kernel_updates == 'no'
+      when: not include_kernel_updates
 
     - name: Randomized startup delay...
       when: include_startup_delay
