@@ -32,7 +32,7 @@
     - name: Set exclude_package_list for kernel-related packages
       ansible.builtin.set_fact:
         exclude_package_list: "kernel*"
-      when: not include_kernel_updates
+      when: not include_kernel_updates | bool
 
     - name: Randomized startup delay...
       when: include_startup_delay
@@ -77,7 +77,7 @@
     - name: Reboot server
       ansible.builtin.reboot:
       register: reboot_result
-      when: include_kernel_updates and not update_check_only 
+      when: include_kernel_updates | bool and not update_check_only | bool
 
     - name: Wait for connection...
       ansible.builtin.wait_for_connection:
