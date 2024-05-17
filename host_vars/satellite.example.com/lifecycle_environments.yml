@@ -28,4 +28,6 @@ satellite_lifecycle_environments:
     prior: "OL7_Dev"
   - name: "OL7_Prod"
     prior: "OL7_QA"
+all_lifecycle_environments:
+  - name: "all"
 ...

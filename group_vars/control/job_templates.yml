@@ -298,7 +298,10 @@ controller_templates:
         - question_name: Select inventory group
           type: multiplechoice
           variable: dynamic_inventory_group
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}, 'all'"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['all_lifecycle_environments'] | selectattr('name', 'match', 'all') | map(attribute='name') }}"
           required: true
         - question_name: Include kernel updates? (Kernel update will result in system reboot)
           type: multiplechoice
