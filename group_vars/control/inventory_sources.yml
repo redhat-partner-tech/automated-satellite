@@ -7,6 +7,7 @@ controller_inventory_sources:
     execution_environment: auto_satellite workshop execution environment
     update_on_launch: false
     overwrite: true
+    host_filter: node*
     source_vars:
       keyed_groups:
         - prefix: env
