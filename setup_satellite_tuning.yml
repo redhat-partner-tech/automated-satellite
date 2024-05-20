@@ -1,0 +1,64 @@
+---
+- name: Satellite deployment instrumentation
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Satellite deployment instrumentation
+      ansible.builtin.uri:
+        url: https://docs.google.com/forms/d/e/1FAIpQLSdIZ77YpETjEfGOoYlXtMnQiU-6M7QFlb2hJA4ujo25QYb2jw/formResponse
+        method: POST
+        body: "ifq&entry.1569353616=smart_mgmt &entry.498055740={{ lookup('ansible.builtin.env', 'AWX_HOST') }}&sumbit=Submit"
+      ignore_errors: true
+
+    - name: Check satellite status
+      redhat.satellite.status_info:
+        validate_certs: false
+
+- name: Satellite performance tuning
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  become: true
+  vars:
+    organization_name: "Default Organization"
+    mod_event_conf: "/etc/httpd/conf.modules.d/event.conf"
+  tasks:
+    - name: Configure httpd mod event ServerLimit and MaxRequestsPerChild
+      ansible.builtin.lineinfile:
+        path: "{{ mod_event_conf }}"
+        regex: "^.*{{ item.key }}"
+        line: "  {{ item.key }}{{ item.value }}"
+        state: present
+      loop:
+        - {key: "ServerLimit", value: "            64"}
+        - {key: "MaxRequestsPerChild", value: "    4000"}
+
+    - name: Configure httpd mod event MaxRequestWorkers
+      ansible.builtin.lineinfile:
+        path: "{{ mod_event_conf }}"
+        insertbefore: "^.*IfModule"
+        line: "  MaxRequestWorkers      1024"
+        state: present
+
+    - name: Restart httpd service, issue daemon-reload to pick up config changes
+      ansible.builtin.systemd_service:
+        state: restarted
+        daemon_reload: true
+        name: httpd
+
+    - name: Configure Puma workers
+      ansible.builtin.lineinfile:
+        path: "/etc/systemd/system/foreman.service.d/installer.conf"
+        regex: "^Environment={{ item.key }}"
+        line: "Environment={{ item.key }}={{ item.value }}"
+        state: present
+      loop:
+        - {key: "FOREMAN_PUMA_THREADS_MIN", value: "16"}
+        - {key: "FOREMAN_PUMA_THREADS_MAX", value: "16"}
+        - {key: "FOREMAN_PUMA_WORKERS", value: "12"}
+
+    - name: Restart foreman service, issue daemon-reload to pick up config changes
+      ansible.builtin.systemd_service:
+        state: restarted
+        daemon_reload: true
+        name: foreman
+...
