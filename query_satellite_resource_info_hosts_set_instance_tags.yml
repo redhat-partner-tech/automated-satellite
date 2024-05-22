@@ -10,7 +10,13 @@
       resource: hosts
     register: resource_info_hosts_result
 
-  - ansible.builtin.debug:
+  - name: Display resource_info_hosts_result
+    ansible.builtin.debug:
+      msg: "{{ resource_info_hosts_result }}"
+    when: display_debug_output
+
+  - name: Display ansible_host_name_query
+    ansible.builtin.debug:
       msg: "{{ resource_info_hosts_result | to_json | from_json | json_query(ansible_host_name_query) }}"
     vars:
       ansible_host_name_query: "resources[?starts_with(name, 'node')].name"
