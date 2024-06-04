@@ -373,6 +373,14 @@ controller_workflows:
         limit: centos7,rhel7
         all_parents_must_converge: false
         always_nodes:
+          - Extend logical volumes and filesystems
+      - identifier: Extend logical volumes and filesystems
+        unified_job_template: UTILITY / Extend logical volumes and filesystems
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "all"
+        always_nodes:
           - Set OL7 EC2 instance tags
           - Workflow node delay
       - identifier: Workflow node delay
