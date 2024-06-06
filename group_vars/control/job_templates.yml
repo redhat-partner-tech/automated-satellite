@@ -941,7 +941,7 @@ controller_templates:
   - name: UTILITY / Extend logical volumes and filesystems
     project: Automated Management
     playbook: filesystem_extend.yml
-    inventory: Workshop Inventory
+    inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
     survey_enabled: true
