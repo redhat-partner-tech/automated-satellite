@@ -229,6 +229,16 @@ controller_templates:
             - repositories
           required: true
 
+  - name: SATELLITE / Performance Tuning
+    project: Automated Management
+    playbook: setup_satellite_tuning.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: SERVER / Register 
     project: Automated Management
     playbook: server_register_dynamic_inv.yml
