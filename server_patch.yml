@@ -86,6 +86,24 @@
         delay: 5
         timeout: 300
 
+    - name: Find any CentOS*.repo files that might have been placed in /etc/yum.repos.d
+      ansible.builtin.find:
+        paths: /etc/yum.repos.d
+        patterns: 'CentOS*repo'
+      register: centos_repos_files
+      when:
+        - ansible_distribution_major_version | int == 7
+        - ansible_distribution == 'CentOS'
+
+    - name: Remove CentOS*.repo files that were found
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ centos_repos_files.files | default([]) }}"
+      when:
+        - ansible_distribution_major_version | int == 7
+        - ansible_distribution == 'CentOS'
+
     - name: Output package updates dictionary
       ansible.builtin.debug:
         msg: "{{ package_updates_register }}"
