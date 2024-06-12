@@ -204,6 +204,12 @@ controller_workflows:
     organization: Default
     survey_enabled: false
     simplified_workflow_nodes:
+      - identifier: Satellite Performance Tuning
+        unified_job_template: SATELLITE / Performance Tuning
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Disable transparent huge pages on Satellite
       - identifier: Disable transparent huge pages on Satellite
         unified_job_template: Z / SETUP / Disable transparent hugepages
         organization: Default
