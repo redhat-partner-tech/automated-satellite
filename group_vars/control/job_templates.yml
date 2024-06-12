@@ -234,6 +234,7 @@ controller_templates:
     playbook: setup_satellite_tuning.yml
     inventory: Workshop Inventory
     credentials:
+      - Satellite Credential
       - Workshop Credential
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
