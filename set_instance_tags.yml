@@ -29,6 +29,7 @@
         - "Instance ID ==> {{ host_ec2_instance_id[item.key] }}"
         - "Node ==> {{ item.key }}"
         - "AnsibleGroup ==> {{ item.value }}"
+        - "app_stack_name ==> {{ app_stack_name }}"
     loop: "{{ lookup('dict', group_tag_map) }}"
     when:
       - instances_details is not none
@@ -41,6 +42,7 @@
       state: present
       tags:
         AnsibleGroup: "{{ item.value }}"
+        app_stack_name: "{{ app_stack_name }}"
     loop: "{{ lookup('dict', group_tag_map) }}"
     when: instances_details is not none
 ...
