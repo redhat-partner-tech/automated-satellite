@@ -672,7 +672,28 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: EC2 / Set instance tag - AnsibleGroup
+  - name: EC2 / Set instance tag - RHEL
+    description: Set instance tag - app_stack_name and groups via provided extra_vars dict
+    project: Automated Management
+    playbook: set_instance_tags.yml
+    inventory: Workshop Inventory
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      instances:
+        tags:
+          guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+          Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+          short_name: node*
+      group_tag_map:
+        node1.example.com: frontends
+        node2.example.com: apps
+        node3.example.com: appdbs
+      app_stack_name: stack01
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
+  - name: EC2 / Set instance tag - CentOS
     description: Set instance tag - AnsibleGroup via provided extra_vars dict
     project: Automated Management
     playbook: set_instance_tags.yml
@@ -688,6 +709,7 @@ controller_templates:
         node4.example.com: frontends
         node5.example.com: apps
         node6.example.com: appdbs
+      app_stack_name: stack02
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -708,6 +730,7 @@ controller_templates:
         node4.example.com: Dev
         node5.example.com: Dev
         node6.example.com: Dev
+      app_stack_name: stack02
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
