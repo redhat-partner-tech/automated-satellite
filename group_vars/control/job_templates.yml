@@ -742,6 +742,10 @@ controller_templates:
         node4.example.com: Dev
         node5.example.com: Dev
         node6.example.com: Dev
+      group_tag_map:
+        node4.example.com: frontends
+        node5.example.com: apps
+        node6.example.com: appdbs
       app_stack_name: stack02
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
