@@ -589,10 +589,11 @@ controller_templates:
     notification_templates_error: Telemetry
     survey_enabled: true
     survey:
-      name: 'Three Tier App deployment survey'
-      description: 'Three Tier App deployment survey'
+      name: ''
+      description: ''
       spec:
         - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
           type: multiplechoice
           variable: app_stack_name
           choices:
@@ -615,6 +616,19 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
+          type: multiplechoice
+          variable: app_stack_name
+          choices:
+            - stack01
+            - stack02
+          required: true
 
   - name: ZZ / UTILITY / Take EC2 EBS snapshot of node
     description: Take node snapshot - selection via EC2 instance tags
