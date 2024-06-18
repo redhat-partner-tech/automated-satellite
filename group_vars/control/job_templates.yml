@@ -699,7 +699,7 @@ controller_templates:
     notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tag - RHEL
-    description: Set instance tag - app_stack_name and groups via provided extra_vars dict
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
     project: Automated Management
     playbook: set_instance_tags.yml
     inventory: Workshop Inventory
@@ -720,7 +720,7 @@ controller_templates:
     notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tag - CentOS
-    description: Set instance tag - AnsibleGroup via provided extra_vars dict
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
     project: Automated Management
     playbook: set_instance_tags.yml
     inventory: Workshop Inventory
@@ -741,7 +741,7 @@ controller_templates:
     notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tag - OracleLinux7
-    description: Set instance tag for OL7 instances via provided extra_vars dict
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
     project: Automated Management
     playbook: set_instance_tags_ol7.yml
     inventory: Workshop Inventory
