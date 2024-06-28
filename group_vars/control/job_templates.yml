@@ -296,7 +296,7 @@ controller_templates:
     credentials:
       - Workshop Credential
     extra_vars:
-      include_startup_delay: false
+      include_startup_delay: true
     ask_variables_on_launch: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
