@@ -897,8 +897,8 @@ controller_templates:
       - Controller Credential
       - Workshop Credential
     extra_vars:
-      insights_user: username
-      insights_password: password
+      redhat_portal_username: username
+      redhat_portal_password: password
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry

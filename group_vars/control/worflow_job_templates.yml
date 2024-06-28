@@ -145,8 +145,8 @@ controller_workflows:
       manifest_name: smrtmgmt-wrksp
       offline_token: value
       rhsm_org_id: value
-      insights_user: username
-      insights_password: password
+      redhat_portal_username: username
+      redhat_portal_password: password
     inventory: Workshop Inventory
     state: present
     organization: Default
