@@ -1050,6 +1050,16 @@ controller_templates:
     extra_vars: ''
     ask_limit_on_launch: true
 
+  - name: Z / SETUP / CentOS system mods
+    project: Automated Management
+    playbook: centos_system_mods.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: false
+    extra_vars: ''
+    ask_limit_on_launch: true
+
   - name: Z / SETUP / Disable transparent hugepages
     project: Automated Management
     playbook: disable_transparent_hugepages.yml
