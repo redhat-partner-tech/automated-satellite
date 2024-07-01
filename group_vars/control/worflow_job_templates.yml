@@ -233,6 +233,13 @@ controller_workflows:
         success_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
           - Workflow node delay
+      - identifier: CentOS system mods
+        unified_job_template: Z / SETUP / CentOS system mods
+        organization: Default
+        limit: node4.example.com,node5.example.com,node6.example.com
+        all_parents_must_converge: false
+        success_nodes:
+          - Setup Cockpit Web Console
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
         organization: Default
