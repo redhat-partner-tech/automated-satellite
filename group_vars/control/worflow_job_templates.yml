@@ -359,6 +359,12 @@ controller_workflows:
     organization: Default
     survey_enabled: false
     simplified_workflow_nodes:
+      - identifier: Satellite Performance Tuning
+        unified_job_template: SATELLITE / Performance Tuning
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - Disable transparent huge pages on Satellite
       - identifier: Disable transparent huge pages on Satellite
         unified_job_template: Z / SETUP / Disable transparent hugepages
         organization: Default
@@ -458,9 +464,35 @@ controller_workflows:
         extra_data:
           dynamic_inventory_group: "aws_ec2"
         success_nodes:
+          - Publish Content View 1
+      - identifier: Publish Content View 1
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes:
+          - Promote Content View
+      - identifier: Promote Content View
+        unified_job_template: SATELLITE / RHEL - Promote Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          content_view: RHEL7
+          current_lifecycle_environment: RHEL7_Dev
+          lifecycle_environment: RHEL7_QA
+        success_nodes:
+          - Publish Content View 2
+      - identifier: Publish Content View 2
+        unified_job_template: SATELLITE / RHEL - Publish Content View
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          env: Dev
+          content_view: RHEL7
+        success_nodes:
           - EC2 Instance action - stop OL7 nodes
-          - EC2 Instance action - stop RHEL7 nodes
-          - EC2 Instance action - stop Satellite node
       - identifier: EC2 Instance action - stop OL7 nodes
         unified_job_template: EC2 / Instance action
         organization: Default
@@ -469,29 +501,6 @@ controller_workflows:
           instance_action: stop
           content_view: OL7
           stage: Dev
-        success_nodes: []
-      - identifier: EC2 Instance action - stop RHEL7 nodes
-        unified_job_template: EC2 / Instance action
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          instance_action: stop
-          content_view: RHEL7
-          stage: Dev
-        success_nodes: []
-      - identifier: EC2 Instance action - stop Satellite node
-        unified_job_template: EC2 / Instance action
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          instance_action: stop
-          content_view: RHEL7
-          stage: Dev
-          instances:
-            tags:
-              guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
-              Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
-              short_name: satellite
         success_nodes: []
 
   - name: Z / Start workshop instances
