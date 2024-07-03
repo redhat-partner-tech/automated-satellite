@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     satellite_validate_certs: true
-    async_timeout: 7200
+    async_timeout: 10800
     async_delay: 15
 
   tasks:
