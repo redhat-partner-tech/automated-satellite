@@ -387,7 +387,7 @@ controller_workflows:
           satellite_cac_scenario: "RHEL7_to_RHEL8"
         success_nodes:
           - Set OL7 EC2 instance tags
-          - Workflow node delay
+          - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Setup Cockpit Web Console
         unified_job_template: Z / SETUP / Cockpit - Web Console
         organization: Default
@@ -409,12 +409,6 @@ controller_workflows:
           dynamic_inventory_group: "all"
         always_nodes:
           - Set OL7 EC2 instance tags
-          - Workflow node delay
-      - identifier: Workflow node delay
-        unified_job_template: UTILITY / Workflow node delay
-        organization: Default
-        all_parents_must_converge: true
-        success_nodes:
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
       - identifier: Register RHEL7 nodes to Satellite AK RHEL7_Dev
         unified_job_template: SERVER / RHEL7 - Register
@@ -429,14 +423,7 @@ controller_workflows:
         unified_job_template: EC2 / Set instance tag - OracleLinux7
         organization: Default
         all_parents_must_converge: true
-        success_nodes:
-          - Register OL7 nodes to Satellite
-      - identifier: Register OL7 nodes to Satellite
-        unified_job_template: UTILITY / Register OracleLinux7 node
-        organization: Default
-        all_parents_must_converge: false
-        success_nodes:
-          - Set instance tags based on Satellite facts
+        success_nodes: []
       - identifier: Set instance tags based on Satellite facts
         unified_job_template: EC2 / Set instance tags based on Satellite facts
         organization: Default
@@ -455,6 +442,14 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
+        success_nodes:
+          - Register OL7 nodes to Satellite
+      - identifier: Register OL7 nodes to Satellite
+        unified_job_template: UTILITY / Register OracleLinux7 node
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: OL7_Dev
         success_nodes:
           - Setup miscellaneous host configuration
       - identifier: Setup miscellaneous host configuration
