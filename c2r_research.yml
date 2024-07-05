@@ -124,4 +124,9 @@
         activationkey: "{{ dynamic_inventory_group }}"
         org_id: "{{ satellite_organization }}"
         # force_register: true
+
+    - name: Enable repos on registered system
+      ansible.builtin.command: >-
+        subscription-manager repos --enable=*
+      ignore_errors: true
 ...
