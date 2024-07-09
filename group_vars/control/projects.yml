@@ -5,7 +5,7 @@ controller_projects:
     scm_type: git
     scm_url: 'https://github.com/heatmiser/awx-facts-playbooks.git'
 
-  - name: Three Tier App / Dev
+  - name: Three Tier App
     organization: Default
     scm_type: git
     scm_url: 'https://github.com/heatmiser/ansible-3tier-app.git'
