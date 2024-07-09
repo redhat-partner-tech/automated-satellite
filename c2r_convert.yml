@@ -71,9 +71,17 @@
       delegate_to: localhost
       connection: local
 
-    - name: Execute conversion via infra.convert2rhel.convert role
+    - name: Execute conversion via infra.convert2rhel.convert role - non Oracle Linux
+      when: ansible_distribution != 'OracleLinux'
       ansible.builtin.import_role:
         name: infra.convert2rhel.convert
+
+    - name: Execute conversion via infra.convert2rhel.convert role - Oracle Linux
+      when: ansible_distribution == 'OracleLinux'
+      ansible.builtin.import_role:
+        name: infra.convert2rhel.convert
+      environment:
+        CONVERT2RHEL_SKIP_KERNEL_CURRENCY_CHECK: 1
 
     - name: Generate current repo configuration
       ansible.builtin.command: >-
