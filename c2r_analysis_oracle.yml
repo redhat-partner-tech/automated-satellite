@@ -1,7 +1,16 @@
 ---
-- name: Install convert2rhel utility
-  ansible.builtin.import_role:
-    name: infra.convert2rhel.common
+# - name: Install convert2rhel utility
+#   ansible.builtin.import_role:
+#     name: infra.convert2rhel.common
+
+- name: Create /usr/share/convert2rhel/subscription-manager directory for katello-ca-consumer
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /usr/share/convert2rhel
+    - /usr/share/convert2rhel/subscription-manager
 
 - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
   ansible.builtin.get_url:
@@ -25,27 +34,4 @@
 - name: Generate pre-conversion analysis report
   ansible.builtin.import_role:
     name: infra.convert2rhel.analysis
-
-- name: Uninstall katello-ca-consumer package
-  ansible.builtin.yum:
-    name: "katello-ca-consumer*"
-    state: absent
-
-- name: Include randomized delay before removing content host from Satellite
-  ansible.builtin.command: |
-    python3 -c 'import time;import random;zzzzz=random.uniform(10.0,30.0);time.sleep(zzzzz);print(zzzzz)'
-  delegate_to: localhost
-  connection: local
-  when: c2r_include_delay
-
-- name: Remove host from Satellite satellite.example.com"
-  redhat.satellite.host:
-    server_url: "https://satellite.example.com"
-    name: "{{ inventory_hostname }}"
-    organization: "{{ organization }}"
-    state: absent
-  delegate_to: localhost
-  vars:
-    organization: "Default Organization"
-    validate_certs: false
 ...

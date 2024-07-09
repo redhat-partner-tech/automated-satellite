@@ -3,15 +3,15 @@
   connection: local
   tasks:
   - name: "Get instance details"
-    import_role:
+    ansible.builtin.import_role:
       name: ec2_node_tools
       tasks_from: get_instance_details
 
-  - set_fact:
+  - ansible.builtin.set_fact:
       host_ec2_instance_id: {}
 
   - name: "Set facts based on individual host's ec2 instance_id"
-    set_fact:
+    ansible.builtin.set_fact:
       host_ec2_instance_id: >
         {{
           host_ec2_instance_id |
@@ -24,18 +24,19 @@
     loop: "{{ lookup('dict', environment_tag_map) }}"
     when: instances_details is not none
 
-  - debug:
+  - ansible.builtin.debug:
       msg:
         - "Instance ID ==> {{ host_ec2_instance_id[item.key] }}"
         - "Node ==> {{ item.key }}"
         - "Environment ==> {{ item.value }}"
+        - "app_stack_name ==> {{ app_stack_name }}"
     loop: "{{ lookup('dict', environment_tag_map) }}"
     when:
       - instances_details is not none
       - display_debug_output
 
   - name: "Populate EC2 instance tags"
-    ec2_tag:
+    amazon.aws.ec2_tag:
       region: "{{ ec2_region }}"
       resource: "{{ host_ec2_instance_id[item.key] }}"
       state: present
@@ -44,6 +45,17 @@
         Environment: "{{ item.value }}"
         ContentView: "OL7"
         satellite_operatingsystem_name: "OracleLinux_7_9"
+        app_stack_name: "{{ app_stack_name }}"
     loop: "{{ lookup('dict', environment_tag_map) }}"
+    when: instances_details is not none
+
+  - name: "Additional EC2 instance tag for application tier group mapping"
+    amazon.aws.ec2_tag:
+      region: "{{ ec2_region }}"
+      resource: "{{ host_ec2_instance_id[item.key] }}"
+      state: present
+      tags:
+        AnsibleGroup: "{{ item.value }}"
+    loop: "{{ lookup('dict', group_tag_map) }}"
     when: instances_details is not none
 ...

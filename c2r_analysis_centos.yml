@@ -31,6 +31,7 @@
 - name: Remove centos-release package
   ansible.builtin.command: >-
     rpm -e --nodeps --justdb centos-release
+  ignore_errors: true
 
 - name: Set delay time via gather_facts
   ansible.builtin.set_fact:

@@ -82,9 +82,18 @@ controller_templates:
       name: ''
       description: ''
       spec:
+        - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
+          type: multiplechoice
+          variable: app_stack_name
+          choices:
+            - stack01
+            - stack02
+          required: true
         - question_name: Select target PostgreSQL version
           type: multiplechoice
           variable: postgresql_target_stream
+          question_description: Selection of PostgreSQL target stream version.
           choices:
             - 10
             - 12

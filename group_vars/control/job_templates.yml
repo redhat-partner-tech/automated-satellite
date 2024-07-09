@@ -45,6 +45,7 @@ controller_templates:
     extra_vars:
       org_id: "Default_Organization"
       product_name_or_regex: "Community Enterprise OS 7"
+      include_offset_task_delay: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -229,6 +230,17 @@ controller_templates:
             - repositories
           required: true
 
+  - name: SATELLITE / Performance Tuning
+    project: Automated Management
+    playbook: setup_satellite_tuning.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
   - name: SERVER / Register 
     project: Automated Management
     playbook: server_register_dynamic_inv.yml
@@ -285,7 +297,7 @@ controller_templates:
     credentials:
       - Workshop Credential
     extra_vars:
-      include_startup_delay: false
+      include_startup_delay: true
     ask_variables_on_launch: true
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
@@ -565,7 +577,7 @@ controller_templates:
   - name: CONVERT2RHEL / 98 - Three Tier App deployment
     description: Deploy three tier app
     project: Three Tier App / Dev
-    playbook: Configure_3TA_AWS.yml
+    playbook: Configure_3TA_AWS_research.yml
     inventory: EC2 Dynamic Inventory
     credentials:
       - Workshop Credential
@@ -576,6 +588,19 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
+          type: multiplechoice
+          variable: app_stack_name
+          choices:
+            - stack01
+            - stack02
+          required: true
 
   - name: CONVERT2RHEL / 99 - Three Tier App smoke test
     description: Smoke test three tier app
@@ -592,6 +617,19 @@ controller_templates:
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
+          type: multiplechoice
+          variable: app_stack_name
+          choices:
+            - stack01
+            - stack02
+          required: true
 
   - name: ZZ / UTILITY / Take EC2 EBS snapshot of node
     description: Take node snapshot - selection via EC2 instance tags
@@ -661,8 +699,29 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: EC2 / Set instance tag - AnsibleGroup
-    description: Set instance tag - AnsibleGroup via provided extra_vars dict
+  - name: EC2 / Set instance tag - RHEL
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
+    project: Automated Management
+    playbook: set_instance_tags.yml
+    inventory: Workshop Inventory
+    extra_vars:
+      ec2_region: "{{ workshop_ec2_region }}"
+      instances:
+        tags:
+          guid: "{{ lookup('env', 'AWX_HOST' ).split('.')[1] }}"
+          Student: "{{ lookup('env', 'AWX_HOST').split('.')[0] | urlsplit('hostname') }}"
+          short_name: node*
+      group_tag_map:
+        node1.example.com: frontends
+        node2.example.com: apps
+        node3.example.com: appdbs
+      app_stack_name: stack01
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+
+  - name: EC2 / Set instance tag - CentOS
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
     project: Automated Management
     playbook: set_instance_tags.yml
     inventory: Workshop Inventory
@@ -677,12 +736,13 @@ controller_templates:
         node4.example.com: frontends
         node5.example.com: apps
         node6.example.com: appdbs
+      app_stack_name: stack02
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
   - name: EC2 / Set instance tag - OracleLinux7
-    description: Set instance tag for OL7 instances via provided extra_vars dict
+    description: Set instance tag - app_stack_name and groups provided via extra_vars dict
     project: Automated Management
     playbook: set_instance_tags_ol7.yml
     inventory: Workshop Inventory
@@ -697,6 +757,11 @@ controller_templates:
         node4.example.com: Dev
         node5.example.com: Dev
         node6.example.com: Dev
+      group_tag_map:
+        node4.example.com: frontends
+        node5.example.com: apps
+        node6.example.com: appdbs
+      app_stack_name: stack02
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -833,8 +898,8 @@ controller_templates:
       - Controller Credential
       - Workshop Credential
     extra_vars:
-      insights_user: username
-      insights_password: password
+      redhat_portal_username: username
+      redhat_portal_password: password
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
@@ -938,6 +1003,35 @@ controller_templates:
       full_storage_device_name: /dev/nvme0n1
       perform_resize: true
 
+  - name: UTILITY / Extend logical volumes and filesystems
+    project: Automated Management
+    playbook: filesystem_extend.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          question_description: Use to limit job to selected inventory host group.
+          type: multiplechoice
+          default: ''
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['all_lifecycle_environments'] | selectattr('name', 'match', 'all') | map(attribute='name') }}"
+          required: true
+    ask_limit_on_launch: true
+    ask_variables_on_launch: true
+    extra_vars:
+      filesystem_extend_volumes:
+        - vg: VolGroup00
+          lv: varVol
+          size: 8G
+
   - name: Z / SETUP / Miscellaneous host config
     project: Automated Management
     playbook: misc_host_config.yml
@@ -954,6 +1048,16 @@ controller_templates:
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list + [ 'aws_ec2' ] }}"
           required: true
+    extra_vars: ''
+    ask_limit_on_launch: true
+
+  - name: Z / SETUP / CentOS system mods
+    project: Automated Management
+    playbook: centos_system_mods.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    survey_enabled: false
     extra_vars: ''
     ask_limit_on_launch: true
 

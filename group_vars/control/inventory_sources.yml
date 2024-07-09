@@ -38,8 +38,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
@@ -69,8 +69,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
@@ -102,8 +102,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
@@ -133,12 +133,13 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
         ansible_user: "'ec2-user'"
+        ansible_python_interpreter: "'/usr/bin/python'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
@@ -164,12 +165,13 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
         ansible_user: "'ec2-user'"
+        ansible_python_interpreter: "'/usr/bin/python'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
@@ -197,12 +199,13 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
         ansible_user: "'ec2-user'"
+        ansible_python_interpreter: "'/usr/bin/python'"
     overwrite: true
     update_on_launch: false
     update_cache_timeout: 0
@@ -228,8 +231,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
@@ -258,8 +261,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address
@@ -290,8 +293,8 @@ controller_inventory_sources:
           separator: ''
         - prefix: os
           key: tags['satellite_operatingsystem_name']
-        - prefix: AnsibleGroup
-          key: tags['AnsibleGroup']
+        - key: tags['app_stack_name'] ~ '_' ~ tags['AnsibleGroup']
+          separator: ''
       compose:
         # set the ansible_host variable to connect with the private IP address without changing the hostname
         ansible_host: private_ip_address

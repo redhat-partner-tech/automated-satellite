@@ -6,6 +6,7 @@
   become: true
   environment:
     CONVERT2RHEL_DISABLE_TELEMETRY: 1
+    CONVERT2RHEL_ALLOW_OLDER_VERSION: 1
     # CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
   vars:
     rhsm_username: ""

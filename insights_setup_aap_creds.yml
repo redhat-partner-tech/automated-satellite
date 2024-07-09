@@ -9,8 +9,8 @@
       state: present
       organization: Default
       inputs:
-        username: "{{ insights_user }}"
-        password: "{{ insights_password }}"
+        username: "{{ redhat_portal_username }}"
+        password: "{{ redhat_portal_password }}"
       credential_type: Insights
 
     #### END OF CREDENTIAL

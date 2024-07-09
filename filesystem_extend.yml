@@ -1,0 +1,17 @@
+---
+- name: Extend logical volumes and filesystems
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: free
+  gather_facts: true
+  become: true
+  vars:
+    filesystem_extend_volumes: []
+  tasks:
+    - name: Extend logical volumes
+      community.general.lvol:
+        vg: "{{ item.vg }}"
+        lv: "{{ item.lv }}"
+        size: "{{ item.size | default(omit) }}"
+        resizefs: true
+      loop: "{{ filesystem_extend_volumes }}"
+...
