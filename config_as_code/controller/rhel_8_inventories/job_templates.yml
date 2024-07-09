@@ -68,7 +68,7 @@ controller_templates:
 
   - name: SERVER / Three Tier App postgresql upgrade
     description: Upgrade postgresql database for three tier app
-    project: Three Tier App / Dev
+    project: Three Tier App
     playbook: UpgradePostgres_3TA_AWS.yml
     inventory: EC2 Dynamic Inventory
     credentials:

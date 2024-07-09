@@ -576,7 +576,7 @@ controller_templates:
 
   - name: CONVERT2RHEL / 98 - Three Tier App deployment
     description: Deploy three tier app
-    project: Three Tier App / Dev
+    project: Three Tier App
     playbook: Configure_3TA_AWS_research.yml
     inventory: EC2 Dynamic Inventory
     credentials:
@@ -604,7 +604,7 @@ controller_templates:
 
   - name: CONVERT2RHEL / 99 - Three Tier App smoke test
     description: Smoke test three tier app
-    project: Three Tier App / Dev
+    project: Three Tier App
     playbook: SmokeTest_3TA_AWS.yml
     inventory: EC2 Dynamic Inventory
     execution_environment: three tier app execution environment
