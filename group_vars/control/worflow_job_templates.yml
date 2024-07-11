@@ -252,14 +252,6 @@ controller_workflows:
         limit: centos7,rhel7
         all_parents_must_converge: false
         always_nodes:
-          - Extend logical volumes and filesystems
-      - identifier: Extend logical volumes and filesystems
-        unified_job_template: UTILITY / Extend logical volumes and filesystems
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          dynamic_inventory_group: "all"
-        always_nodes:
           - Register CentOS7 nodes to Satellite AK CentOS7_Dev
           - Workflow node delay
       - identifier: Workflow node delay
@@ -304,6 +296,14 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
+        success_nodes:
+          - Extend logical volumes and filesystems
+      - identifier: Extend logical volumes and filesystems
+        unified_job_template: UTILITY / Extend logical volumes and filesystems
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "all"
         success_nodes:
           - Setup miscellaneous host configuration
       - identifier: Setup miscellaneous host configuration
@@ -397,16 +397,8 @@ controller_workflows:
       - identifier: Extend partition and resize physical volume
         unified_job_template: UTILITY / Extend partition and resize physical volume
         organization: Default
-        limit: centos7,rhel7
+        limit: oracle7,rhel7
         all_parents_must_converge: false
-        always_nodes:
-          - Extend logical volumes and filesystems
-      - identifier: Extend logical volumes and filesystems
-        unified_job_template: UTILITY / Extend logical volumes and filesystems
-        organization: Default
-        all_parents_must_converge: false
-        extra_data:
-          dynamic_inventory_group: "all"
         always_nodes:
           - Set OL7 EC2 instance tags
           - Register RHEL7 nodes to Satellite AK RHEL7_Dev
@@ -443,6 +435,14 @@ controller_workflows:
         all_parents_must_converge: false
         type: inventory_source
         success_nodes:
+          - Extend logical volumes and filesystems
+      - identifier: Extend logical volumes and filesystems
+        unified_job_template: UTILITY / Extend logical volumes and filesystems
+        organization: Default
+        all_parents_must_converge: false
+        extra_data:
+          dynamic_inventory_group: "all"
+        always_nodes:
           - Register OL7 nodes to Satellite
       - identifier: Register OL7 nodes to Satellite
         unified_job_template: UTILITY / Register OracleLinux7 node
