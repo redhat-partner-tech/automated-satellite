@@ -1,7 +1,53 @@
 ---
 controller_workflows:
+  - name: CONVERT2RHEL / 01 Analysis
+    description: Workflow for Snapshot and Pre-conversion analysis of EL systems
+    extra_vars:
+      org_id: "Default_Organization"
+      convert_convert2rhel_opts: '--no-rpm-va'
+      convert_reboot_requested: true
+      lvm_snapshots_action: create
+    inventory: EC2 Dynamic Inventory
+    state: present
+    organization: Default
+    survey_enabled: true
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select EL Group to analyze
+          variable: dynamic_inventory_group
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}"
+          required: true
+        - question_name: Select RHEL Lifecycle Environment to use for analysis
+          variable: rhel_lifecycle_environment
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          required: true
+    ask_limit_on_launch: true
+    ask_variables_on_launch: true
+    simplified_workflow_nodes:
+      - identifier: UTILITY / Clear yum cache
+        unified_job_template: UTILITY / Clear yum cache
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - UTILITY / Snapshot Instance
+      - identifier: UTILITY / Snapshot Instance
+        unified_job_template: UTILITY / Snapshot Instance
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes:
+          - OS / Pre-conversion Analysis
+      - identifier: OS / Pre-conversion Analysis
+        unified_job_template: OS / Pre-conversion Analysis
+        organization: Default
+        all_parents_must_converge: false
+        success_nodes: []
+
   - name: CONVERT2RHEL / 02 Convert
-    description: Workflow for Snapshot and Convert2RHEL
+    description: Workflow for Snapshot and Conversion of EL systems
     extra_vars:
       org_id: "Default_Organization"
       convert_convert2rhel_opts: '--no-rpm-va'
