@@ -390,7 +390,7 @@ controller_templates:
     notification_templates_error: Telemetry
 
   - name: UTILITY / Snapshot Instance
-    description: Take node snapshot - selection via dynamic inventory group
+    description: Node snapshot actions - selection via dynamic inventory group
     project: Automated Management
     playbook: snapshot_instance_lvm.yml
     inventory: EC2 Dynamic Inventory
@@ -512,8 +512,8 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: CONVERT2RHEL / 01 Analysis
-    description: Pre-conversion analysis of EL systems
+  - name: OS / Pre-conversion Analysis
+    description: Pre-conversion analysis of EL systems for RHEL7 conversion target
     project: Automated Management
     playbook: c2r_analysis.yml
     inventory: EC2 Dynamic Inventory
