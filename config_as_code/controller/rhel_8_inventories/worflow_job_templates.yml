@@ -216,9 +216,9 @@ controller_workflows:
           dynamic_inventory_group: RHEL7_Dev
         all_parents_must_converge: false
         success_nodes:
-          - OS Remediation RHEL7_Dev 
-      - identifier: OS Remediation RHEL7_Dev
-        unified_job_template: OS / Remediation
+          - OS Leapp Remediation RHEL7_Dev 
+      - identifier: OS Leapp Remediation RHEL7_Dev
+        unified_job_template: OS / Leapp / Remediation
         organization: Default
         extra_data:
           dynamic_inventory_group: RHEL7_Dev

@@ -916,7 +916,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: OS / Remediation
+  - name: OS / Leapp / Remediation
     project: Automated Management
     playbook: leapp_remediate.yml
     inventory: EC2 Dynamic Inventory
