@@ -937,6 +937,30 @@ controller_templates:
           required: true
     ask_limit_on_launch: true
 
+  - name: OS / Convert2RHEL / Post-Remediation
+    description: Perform post conversion OS remediations for three tier app
+    project: Three Tier App
+    playbook: ConversionPostgres_3TA_AWS_research.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Choose application stack name
+          question_description: Selection of specific application stack name.
+          type: multiplechoice
+          variable: app_stack_name
+          choices:
+            - stack01
+            - stack02
+          required: true
+
   - name: Z / CaC / Satellite / C2R - RIPU scenario
     project: Automated Management
     playbook: setup_satellite_via_varsfiles.yml
