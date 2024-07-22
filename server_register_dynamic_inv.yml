@@ -6,6 +6,29 @@
     env: Dev
     activation_key: undef
     sat_url: satellite.example.com
-  roles:
-    - rhsm_register
+    include_offset_task_delay: false
+  tasks:
+    - name: Offset task delay
+      when: include_offset_task_delay
+      block:
+        - name: Set delay time via gather_facts
+          ansible.builtin.set_fact:
+            node_delay_time: "{{ inventory_hostname | regex_replace('^\\D+|\\..*', '') | int *20 }}"
+
+        - name: Include delay to offset system registrations
+          ansible.builtin.command: |
+            python3 -c 'import time;time.sleep({{ node_delay_time }})'
+          delegate_to: localhost
+          connection: local
+  
+    - name: Register system
+      ansible.builtin.include_role:
+        name: rhsm_register
+
+    - name: Enable all repositories
+      when:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+      ansible.builtin.command: |
+        yum-config-manager --enable \*
 ...
