@@ -36,4 +36,12 @@
           locations: "{{ locations_resource_info_result }}"
           capsules: "{{ capsules_resource_info_result }}"
 
+    - name: set the Organization Id from specific org selection via "{{ organization }}" variable and .Id
+      ansible.builtin.set_fact: sat_org_id={{ organizations_resource_info_result | from_json | json_query(my_query) }}
+      vars:
+        my_query: "[?name=='{{ organization }}'].id"
+
+    - name: What is the Org Id?
+      ansible.builtin.debug:
+        msg: "The Org Id selected is: {{ sat_org_id[0] }}"
 ...
