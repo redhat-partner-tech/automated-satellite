@@ -1,35 +1,50 @@
 ---
-- name: Register host via Satellite API method
-  hosts: "{{ dynamic_inventory_group | default(omit) }}"
-  strategy: ansible.builtin.free
-  become: yes
+- name: Generate Content Host registration command via Satellite API method
+  hosts: localhost
+  become: true
+  gather_facts: false
   vars:
-    env: Dev
-    sr_activation_key: undef
-    sr_satellite_url: satellite.example.com
+    satellite_server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+    satellite_username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+    satellite_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+    satellite_validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') | default(true) }}"
+    org_id: 1
+    location_id: 2
+    capsule_id: 1
+    setup_insights: false
+    set_remote_execution: false
+    update_packages: false
+    activation_key: "MyAK"
+    force_register: false
+    insecure: true
   tasks:
-    - name: Retrieve registration script
-      become: false
+    - name: Generate a host registration command
       ansible.builtin.uri:
-        url: "{{ sr_satellite_url }}/api/registration_commands"
-        validate_certs: "{{ sr_satellite_tls | default(false) }}"
-        url_username: "{{ sr_satellite_username }}"
-        url_password: "{{ sr_satellite_password }}"
-        force_basic_auth: true
+        url: "{{ satellite_server_url }}/api/registration_commands/"
+        user: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
         method: POST
+        body: "{{ lookup('template', sat_host_reg / reg_args.j2) }}"
+        force_basic_auth: true
         body_format: json
         return_content: true
-        body:
-          location_id: "{{ sr_satellite_location }}"
-          organization_id: "{{ sr_satellite_org }}"
-          registration_command:
-            smart_proxy_id: "{{ __capsule_id }}"
-            location_id: "{{ __location_id }}"
-            organization_id: "{{ __organization_id }}"
-            setup_insights: "{{ sr_satellite_insights | default(false) }}"
-            setup_remote_execution: "{{ sr_satellite_rex | default(false) }}"
-            jwt_expiration: 4
-            insecure: "{{ sr_satellite_tls | default(false) }}"
-            activation_key: "{{ sr_activation_key }}"
-      register: __regcmd
+      register: reg_cmd
+
+    - name: Export host registration command as a fact
+      ansible.builtin.set_fact:
+        reg_cmd: "{{ reg_cmd.json['registration_command'] }}"
+
+- name: Register Content Hosts to Satellite
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check registration status
+      ansible.builtin.command: subscription-manager identity
+      register: sub_man_status
+
+    - name: Run registration command
+      ansible.builtin.command: bash -c "{{ reg_cmd }}"
+      when: "'This system is not yet registered' in sub_man_status['stderr']"
 ...
