@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    login: &login
+      server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+      username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+      password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+      validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
+    organization: Default Organization
+
+  tasks:
+    - name: List organization info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: organizations
+      register: organization_resource_info_result
+
+    - name: List location info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: locations
+      register: location_resource_info_result
+
+    - name: List capsule info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: capsules
+      register: capsule_resource_info_result
+
+    - ansible.builtin.debug:
+        var:
+          - organization_resource_info_result
+          - location_resource_info_result
+          - capsule_resource_info_result
+
+...
