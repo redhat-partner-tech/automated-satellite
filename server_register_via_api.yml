@@ -4,23 +4,45 @@
   become: true
   gather_facts: false
   vars:
-    satellite_server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+    login: &login
+      server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+      username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+      password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+      validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
     satellite_username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
     satellite_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
     satellite_validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') | default(true) }}"
-    org_id: 1
-    location_id: 2
-    capsule_id: 1
     setup_insights: false
     set_remote_execution: false
     update_packages: false
     activation_key: "MyAK"
     force_register: false
-    insecure: true
   tasks:
+    - name: Set Activation Key
+      ansible.builtin.set_fact:
+        activation_key: "{{ rhel_version + '_' + env }}"
+
+    - name: List organization info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: organizations
+      register: organizations_resource_info_result
+
+    - name: List location info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: locations
+      register: locations_resource_info_result
+
+    - name: List capsule info
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: capsules
+      register: capsules_resource_info_result
+
     - name: Generate a host registration command
       ansible.builtin.uri:
-        url: "{{ satellite_server_url }}/api/registration_commands/"
+        url: "https://{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') }}/api/registration_commands/"
         user: "{{ satellite_username }}"
         password: "{{ satellite_password }}"
         method: POST
@@ -35,7 +57,7 @@
         reg_cmd: "{{ reg_cmd.json['registration_command'] }}"
 
 - name: Register Content Hosts to Satellite
-  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
   strategy: ansible.builtin.free
   become: true
   gather_facts: false

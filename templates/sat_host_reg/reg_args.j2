@@ -1,8 +1,8 @@
 {
-  "location_id": {{ location_id }},
-  "organization_id": {{ org_id }},
+  "organization_id": {{ organizations_resource_info_result.resources | selectattr('name', 'search', organization) | map(attribute='id') }},
+  "location_id": {{ locations_resource_info_result.resources | selectattr('name', 'search', location) | map(attribute='id') }},
   "registration_command": {
-    "smart_proxy_id": {{ capsule_id }},
+    "smart_proxy_id": {{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='id') }},
     "setup_insights": {{ setup_insights | default(false) }},
     "setup_remote_execution": {{ setup_remote_execution | default(false) }},
     "insecure": {{ lookup('env', 'SATELLITE_VALIDATE_CERTS') | default(true) }},
