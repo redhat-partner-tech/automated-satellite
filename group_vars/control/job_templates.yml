@@ -35,6 +35,50 @@ controller_templates:
             - Prod
           required: true
 
+  - name: SERVER / RHEL7 - Register via Satellite API
+    project: Automated Management
+    playbook: server_register_via_api.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    limit: rhel7
+    extra_vars:
+      organization: "Default Organization"
+      location: "Default Location"
+      rhsm_enabled_repos:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-satellite-client-6-rpms
+      include_offset_task_delay: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Server Name or Pattern
+          type: text
+          variable: PREFIX
+          required: false
+        - question_name: Choose RHEL version
+          type: multiplechoice
+          variable: rhel_version
+          choices:
+            - RHEL7
+            - RHEL8
+            - RHEL9
+          required: true
+        - question_name: Choose Environment
+          type: multiplechoice
+          variable: env
+          choices:
+            - Dev
+            - QA
+            - Prod
+          required: true
+
   - name: SERVER / CentOS7 - Register
     project: Automated Management
     playbook: server_register.yml
