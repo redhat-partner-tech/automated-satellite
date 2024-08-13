@@ -224,7 +224,9 @@ controller_templates:
           variable: resource_info_survey
           choices:
             - organizations
+            - locations
             - subscriptions
+            - capsules
             - hosts
             - content_views
             - lifecycle_environments
