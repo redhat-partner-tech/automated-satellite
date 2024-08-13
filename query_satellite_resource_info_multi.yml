@@ -31,17 +31,24 @@
     - ansible.builtin.debug:
         var: resource_info_results
       vars:
-        resource_info_results:  
+        resource_info_results:
           organizations: "{{ organizations_resource_info_result }}"
           locations: "{{ locations_resource_info_result }}"
           capsules: "{{ capsules_resource_info_result }}"
 
-    - name: set the Organization Id from specific org selection via "{{ organization }}" variable and .Id
-      ansible.builtin.set_fact: sat_org_id={{ organizations_resource_info_result | from_json | json_query(my_query) }}
-      vars:
-        my_query: "[?name=='{{ organization }}'].id"
-
-    - name: What is the Org Id?
+    - name: List organization id
       ansible.builtin.debug:
-        msg: "The Org Id selected is: {{ sat_org_id[0] }}"
+        msg: "{{ resource_info_results.organizations.resources | selectattr('name', 'search', organization) | map(attribute='id') }}"
+
+    - name: List location id
+      ansible.builtin.debug:
+        msg: "{{ resource_info_results.locations.resources | selectattr('name', 'search', location) | map(attribute='id') }}"
+
+    - name: List capsule name
+      ansible.builtin.debug:
+        msg: "{{ resource_info_results.capsules.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') }}"
+
+    - name: List capsule id
+      ansible.builtin.debug:
+        msg: "{{ resource_info_results.capsules.resources | selectattr('name', 'search', '^satellite') | map(attribute='id') }}"
 ...
