@@ -38,17 +38,17 @@
 
     - name: List organization id
       ansible.builtin.debug:
-        msg: "{{ resource_info_results.organizations.resources | selectattr('name', 'search', organization) | map(attribute='id') }}"
+        msg: "{{ organizations_resource_info_result.resources | selectattr('name', 'search', organization) | map(attribute='id') }}"
 
     - name: List location id
       ansible.builtin.debug:
-        msg: "{{ resource_info_results.locations.resources | selectattr('name', 'search', location) | map(attribute='id') }}"
+        msg: "{{ locations_resource_info_result.resources | selectattr('name', 'search', location) | map(attribute='id') }}"
 
     - name: List capsule name
       ansible.builtin.debug:
-        msg: "{{ resource_info_results.capsules.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') }}"
+        msg: "{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') }}"
 
     - name: List capsule id
       ansible.builtin.debug:
-        msg: "{{ resource_info_results.capsules.resources | selectattr('name', 'search', '^satellite') | map(attribute='id') }}"
+        msg: "{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='id') }}"
 ...
