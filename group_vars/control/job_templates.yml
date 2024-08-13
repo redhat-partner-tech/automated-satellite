@@ -223,11 +223,14 @@ controller_templates:
           type: multiplechoice
           variable: resource_info_survey
           choices:
+            - organizations
+            - subscriptions
             - hosts
             - content_views
             - lifecycle_environments
             - activation_keys
             - repositories
+            - list_all_options
           required: true
 
   - name: SATELLITE / Performance Tuning
