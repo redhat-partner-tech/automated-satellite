@@ -14,24 +14,26 @@
       redhat.satellite.resource_info:
         <<: *login
         resource: organizations
-      register: organization_resource_info_result
+      register: organizations_resource_info_result
 
     - name: List location info
       redhat.satellite.resource_info:
         <<: *login
         resource: locations
-      register: location_resource_info_result
+      register: locations_resource_info_result
 
     - name: List capsule info
       redhat.satellite.resource_info:
         <<: *login
         resource: capsules
-      register: capsule_resource_info_result
+      register: capsules_resource_info_result
 
     - ansible.builtin.debug:
-        var:
-          - organization_resource_info_result
-          - location_resource_info_result
-          - capsule_resource_info_result
+        var: resource_info_results
+      vars:
+        resource_info_results:  
+          organizations: "{{ organizations_resource_info_result }}"
+          locations: "{{ locations_resource_info_result }}"
+          capsules: "{{ capsules_resource_info_result }}"
 
 ...
