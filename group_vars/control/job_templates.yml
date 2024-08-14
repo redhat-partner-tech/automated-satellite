@@ -41,6 +41,7 @@ controller_templates:
     inventory: Workshop Inventory
     credentials:
       - Workshop Credential
+      - Satellite Credential
     limit: rhel7
     extra_vars:
       organization: "Default Organization"
