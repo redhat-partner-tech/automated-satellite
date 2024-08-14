@@ -90,7 +90,7 @@
       ansible.builtin.assert:
         that:
           - '"system identity" in sub_man_status_post.stdout'
-          - '"name: " + hostname in sub_man_status_post.stdout'
+          - '"name: " + inventory_hostname in sub_man_status_post.stdout'
           - '"org name: " + organization in sub_man_status_post.stdout'
         fail_msg: "Content Host registration unsuccessful."
         success_msg: "Content Host registration verification successful."
