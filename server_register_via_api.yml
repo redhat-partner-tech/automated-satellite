@@ -84,7 +84,6 @@
     - name: Check registration status post registration
       ansible.builtin.command: subscription-manager identity
       register: sub_man_status_post
-      failed_when: not sub_man_status_post.failed
 
     - name: Verify registration successful
       ansible.builtin.assert:
