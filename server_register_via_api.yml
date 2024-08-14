@@ -69,6 +69,7 @@
     - name: Check registration status
       ansible.builtin.command: subscription-manager identity
       register: sub_man_status
+      failed_when: not sub_man_status.failed
 
     - name: Run registration command
       ansible.builtin.command: bash -c "{{ reg_cmd }}"
