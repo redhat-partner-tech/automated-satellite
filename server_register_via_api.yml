@@ -42,7 +42,7 @@
 
     - name: Generate a host registration command
       ansible.builtin.uri:
-        url: "https://{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') }}/api/registration_commands/"
+        url: "https://{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') | [0] }}/api/registration_commands/"
         user: "{{ satellite_username }}"
         password: "{{ satellite_password }}"
         method: POST
