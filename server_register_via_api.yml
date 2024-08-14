@@ -46,7 +46,7 @@
         user: "{{ satellite_username }}"
         password: "{{ satellite_password }}"
         method: POST
-        body: "{{ lookup('template', sat_host_reg / reg_args.j2) }}"
+        body: "{{ lookup('template', './sat_host_reg/reg_args.j2') }}"
         force_basic_auth: true
         body_format: json
         return_content: true
