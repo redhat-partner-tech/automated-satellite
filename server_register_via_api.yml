@@ -42,7 +42,7 @@
 
     - name: Select capsule hostname from capsules resource_info
       ansible.builtin.set_fact:
-        capsule_hostname: "{{ capsules_resource_info_result.resources[0] | selectattr('name', 'search', '^satellite') | map(attribute='name') | to_yaml | trim }}"
+        capsule_hostname: "{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') | list | first }}"
 
     - name: Generate a host registration command
       ansible.builtin.uri:
