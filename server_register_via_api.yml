@@ -66,12 +66,32 @@
   become: true
   gather_facts: false
   tasks:
-    - name: Check registration status
+    - name: Check registration status pre registration
       ansible.builtin.command: subscription-manager identity
-      register: sub_man_status
-      failed_when: not sub_man_status.failed
+      register: sub_man_status_pre
+      failed_when: not sub_man_status_pre.failed
 
     - name: Run registration command
-      ansible.builtin.command: bash -c "{{ hostvars['localhost']['reg_cmd'] }}"
-      when: "'This system is not yet registered' in sub_man_status['stderr']"
+      ansible.builtin.shell: "{{ hostvars['localhost']['reg_cmd'] }}"
+      when: "'This system is not yet registered' in sub_man_status_pre['stderr']"
+
+    - name: Include delay before registration verfication
+      ansible.builtin.command: |
+        python3 -c 'import time;time.sleep(5)'
+      delegate_to: localhost
+      connection: local
+
+    - name: Check registration status post registration
+      ansible.builtin.command: subscription-manager identity
+      register: sub_man_status_post
+      failed_when: not sub_man_status_post.failed
+
+    - name: Verify registration successful
+      ansible.builtin.assert:
+        that:
+          - '"system identity" in sub_man_status_post.stdout'
+          - '"name: " + hostname in sub_man_status_post.stdout'
+          - '"org name: " + organization in sub_man_status_post.stdout'
+        fail_msg: "Content Host registration unsuccessful."
+        success_msg: "Content Host registration verification successful."
 ...
