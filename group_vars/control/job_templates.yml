@@ -42,7 +42,7 @@ controller_templates:
     credentials:
       - Workshop Credential
       - Satellite Credential
-    limit: rhel7
+    limit: localhost,rhel7
     extra_vars:
       organization: "Default Organization"
       location: "Default Location"
@@ -70,6 +70,47 @@ controller_templates:
             - RHEL7
             - RHEL8
             - RHEL9
+          required: true
+        - question_name: Choose Environment
+          type: multiplechoice
+          variable: env
+          choices:
+            - Dev
+            - QA
+            - Prod
+          required: true
+
+  - name: SERVER / CentOS7 - Register via Satellite API
+    project: Automated Management
+    playbook: server_register_via_api.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+      - Satellite Credential
+    limit: localhost,centos7
+    extra_vars:
+      organization: "Default Organization"
+      location: "Default Location"
+      include_offset_task_delay: true
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Server Name or Pattern
+          type: text
+          variable: PREFIX
+          required: false
+        - question_name: Choose CentOS version
+          type: multiplechoice
+          variable: rhel_version
+          choices:
+            - CentOS7
+            - CentOS8
+            - CentOS9
           required: true
         - question_name: Choose Environment
           type: multiplechoice
