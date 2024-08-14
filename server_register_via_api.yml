@@ -72,6 +72,6 @@
       failed_when: not sub_man_status.failed
 
     - name: Run registration command
-      ansible.builtin.command: bash -c "{{ reg_cmd }}"
+      ansible.builtin.command: bash -c "{{ hostvars['localhost']['reg_cmd'] }}"
       when: "'This system is not yet registered' in sub_man_status['stderr']"
 ...
