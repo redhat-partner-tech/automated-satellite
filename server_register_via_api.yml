@@ -1,4 +1,56 @@
 ---
+- name: Pre-registration tasks for Content Hosts to Satellite
+  hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
+  strategy: ansible.builtin.free
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Check registration status pre registration
+      ansible.builtin.command: subscription-manager identity
+      register: sub_man_status_pre
+      failed_when: not sub_man_status_pre.failed
+      changed_when: false
+
+    - name: Verify current registration status
+      ansible.builtin.assert:
+        that:
+          - '"system identity" not in sub_man_status_pre.stdout'
+          - '"This system is not yet registered" in sub_man_status_pre.stderr'
+        fail_msg: "Content Host already registered."
+        success_msg: "Content Host is not currently registered."
+
+    - name: Remove rhui client packages
+      ansible.builtin.yum:
+        name: rh-amazon-rhui-client*
+        state: removed
+
+    - name: Get current repos
+      ansible.builtin.command:
+        cmd: ls /etc/yum.repos.d/
+      register: repos
+      changed_when: false
+
+    - name: Remove existing rhui repos
+      ansible.builtin.file:
+        path: "/etc/yum.repos.d/{{ item }}"
+        state: absent
+      loop: "{{ repos.stdout_lines }}"
+
+    - name: Define activation key for RHEL systems
+      ansible.builtin.set_fact:
+        activation_key: "{{ 'RHEL' + ansible_distribution_major_version + '_' + env }}"
+      when: ansible_distribution == 'OracleLinux'
+
+    - name: Define activation key for CentOS systems
+      ansible.builtin.set_fact:
+        activation_key: "{{ 'CentOS' + ansible_distribution_major_version + '_' + env }}"
+      when: ansible_distribution == 'CentOS'
+
+    - name: Define activation key for OracleLinux systems
+      ansible.builtin.set_fact:
+        activation_key: "{{ 'OL' + ansible_distribution_major_version + '_' + env }}"
+      when: ansible_distribution == 'OracleLinux'
+
 - name: Generate Content Host registration command via Satellite API method
   hosts: localhost
   become: true
@@ -20,7 +72,7 @@
   tasks:
     - name: Set Activation Key
       ansible.builtin.set_fact:
-        activation_key: "{{ rhel_version + '_' + env }}"
+        activation_key: "{{ el_distribution + '_' + env }}"
 
     - name: List organization info
       redhat.satellite.resource_info:
@@ -60,17 +112,16 @@
       ansible.builtin.set_fact:
         reg_cmd: "{{ reg_cmd.json['registration_command'] }}"
 
+    - name: Display generated registration command
+      ansible.builtin.debug:
+        msg: "registration command ==> {{ reg_cmd }}"
+
 - name: Register Content Hosts to Satellite
   hosts: "{{ HOSTS is defined | ternary(HOSTS, PREFIX|default('')+'*') }}"
   strategy: ansible.builtin.free
   become: true
   gather_facts: false
   tasks:
-    - name: Check registration status pre registration
-      ansible.builtin.command: subscription-manager identity
-      register: sub_man_status_pre
-      failed_when: not sub_man_status_pre.failed
-
     - name: Run registration command
       ansible.builtin.shell: "{{ hostvars['localhost']['reg_cmd'] }}"
       when: "'This system is not yet registered' in sub_man_status_pre['stderr']"
