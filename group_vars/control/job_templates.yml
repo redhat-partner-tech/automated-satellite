@@ -44,6 +44,7 @@ controller_templates:
       - Satellite Credential
     limit: localhost,rhel7
     extra_vars:
+      el_distribution: RHEL7
       organization: "Default Organization"
       location: "Default Location"
       rhsm_enabled_repos:
@@ -63,14 +64,6 @@ controller_templates:
           type: text
           variable: PREFIX
           required: false
-        - question_name: Choose RHEL version
-          type: multiplechoice
-          variable: rhel_version
-          choices:
-            - RHEL7
-            - RHEL8
-            - RHEL9
-          required: true
         - question_name: Choose Environment
           type: multiplechoice
           variable: env
@@ -89,6 +82,7 @@ controller_templates:
       - Satellite Credential
     limit: localhost,centos7
     extra_vars:
+      el_distribution: CentOS7
       organization: "Default Organization"
       location: "Default Location"
       include_offset_task_delay: true
@@ -103,15 +97,6 @@ controller_templates:
         - question_name: Server Name or Pattern
           type: text
           variable: PREFIX
-          required: false
-        - question_name: Choose CentOS version
-          type: multiplechoice
-          variable: rhel_version
-          choices:
-            - CentOS7
-            - CentOS8
-            - CentOS9
-          required: true
         - question_name: Choose Environment
           type: multiplechoice
           variable: env
