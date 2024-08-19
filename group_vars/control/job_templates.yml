@@ -97,6 +97,7 @@ controller_templates:
         - question_name: Server Name or Pattern
           type: text
           variable: PREFIX
+          required: false
         - question_name: Choose Environment
           type: multiplechoice
           variable: env
