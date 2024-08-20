@@ -39,7 +39,7 @@
     - name: Define activation key for RHEL systems
       ansible.builtin.set_fact:
         activation_key: "{{ 'RHEL' + ansible_distribution_major_version + '_' + env }}"
-      when: ansible_distribution == 'OracleLinux'
+      when: ansible_distribution == 'RedHat'
 
     - name: Define activation key for CentOS systems
       ansible.builtin.set_fact:
@@ -67,13 +67,9 @@
     setup_insights: false
     set_remote_execution: false
     update_packages: false
-    activation_key: "MyAK"
+    subtoken_activation_key: "AKtempSubToken"
     force_register: false
   tasks:
-    - name: Set Activation Key
-      ansible.builtin.set_fact:
-        activation_key: "{{ el_distribution + '_' + env }}"
-
     - name: List organization info
       redhat.satellite.resource_info:
         <<: *login
@@ -96,7 +92,7 @@
       ansible.builtin.set_fact:
         capsule_hostname: "{{ capsules_resource_info_result.resources | selectattr('name', 'search', '^satellite') | map(attribute='name') | list | first }}"
 
-    - name: Generate a host registration command
+    - name: Generate host registration command
       ansible.builtin.uri:
         url: "https://{{ capsule_hostname }}/api/registration_commands/"
         user: "{{ satellite_username }}"
@@ -123,7 +119,7 @@
   gather_facts: false
   tasks:
     - name: Run registration command
-      ansible.builtin.shell: "{{ hostvars['localhost']['reg_cmd'] }}"
+      ansible.builtin.shell: "{{ hostvars['localhost']['reg_cmd'] | regex_replace('AKtempSubToken',activation_key) }}"
       when: "'This system is not yet registered' in sub_man_status_pre['stderr']"
 
     - name: Include delay before registration verfication
