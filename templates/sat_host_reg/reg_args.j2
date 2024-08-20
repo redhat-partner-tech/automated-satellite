@@ -7,7 +7,7 @@
     "setup_remote_execution": {{ setup_remote_execution | default(false) }},
     "insecure": {{ lookup('env', 'SATELLITE_VALIDATE_CERTS') | default(true) }},
     "update_packages": {{ update_packages | default(false) }},
-    "activation_key": "{{ activation_key }}",
+    "activation_key": "{{ subtoken_activation_key }}",
     "force": {{ force_register | default(false) }},
     "jwt_expiration": 4
   }
