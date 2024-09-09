@@ -14,4 +14,11 @@ satellite_lifecycle_environments:
     prior: "CentOS7_Dev"
   - name: "CentOS7_Prod"
     prior: "CentOS7_QA"
+  # CentOS7 to RHEL7 conversion
+  - name: "CentOS7_to_RHEL7_Dev"
+    prior: "Library"
+  - name: "CentOS7_to_RHEL7_QA"
+    prior: "CentOS7_to_RHEL7_Dev"
+  - name: "CentOS7_to_RHEL7_Prod"
+    prior: "CentOS7_to_RHEL7_QA"
 ...

@@ -20,4 +20,14 @@ satellite_activation_keys:
   - name: "CentOS7_Prod"
     lifecycle_environment: "CentOS7_Prod"
     content_view: "CentOS7"
+  # CentOS7 to RHEL7 conversion
+  - name: "CentOS7_to_RHEL7_Dev"
+    lifecycle_environment: "CentOS7_to_RHEL7_Dev"
+    content_view: "CentOS7_to_RHEL7"
+  - name: "CentOS7_to_RHEL7_QA"
+    lifecycle_environment: "CentOS7_to_RHEL7_QA"
+    content_view: "CentOS7_to_RHEL7"
+  - name: "CentOS7_to_RHEL7_Prod"
+    lifecycle_environment: "CentOS7_to_RHEL7_Prod"
+    content_view: "CentOS7_to_RHEL7"
 ...
