@@ -2,7 +2,6 @@
 satellite_content_views:
   # Red Hat Enterprise Linux 7
   - name: RHEL7
-    content_view: RHEL7
     lifecycle_environments:
       - "RHEL7_Dev"
       - "RHEL7_QA"
@@ -18,7 +17,6 @@ satellite_content_views:
         product: 'Red Hat Enterprise Linux Server'
   # Community Enterprise Linux 7
   - name: CentOS7
-    content_view: CentOS7
     lifecycle_environments:
       - "CentOS7_Dev"
       - "CentOS7_QA"
