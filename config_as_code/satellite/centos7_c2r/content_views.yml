@@ -28,7 +28,6 @@ satellite_content_views:
         product: 'Community Enterprise OS 7'
       - name: CentOS-7 - Updates RPMs x86_64
         product: 'Community Enterprise OS 7'
-
   # CentOS7 to RHEL7 CCV
   - name: CentOS7_to_RHEL7
     description: "CentOS7 to RHEL7 conversion composite content view"
