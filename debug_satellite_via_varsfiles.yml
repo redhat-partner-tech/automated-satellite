@@ -1,0 +1,25 @@
+---
+- name: Debug Satellite CaC for content views
+- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  connection: local
+  gather_facts: false
+  vars:
+    satellite_validate_certs: true
+    async_timeout: 10800
+    async_delay: 15
+
+  tasks:
+    - name: Check satellite status
+      redhat.satellite.status_info:
+        validate_certs: "{{ satellite_validate_certs }}"
+
+    - name: Include CentOS7 CONVERT2RHEL Satellite CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/satellite/centos7_c2r
+
+    - name: Loop on Content Views the same as redhat.satellite.content_views role
+      ansible.builtin.include_tasks: '_display_content_view.yml'
+      with_items: "{{ satellite_content_views | default([]) }}"
+      loop_control:
+        loop_var: content_view
+...
