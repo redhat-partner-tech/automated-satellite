@@ -34,6 +34,7 @@ satellite_content_views:
   - name: CentOS7_to_RHEL7
     content_view: CentOS7_to_RHEL7
     description: "CentOS7 to RHEL7 conversion composite content view"
+    composite: true
     auto_publish: false
     components:
       - content_view: CentOS7
