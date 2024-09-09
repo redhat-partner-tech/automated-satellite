@@ -17,5 +17,5 @@ collections:
 #  version: main
 - name: https://github.com/heatmiser/infra.convert2rhel.git
   type: git
-  version: dev-2024-01-21.01
+  version: dev-2024-09-09.01
 ...
