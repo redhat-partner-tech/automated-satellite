@@ -1,6 +1,6 @@
 ---
 - name: Debug Satellite CaC for content views
-- hosts: "{{ HOSTS | default('satellite.example.com') }}"
+  hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   gather_facts: false
   vars:
