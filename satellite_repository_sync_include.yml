@@ -9,4 +9,5 @@
   async: "{{ async_timeout }}"
   poll: "{{ async_delay }}"
   register: async_update
+  when: content_view.repositories is defined
 ...
