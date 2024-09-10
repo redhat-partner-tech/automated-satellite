@@ -1,6 +1,6 @@
 ---
 # https://devpress.csdn.net/cicd/62ec1d2689d9027116a10320.html
-- name: satellite_repository_sync workloads Task Group
+- name: Satellite_repository_sync workloads Task Group
   block:
   - name: Increment retry count
     set_fact:
@@ -23,12 +23,12 @@
       loop_var: content_view
 
   rescue:
-    - fail:
+    - ansible.builtin.fail:
         msg: Maximum retries of grouped tasks reached
       # initial try plus 3 retries = 4 total tries
       when: sync_subtasks_retry_count | int == 3
 
-    - debug:
+    - ansible.builtin.debug:
         msg: "satellite_repository_sync workloads Task Group failed, retry count: {{ sync_subtasks_retry_count }}"
 
     - ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
