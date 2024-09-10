@@ -46,8 +46,8 @@
       ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
       when: sync_repository | default(true) | bool
 
-    - name: execute content_views role
-      ansible.builtin.import_role:
-        name: "content_views"
-      delegate_to: localhost
+    #- name: execute content_views role
+    #  ansible.builtin.import_role:
+    #    name: "content_views"
+    #  delegate_to: localhost
 ...
