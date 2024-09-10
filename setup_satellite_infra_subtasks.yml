@@ -3,7 +3,7 @@
 - name: Deploy satellite_infra workloads Task Group
   block:
   - name: Increment retry count
-    set_fact:
+    ansible.builtin.set_fact:
       infra_subtasks_retry_count: "{{ 0 if infra_subtasks_retry_count is undefined else infra_subtasks_retry_count | int + 1 }}"
   - name: Resume failed Satellite tasks after each failed attempt
     ansible.builtin.include_tasks: satellite_hammer_task_resume.yml
@@ -19,14 +19,19 @@
       name: "redhat.satellite.repositories"
     delegate_to: localhost
 
-  - name: execute redhat.satellite.lifecycle_environments role
+  - name: Execute redhat.satellite.lifecycle_environments role
     ansible.builtin.import_role:
       name: "redhat.satellite.lifecycle_environments"
     delegate_to: localhost
 
-  - name: execute redhat.satellite.content_views role
+  - name: Execute redhat.satellite.content_views role
     ansible.builtin.import_role:
       name: "redhat.satellite.content_views"
+    delegate_to: localhost
+
+  - name: Ensure content views and composite content views are published
+    ansible.builtin.import_role:
+      name: redhat.satellite.content_view_publish
     delegate_to: localhost
 
   #- name: execute content_views role
@@ -34,18 +39,18 @@
   #    name: "content_views"
   #  delegate_to: localhost
 
-  - name: execute redhat.satellite.activation_keys role
+  - name: Execute redhat.satellite.activation_keys role
     ansible.builtin.import_role:
       name: "redhat.satellite.activation_keys"
     delegate_to: localhost
 
   rescue:
-    - fail:
+    - ansible.builtin.fail:
         msg: Maximum retries of grouped tasks reached
       # initial try plus 3 retries = 4 total tries
       when: infra_subtasks_retry_count | int == 3
 
-    - debug:
+    - ansible.builtin.debug:
         msg: "satellite_infra workloads Task Group failed, retry count: {{ infra_subtasks_retry_count }}"
 
     - ansible.builtin.include_tasks: setup_satellite_infra_subtasks.yml
