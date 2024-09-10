@@ -6,14 +6,14 @@
   become: true
   environment:
     CONVERT2RHEL_DISABLE_TELEMETRY: 1
-    CONVERT2RHEL_ALLOW_OLDER_VERSION: 1
+    # CONVERT2RHEL_ALLOW_OLDER_VERSION: 1
     # CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
   vars:
     rhsm_username: ""
     rhsm_password: ""
     rhsm_org: "{{ org_id }}"
     rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
-    rhsm_activation_key_pre_convert: "{{ dynamic_inventory_group }}"
+    # rhsat_lifecycle_environment_pre_convert: "{{ dynamic_inventory_group }}"
     c2r_include_delay: false
   tasks:
     - name: Verify operating system
