@@ -140,4 +140,11 @@
           - 'organization in sub_man_status_post.stdout'
         fail_msg: "Content Host registration unsuccessful."
         success_msg: "Content Host registration verification successful."
+
+    - name: Enable all repositories
+      when:
+        - "ansible_distribution == 'CentOS'"
+        - "ansible_distribution_major_version | int  == 7"
+      ansible.builtin.command: |
+        yum-config-manager --enable \*
 ...
