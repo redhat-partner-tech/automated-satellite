@@ -9,12 +9,12 @@
     ansible.builtin.include_tasks: satellite_hammer_task_resume_subtasks.yml
     when: sync_subtasks_retry_count | int != 0
 
-  - name: List repositories to sync
-    ansible.builtin.debug:
-      msg: "{{ content_view.repositories | map(attribute='name') | list | unique }}"
-    with_items: "{{ satellite_content_views | default([]) }}"
-    loop_control:
-      loop_var: content_view
+  #- name: List repositories to sync
+  #  ansible.builtin.debug:
+  #    msg: "{{ content_view.repositories | map(attribute='name') | list | unique }}"
+  #  with_items: "{{ satellite_content_views | default([]) }}"
+  #  loop_control:
+  #    loop_var: content_view
 
   - name: Loop on repositories to sync
     ansible.builtin.include_tasks: 'satellite_repository_sync_include.yml'
