@@ -24,10 +24,15 @@
       name: "redhat.satellite.lifecycle_environments"
     delegate_to: localhost
 
-  - name: execute content_views role
+  - name: execute redhat.satellite.content_views role
     ansible.builtin.import_role:
-      name: "content_views"
+      name: "redhat.satellite.content_views"
     delegate_to: localhost
+
+  #- name: execute content_views role
+  #  ansible.builtin.import_role:
+  #    name: "content_views"
+  #  delegate_to: localhost
 
   - name: execute redhat.satellite.activation_keys role
     ansible.builtin.import_role:
