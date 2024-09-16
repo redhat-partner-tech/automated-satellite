@@ -28,5 +28,6 @@
       ansible.builtin.debug:
         msg:
           - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') }}"
-          - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_facet_attributes.content_view_environments[0].content_view.name') }}"
+          #- "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_facet_attributes.content_view_environments[0].content_view.name') }}"
+          - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_facet_attributes') }}"
 ...
