@@ -610,12 +610,14 @@ controller_templates:
         - question_name: Select EL Group to analyze
           question_description: Use to limit job to hosts that are members of the selected host group.
           variable: dynamic_inventory_group
+          default: ''
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}"
           required: true
         - question_name: Select RHEL Lifecycle Environment to use for analysis
           question_description: Select RHEL Lifecycle Environment to use during ConvertRHEL pre-conversion analysis.
           variable: rhel_lifecycle_environment
+          default: ''
           type: multiplechoice
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
