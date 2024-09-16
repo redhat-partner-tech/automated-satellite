@@ -26,5 +26,7 @@
 
     - name: List host name
       ansible.builtin.debug:
-        msg: "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') }}"
+        msg:
+          - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') }}"
+          - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_view_environments[0].content_view.name') }}"
 ...
