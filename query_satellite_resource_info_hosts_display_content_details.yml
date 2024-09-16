@@ -1,0 +1,30 @@
+---
+- name: Query Satellite content hosts detail and provide content details
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    login: &login
+      server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+      username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+      password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+      validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
+
+  tasks:
+    - name: Retrieve Satellite content hosts details
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: hosts
+      register: hosts_resource_info_result
+
+    - name: Display resource_info_results
+      ansible.builtin.debug:
+        var: resource_info_results
+      vars:
+        resource_info_results:
+          hosts: "{{ hosts_resource_info_result }}"
+
+    - name: List host name
+      ansible.builtin.debug:
+        msg: "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') }}"
+...
