@@ -30,6 +30,6 @@
           - "node name: {{ item }}"
           - "content view: {{ hosts_resource_info_result.hosts.resources | selectattr('name', 'search', item) | map(attribute='content_facet_attributes.content_view.name') | first }}" 
           - "lifecycle environment: {{ hosts_resource_info_result.hosts.resources | selectattr('name', 'search', item) | map(attribute='content_facet_attributes.lifecycle_environment.name') | first }}"
-      loop: "{{ groups.dynamic_inventory_group }}"
+      loop: "{{ groups[dynamic_inventory_group] }}"
       when: item in hosts_resource_info_result.hosts.resources | selectattr('name', 'search', 'node*') | map(attribute='name')
 ...
