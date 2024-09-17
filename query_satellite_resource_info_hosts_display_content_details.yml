@@ -24,6 +24,10 @@
         resource_info_results:
           hosts: "{{ hosts_resource_info_result }}"
 
+    - name: Display group listing via dynamic_inventory_group variable
+      ansible.builtin.debug:
+        msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
+
     - name: List host name plus content details
       ansible.builtin.debug:
         msg:
