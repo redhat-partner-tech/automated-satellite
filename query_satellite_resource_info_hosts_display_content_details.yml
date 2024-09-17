@@ -17,12 +17,9 @@
         resource: hosts
       register: hosts_resource_info_result
 
-    - name: Display resource_info_results
+    - name: Display hosts_resource_info_result
       ansible.builtin.debug:
-        var: resource_info_results
-      vars:
-        resource_info_results:
-          hosts: "{{ hosts_resource_info_result }}"
+        var: "{{ hosts_resource_info_result }}"
 
     - name: Display group listing via dynamic_inventory_group variable
       ansible.builtin.debug:
