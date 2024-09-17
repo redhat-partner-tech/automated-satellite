@@ -1,5 +1,5 @@
 ---
-- name: Query Satellite content hosts detail and provide content details
+- name: Query Satellite content hosts detail and provide content facet details
   hosts: localhost
   connection: local
   gather_facts: false
@@ -24,18 +24,12 @@
         resource_info_results:
           hosts: "{{ hosts_resource_info_result }}"
 
-    #- name: List host name
-    #  ansible.builtin.debug:
-    #    msg:
-    #      - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') }}"
-    #      #- "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_facet_attributes.content_view_environments[0].content_view.name') }}"
-    #     - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='content_facet_attributes') }}"
-
     - name: List host name plus content details
       ansible.builtin.debug:
         msg:
-          - "{{ hosts_resource_info_result.resources | selectattr('name', 'search', hosts_resource_node_name.name ) | map(attribute='content_facet_attributes') }}"
-      with_items: "{{ hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name') | default([]) }}"
-      loop_control:
-        loop_var: hosts_resource_node_name
+          - "node name: {{ item }}"
+          - "content view: {{ hosts_resource_info_result.hosts.resources | selectattr('name', 'search', item) | map(attribute='content_facet_attributes.content_view.name') | first }}" 
+          - "lifecycle environment: {{ hosts_resource_info_result.hosts.resources | selectattr('name', 'search', item) | map(attribute='content_facet_attributes.lifecycle_environment.name') | first }}"
+      loop: "{{ groups.dynamic_inventory_group }}"
+      when: item in hosts_resource_info_result.hosts.resources | selectattr('name', 'search', 'node*') | map(attribute='name')
 ...
