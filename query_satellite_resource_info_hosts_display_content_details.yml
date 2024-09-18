@@ -15,11 +15,16 @@
       ansible.builtin.debug:
         msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
 
+    - name: Set inventory host list
+      ansible.builtin.set_fact:
+        inventory_host_loop_list: "{{ inventory_host_limit | split(',') \
+                                  if inventory_host_limit is defined else [] }}"
+
     - name: Set content host loop list
       ansible.builtin.set_fact:
-        content_host_loop_list: "{{ ansible_limit \
-                                if ansible_limit is defined and \
-                                ansible_limit is subset(groups[dynamic_inventory_group]) \
+        content_host_loop_list: "{{ inventory_host_limit_list \
+                                if inventory_host_limit_list is defined and \
+                                inventory_host_limit_list is subset(groups[dynamic_inventory_group]) \
                                 else groups[dynamic_inventory_group] }}"
 
     - name: Retrieve Satellite organizations details
@@ -46,7 +51,9 @@
       redhat.satellite.resource_info:
         <<: *login
         resource: activation_keys
-        organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first }}"
+        organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first \
+                      if org_id is defined \
+                      else org_name }}"
       register: activation_keys_resource_info_result
 
     - name: Display activation_keys_resource_info_result
