@@ -11,6 +11,34 @@
       validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
 
   tasks:
+    - name: Display ansible inventory group listing via dynamic_inventory_group variable
+      ansible.builtin.debug:
+        msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
+
+    - name: Display value of 'ansible_limit' if set
+      ansible.builtin.debug:
+        var: ansible_limit | default ('')
+
+    - name: Set content host loop list when ansible_limit is utilized
+      when: ansible_limit in groups[dynamic_inventory_group]
+      ansible.builtin.set_fact:
+        content_host_loop_list: "{{ ansible_limit }}"
+
+    - name: Set content host loop list when ansible_limit is not utilized
+      when: ansible_limit == ''
+      ansible.builtin.set_fact:
+        content_host_loop_list: "{{ groups[dynamic_inventory_group] }}"
+
+    - name: Retrieve Satellite organizations details
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: organizations
+      register: organizations_resource_info_result
+
+    - name: Display organizations_resource_info_result
+      ansible.builtin.debug:
+        msg: "{{ organizations_resource_info_result }}"
+
     - name: Retrieve Satellite content hosts details
       redhat.satellite.resource_info:
         <<: *login
@@ -25,16 +53,12 @@
       redhat.satellite.resource_info:
         <<: *login
         resource: activation_keys
-        organization: "{{ org_name }}"
+        organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first }}"
       register: activation_keys_resource_info_result
 
     - name: Display activation_keys_resource_info_result
       ansible.builtin.debug:
         msg: "{{ activation_keys_resource_info_result }}"
-
-    - name: Display group listing via dynamic_inventory_group variable
-      ansible.builtin.debug:
-        msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
 
     - name: List host name plus content details
       ansible.builtin.debug:
@@ -47,6 +71,6 @@
           - "associated activation key: {{ activation_keys_resource_info_result.resources | selectattr('name', 'search', hosts_resource_info_result.resources \
             | selectattr('name', 'search', item) | map(attribute='content_facet_attributes.lifecycle_environment.name') | first) | map(attribute='name') \
             | first }}"
-      loop: "{{ groups[dynamic_inventory_group] }}"
+      loop: "{{ content_host_loop_list }}"
       when: item in hosts_resource_info_result.resources | selectattr('name', 'search', 'node*') | map(attribute='name')
 ...
