@@ -19,7 +19,7 @@
 
     - name: Display hosts_resource_info_result
       ansible.builtin.debug:
-        var: "{{ hosts_resource_info_result }}"
+        msg: "{{ hosts_resource_info_result }}"
 
     - name: Display group listing via dynamic_inventory_group variable
       ansible.builtin.debug:
