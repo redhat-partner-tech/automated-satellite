@@ -21,6 +21,16 @@
       ansible.builtin.debug:
         msg: "{{ hosts_resource_info_result }}"
 
+    - name: Retrieve Satellite activation keys details
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: activation_keys
+      register: activation_keys_resource_info_result
+
+    - name: Display activation_keys_resource_info_result
+      ansible.builtin.debug:
+        msg: "{{ activation_keys_resource_info_result }}"
+
     - name: Display group listing via dynamic_inventory_group variable
       ansible.builtin.debug:
         msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
