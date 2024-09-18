@@ -1231,7 +1231,7 @@ controller_templates:
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
 
-  - name: SATELLITE / Query hosts and display content details 
+  - name: SATELLITE / Query for content host configuration details
     project: Automated Management
     playbook: query_satellite_resource_info_hosts_display_content_details.yml
     inventory: EC2 Dynamic Inventory
@@ -1255,7 +1255,13 @@ controller_templates:
           variable: dynamic_inventory_group
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
           required: true
-    ask_limit_on_launch: true
+        - question_name: Enter list of specific content hosts to limit to delimited by commas
+          question_description: Use to limit job to specified content hosts that are members of inventory host group, leave blank for no limit.
+          type: text
+          default: ''
+          variable: inventory_host_limit
+          required: false
+    ask_limit_on_launch: false
 
   - name: Demo Job Template
     state: absent
