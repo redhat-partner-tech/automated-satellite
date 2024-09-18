@@ -17,7 +17,10 @@
 
     - name: Set content host loop list
       ansible.builtin.set_fact:
-        content_host_loop_list: "{{ ansible_limit if ansible_limit is defined and ansible_limit is subset(groups[dynamic_inventory_group]) else groups[dynamic_inventory_group] }}"
+        content_host_loop_list: "{{ ansible_limit \
+                                if ansible_limit is defined and \
+                                ansible_limit is subset(groups[dynamic_inventory_group]) \
+                                else groups[dynamic_inventory_group] }}"
 
     - name: Retrieve Satellite organizations details
       redhat.satellite.resource_info:
