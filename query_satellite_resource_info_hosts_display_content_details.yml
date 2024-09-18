@@ -25,7 +25,7 @@
       redhat.satellite.resource_info:
         <<: *login
         resource: activation_keys
-        organization: "{{ org_id }}"
+        organization: "{{ org_name }}"
       register: activation_keys_resource_info_result
 
     - name: Display activation_keys_resource_info_result
