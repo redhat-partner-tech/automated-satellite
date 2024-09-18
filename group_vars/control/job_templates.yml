@@ -1239,7 +1239,7 @@ controller_templates:
       - Satellite Credential
       - Workshop Credential
     extra_vars:
-      org_id: Default_Organization
+      org_name: "{{ hostvars['satellite.example.com']['satellite_organization'] }}"
     notification_templates_started: Telemetry
     notification_templates_success: Telemetry
     notification_templates_error: Telemetry
