@@ -12,9 +12,8 @@
     rhsm_username: ""
     rhsm_password: ""
     rhsm_org: "{{ org_id }}"
-    # rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
-    rhsm_activation_key: "{{ rhsat_lifecycle_environment }}"
-    # rhsat_lifecycle_environment_pre_convert: "{{ dynamic_inventory_group }}"
+    rhsm_activation_key: "{{ rhel_lifecycle_environment }}"
+    rhsm_activation_key_pre_convert: "{{ rhel_lifecycle_environment }}"
     c2r_include_delay: false
   tasks:
     - name: Verify operating system
