@@ -11,6 +11,14 @@
       validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
 
   tasks:
+    - name: "Validate inventory_host_limit is a subset of inventory group {{ dynamic_inventory_group }}"
+      when: inventory_host_limit | length > 0
+      ansible.builtin.assert:
+        that:
+          - "inventory_host_limit | split(',') is subset(groups[dynamic_inventory_group])"
+        fail_msg: hosts_limit {{ inventory_host_limit | split(',') }} is not a subset of {{ dynamic_inventory_group }}.
+        success_msg: hosts_limit {{ inventory_host_limit | split(',') }} is a subset of {{ dynamic_inventory_group }}.
+
     - name: Display ansible inventory group listing via dynamic_inventory_group variable
       ansible.builtin.debug:
         msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
@@ -22,9 +30,8 @@
 
     - name: Set content host loop list
       ansible.builtin.set_fact:
-        content_host_loop_list: "{{ inventory_host_loop_list \
-                                if inventory_host_loop_list is defined and \
-                                inventory_host_loop_list is subset(groups[dynamic_inventory_group]) \
+        content_host_loop_list: "{{ inventory_host_limit | split(',') \
+                                if inventory_host_limit | length > 0 \
                                 else groups[dynamic_inventory_group] }}"
 
     - name: Retrieve Satellite organizations details
