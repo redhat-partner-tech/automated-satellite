@@ -14,4 +14,11 @@ satellite_lifecycle_environments:
     prior: "OL7_Dev"
   - name: "OL7_Prod"
     prior: "OL7_QA"
+  # OL7 to RHEL7 conversion
+  - name: "OL7_to_RHEL7_Dev"
+    prior: "Library"
+  - name: "OL7_to_RHEL7_QA"
+    prior: "OL7_to_RHEL7_Dev"
+  - name: "OL7_to_RHEL7_Prod"
+    prior: "OL7_to_RHEL7_QA"
 ...

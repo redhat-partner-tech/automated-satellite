@@ -9,14 +9,14 @@ satellite_content_views:
       - "RHEL7_QA"
       - "RHEL7_Prod"
     repositories:
-    - name: Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server
-      product: 'Red Hat Enterprise Linux Server'
-    - name: Red Hat Enterprise Linux 7 Server - Extras RPMs x86_64
-      product: 'Red Hat Enterprise Linux Server'
-    - name: Red Hat Satellite Client 6 for RHEL 7 Server RPMs x86_64
-      product: 'Red Hat Enterprise Linux Server'
-    - name: Red Hat Satellite Utils 6.11 for RHEL 7 Server RPMs x86_64
-      product: 'Red Hat Enterprise Linux Server'
+      - name: Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server
+        product: 'Red Hat Enterprise Linux Server'
+      - name: Red Hat Enterprise Linux 7 Server - Extras RPMs x86_64
+        product: 'Red Hat Enterprise Linux Server'
+      - name: Red Hat Satellite Client 6 for RHEL 7 Server RPMs x86_64
+        product: 'Red Hat Enterprise Linux Server'
+      - name: Red Hat Satellite Utils 6.11 for RHEL 7 Server RPMs x86_64
+        product: 'Red Hat Enterprise Linux Server'
   # Oracle Linux 7
   - name: OL7
     content_view: OL7
@@ -26,14 +26,30 @@ satellite_content_views:
       - "OL7_QA"
       - "OL7_Prod"
     repositories:
-    - name: Oracle Linux 7Server Latest x86_64
-      product: 'Oracle Linux 7'
-    - name: Oracle Linux 7Server Optional Latest x64_64
-      product: 'Oracle Linux 7'
-    - name: Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7Server x86_64
-      product: 'Oracle Linux 7'
-    - name: Latest Unbreakable Enterprise Kernel Release 5 for Oracle Linux 7Server x86_64
-      product: 'Oracle Linux 7'
-    - name: Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7Server x86_64
-      product: 'Oracle Linux 7'
+      - name: Oracle Linux 7Server Latest x86_64
+        product: 'Oracle Linux 7'
+      - name: Oracle Linux 7Server Optional Latest x64_64
+        product: 'Oracle Linux 7'
+      - name: Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7Server x86_64
+        product: 'Oracle Linux 7'
+      - name: Latest Unbreakable Enterprise Kernel Release 5 for Oracle Linux 7Server x86_64
+        product: 'Oracle Linux 7'
+      - name: Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7Server x86_64
+        product: 'Oracle Linux 7'
+      - name: Convert2RHEL 7 x86_64
+        product: 'Convert2RHEL 7'
+  # OL7 to RHEL7 CCV
+  - name: OL7_to_RHEL7
+    description: "OL7 to RHEL7 conversion composite content view"
+    composite: true
+    auto_publish: false
+    components:
+      - content_view: OL7
+        latest: true
+      - content_view: RHEL7
+        latest: true
+    lifecycle_environments:
+      - "OL7_to_RHEL7_Dev"
+      - "OL7_to_RHEL7_QA"
+      - "OL7_to_RHEL7_Prod"
 ...

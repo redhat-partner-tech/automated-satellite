@@ -1,3 +1,10 @@
 ---
-satellite_products: []
+satellite_products:
+  - name: Convert2RHEL 7
+    repositories:
+      - name: Convert2RHEL 7 x86_64
+        content_type: yum
+        url: https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/
+        gpg_key: RPM-GPG-KEY-redhat-release
+        ssl_ca_cert: redhat-uep-cert
 ...

@@ -20,4 +20,14 @@ satellite_activation_keys:
   - name: "OL7_Prod"
     lifecycle_environment: "OL7_Prod"
     content_view: "OL7"
+  # OL7 to RHEL7 conversion
+  - name: "OL7_to_RHEL7_Dev"
+    lifecycle_environment: "OL7_to_RHEL7_Dev"
+    content_view: "OL7_to_RHEL7"
+  - name: "OL7_to_RHEL7_QA"
+    lifecycle_environment: "OL7_to_RHEL7_QA"
+    content_view: "OL7_to_RHEL7"
+  - name: "OL7_to_RHEL7_Prod"
+    lifecycle_environment: "OL7_to_RHEL7_Prod"
+    content_view: "OL7_to_RHEL7"
 ...
