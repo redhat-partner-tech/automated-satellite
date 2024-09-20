@@ -1,0 +1,79 @@
+---
+- name: Query Satellite content resource details and change content source for host
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    login: &login
+      server_url: "{{ lookup('env', 'SATELLITE_SERVER_URL') }}"
+      username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+      password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+      validate_certs: "{{ lookup('env', 'SATELLITE_VALIDATE_CERTS') }}"
+
+  tasks:
+    - name: "Validate inventory_host_limit is a subset of inventory group {{ dynamic_inventory_group }} when set"
+      when: inventory_host_limit | length > 0
+      ansible.builtin.assert:
+        that:
+          - "inventory_host_limit | split(',') is subset(groups[dynamic_inventory_group])"
+        fail_msg: hosts_limit {{ inventory_host_limit | split(',') }} is not a subset of {{ dynamic_inventory_group }}.
+        success_msg: hosts_limit {{ inventory_host_limit | split(',') }} is a subset of {{ dynamic_inventory_group }}.
+
+    - name: Display ansible inventory group listing via dynamic_inventory_group variable
+      ansible.builtin.debug:
+        msg: "dynamic_inventory_group list: {{ groups[dynamic_inventory_group] }}"
+
+    - name: Set content host loop list
+      ansible.builtin.set_fact:
+        content_host_loop_list: "{{ inventory_host_limit | split(',') \
+                                if inventory_host_limit | length > 0 \
+                                else groups[dynamic_inventory_group] }}"
+
+    - name: Retrieve Satellite organizations details
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: organizations
+      register: organizations_resource_info_result
+
+    - name: Display organizations_resource_info_result
+      ansible.builtin.debug:
+        msg: "{{ organizations_resource_info_result }}"
+
+    - name: Retrieve Satellite lifecycle environments details
+      redhat.satellite.resource_info:
+        <<: *login
+        resource: lifecycle_environments
+      register: lifecycle_environment_resource_info_result
+
+    - name: Display lifecycle_environment_resource_info_result
+      ansible.builtin.debug:
+        msg: "{{ lifecycle_environment_resource_info_result }}"
+
+    - name: "Testing - content source for content host to lifecyle environment {{ target_lifecycle_environment }}"
+      ansible.builtin.debug:
+        msg:
+          - "name: {{ item }}"
+          - "lifecycle_environment: {{ target_lifecycle_environment }}"
+          - "content_view: {{ lifecycle_environment_resource_info_result.resources \
+            | selectattr('name', 'search', target_lifecycle_environment) | map(attribute='content_views.name') | first }}"
+          - "organization: {{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first \
+            if org_id is defined \
+            else org_name }}"
+      with_items: "{{ content_host_loop_list }}"
+
+    # - name: "Change content source for content host to lifecyle environment {{ target_lifecycle_environment }}"
+    #   redhat.satellite.host:
+    #     <<: *login
+    #     name: "{{ item }}"
+    #     lifecycle_environment: "{{ target_lifecycle_environment }}"
+    #     content_view: "{{ rhel_lifecycle_environment.split('_')[0] }}"
+    #     organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first \
+    #                   if org_id is defined \
+    #                   else org_name }}"
+    #   with_items: "{{ content_host_loop_list }}"
+    #   register: change_content_hosts_result
+
+    # - name: Display change_content_hosts_result
+    #   ansible.builtin.debug:
+    #     var: change_content_hosts_result
+...
