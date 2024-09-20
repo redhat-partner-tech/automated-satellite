@@ -1267,6 +1267,45 @@ controller_templates:
           required: false
     ask_limit_on_launch: false
 
+  - name: SATELLITE / Change content source for content host
+    project: Automated Management
+    playbook: satellite_node_change_content_source.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Satellite Credential
+      - Workshop Credential
+    extra_vars:
+      org_name: "{{ hostvars['satellite.example.com']['satellite_organization'] }}"
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          question_description: Use to limit job to selected inventory host group.
+          type: multiplechoice
+          default: ''
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+        - question_name: Enter list of specific content hosts to limit to delimited by commas
+          question_description: Use to limit job to specified content hosts that are members of inventory host group, leave blank for no limit.
+          type: text
+          default: ''
+          variable: inventory_host_limit
+          required: false
+        - question_name: Select target lifecycle environment for content host
+          question_description: Lifecycle environment for content host to be changed to.
+          type: multiplechoice
+          default: ''
+          variable: target_lifecycle_environment
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '.*') | map(attribute='name') | list }}"
+          required: true
+    ask_limit_on_launch: false
+
   - name: Demo Job Template
     state: absent
 ...
