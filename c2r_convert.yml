@@ -6,7 +6,8 @@
   become: true
   environment:
     CONVERT2RHEL_DISABLE_TELEMETRY: 1
-    CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
+    # CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
+    CONVERT2RHEL_INCOMPLETE_ROLLBACK: 1
   vars:
     rhsm_username: ""
     rhsm_password: ""
@@ -50,16 +51,16 @@
         fail_msg: "Release version must be >= 7.9"
         success_msg: "Release version requirement met, continue..."
 
-    - name: Install convert2rhel utility
-      ansible.builtin.import_role:
-        name: infra.convert2rhel.common
+    # - name: Install convert2rhel utility
+    #   ansible.builtin.import_role:
+    #     name: infra.convert2rhel.common
 
-    - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
-      ansible.builtin.get_url:
-        url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
-        dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
-        mode: '0440'
-        validate_certs: false
+    # - name: Pull katello-ca-consumer package from satellite server and place under /usr/share/convert2rhel/subscription-manager
+    #   ansible.builtin.get_url:
+    #     url: https://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+    #     dest: /usr/share/convert2rhel/subscription-manager/katello-ca-consumer-latest.noarch.rpm
+    #     mode: '0440'
+    #     validate_certs: false
 
     - name: Set delay time via gather_facts
       ansible.builtin.set_fact:
@@ -83,13 +84,13 @@
       environment:
         CONVERT2RHEL_SKIP_KERNEL_CURRENCY_CHECK: 1
 
-    - name: Generate current repo configuration
-      ansible.builtin.command: >-
-        subscription-manager repos
-      ignore_errors: true
+    # - name: Generate current repo configuration
+    #   ansible.builtin.command: >-
+    #     subscription-manager repos
+    #   ignore_errors: true
 
-    - name: Update system facts on Satellite
-      ansible.builtin.command: >-
-        subscription-manager facts --update
-      ignore_errors: true
+    # - name: Update system facts on Satellite
+    #   ansible.builtin.command: >-
+    #     subscription-manager facts --update
+    #   ignore_errors: true
 ...
