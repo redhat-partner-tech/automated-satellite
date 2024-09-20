@@ -59,21 +59,22 @@
           - "organization: {{ organizations_resource_info_result.resources | selectattr('label', 'equalto', org_id) | map(attribute='name') | first \
             if org_id is defined \
             else org_name }}"
-      with_items: "{{ content_host_loop_list }}"
+      loop: "{{ content_host_loop_list }}"
 
-    # - name: "Change content source for content host to lifecyle environment {{ target_lifecycle_environment }}"
-    #   redhat.satellite.host:
-    #     <<: *login
-    #     name: "{{ item }}"
-    #     lifecycle_environment: "{{ target_lifecycle_environment }}"
-    #     content_view: "{{ rhel_lifecycle_environment.split('_')[0] }}"
-    #     organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'search', org_id) | map(attribute='name') | first \
-    #                   if org_id is defined \
-    #                   else org_name }}"
-    #   with_items: "{{ content_host_loop_list }}"
-    #   register: change_content_hosts_result
+    - name: "Change content source for content host to lifecyle environment {{ target_lifecycle_environment }}"
+      redhat.satellite.host:
+        <<: *login
+        name: "{{ item }}"
+        lifecycle_environment: "{{ target_lifecycle_environment }}"
+        content_view: "{{ lifecycle_environment_resource_info_result.resources \
+            |         selectattr('name', 'equalto', target_lifecycle_environment) | map(attribute='content_views') | first | map(attribute='name') | first }}"
+        organization: "{{ organizations_resource_info_result.resources | selectattr('label', 'equalto', org_id) | map(attribute='name') | first \
+                      if org_id is defined \
+                      else org_name }}"
+      loop: "{{ content_host_loop_list }}"
+      register: change_content_hosts_result
 
-    # - name: Display change_content_hosts_result
-    #   ansible.builtin.debug:
-    #     var: change_content_hosts_result
+    - name: Display change_content_hosts_result
+      ansible.builtin.debug:
+        var: change_content_hosts_result
 ...
