@@ -619,7 +619,7 @@ controller_templates:
           variable: rhel_lifecycle_environment
           default: ''
           type: multiplechoice
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}} + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS7_to_RHEL7.*$') | map(attribute='name') | list }}"
           required: true
     ask_limit_on_launch: true
 
@@ -654,7 +654,7 @@ controller_templates:
           variable: rhel_lifecycle_environment
           type: multiplechoice
           default: ''
-          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS7_to_RHEL7.*$') | map(attribute='name') | list }}"
           required: true
     ask_variables_on_launch: true
     ask_limit_on_launch: true
