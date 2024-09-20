@@ -643,13 +643,17 @@ controller_templates:
       description: ''
       spec:
         - question_name: Select EL Group to convert
+          question_description: Use to limit job to selected inventory host group.
           variable: dynamic_inventory_group
           type: multiplechoice
+          default: ''
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') | list + hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') | list }}"
           required: true
         - question_name: Select target RHEL Lifecycle Environment to convert to
+          question_description: Specify RHEL Lifecycle Environment for conversion RPM package sources.
           variable: rhel_lifecycle_environment
           type: multiplechoice
+          default: ''
           choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') | list}}"
           required: true
     ask_variables_on_launch: true
