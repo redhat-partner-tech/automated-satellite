@@ -16,6 +16,15 @@
     - ansible.builtin.set_fact:
         workshop_ec2_region: "{{ ansible_ec2_instance_identity_document_region }}"
 
+    - name: Include CentOS7 Convert2RHEL CaC via vars files
+      block:
+        - name: Include Satellite centos7_c2r CaC via vars files
+          ansible.builtin.include_vars:
+            dir: config_as_code/satellite/centos7_c2r
+          delegate_to: satellite.example.com
+          delegate_facts: true
+      when: controller_cac_scenario == 'CentOS7_C2R'
+
     - name: Include RHEL8 CaC via vars files
       block:
         - name: Include Controller rhel_8_inventories CaC via vars files
