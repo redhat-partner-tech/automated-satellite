@@ -1092,12 +1092,15 @@ controller_templates:
       name: ''
       description: ''
       spec:
-        - question_name: Choose RIPU version to prepare on Controller
+        - question_name: Choose C2R/RIPU version to prepare on Controller
+          question_description: Select Convert2RHEL, RHEL8, or RHEL9 CaC scenario
           type: multiplechoice
           variable: controller_cac_scenario
           choices:
+            - CentOS7_C2R
             - RHEL8
             - RHEL9
+          default: ''
           required: true
 
   - name: UTILITY / Extend partition and resize physical volume
