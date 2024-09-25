@@ -44,7 +44,6 @@
     - name: Include CentOS to RHEL lifecycle_environments vars
       ansible.builtin.include_vars:
         file: config_as_code/satellite/centos7_c2r/lifecycle_environments.yml
-        hash_behaviour: merge
       delegate_to: satellite.example.com
 
 # Allow projects to pull collections via collections/requirements.yml
