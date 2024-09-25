@@ -44,7 +44,7 @@
     - name: Include Controller rhel_8_inventories CaC via vars files
       ansible.builtin.include_vars:
         file: config_as_code/satellite/centos7_c2r/content_views.yml
-        hash_behavior: merge
+        hash_behaviour: merge
 
 # Allow projects to pull collections via collections/requirements.yml
     - name: Turn on AWX_COLLECTIONS_ENABLED on controller
