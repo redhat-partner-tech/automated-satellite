@@ -93,7 +93,6 @@ controller_workflows:
       snapshot_create_boot_backup: true
       lvm_snapshots_action: revert
       org_id: "Default_Organization"
-      product_name_or_regex: "Community Enterprise OS 7"
     state: present
     organization: Default
     survey_enabled: true
@@ -113,18 +112,11 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         success_nodes:
-          - SERVER / Unregister
-      - identifier: SERVER / Unregister
-        unified_job_template: SERVER / Unregister
+          - SERVER / Update content host system facts on Satellite
+      - identifier: SERVER / Update content host system facts on Satellite
+        unified_job_template: SERVER / Update content host system facts on Satellite
         organization: Default
         all_parents_must_converge: false
-        success_nodes:
-          - SERVER / Register
-      - identifier: SERVER / Register
-        unified_job_template: SERVER / Register
-        organization: Default
-        all_parents_must_converge: false
-        type: inventory_source
         success_nodes: []
 
   - name: CONVERT2RHEL / 04 Commit
