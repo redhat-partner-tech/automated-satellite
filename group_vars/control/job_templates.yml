@@ -1309,6 +1309,31 @@ controller_templates:
           required: true
     ask_limit_on_launch: false
 
+  - name: OS / Update content host system facts on Satellite
+    project: Automated Management
+    playbook: subman_facts_update.yml
+    inventory: EC2 Dynamic Inventory
+    credentials:
+      - Workshop Credential
+    ask_variables_on_launch: false
+    notification_templates_started: Telemetry
+    notification_templates_success: Telemetry
+    notification_templates_error: Telemetry
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: dynamic_inventory_group
+          choices: "{{ hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^RHEL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^CentOS.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['satellite_lifecycle_environments'] | selectattr('name', 'match', '^OL.*$') | map(attribute='name') +
+                       hostvars['satellite.example.com']['all_lifecycle_environments'] | selectattr('name', 'match', 'all') | map(attribute='name') }}"
+          required: true
+    ask_limit_on_launch: true
+
   - name: Demo Job Template
     state: absent
 ...

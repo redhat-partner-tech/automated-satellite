@@ -1,0 +1,14 @@
+---
+- name: Subscription-manager - push local content host system facts to Satellite
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  strategy: ansible.builtin.free
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Update content host system facts on Satellite
+      ansible.builtin.command: >-
+        subscription-manager facts --update
+      register: subman_facts_update_res
+      changed_when: "'Successfully updated the system facts' in subman_facts_update_res.stdout"
+...
