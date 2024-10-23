@@ -1309,7 +1309,7 @@ controller_templates:
           required: true
     ask_limit_on_launch: false
 
-  - name: OS / Update content host system facts on Satellite
+  - name: SERVER / Update content host system facts on Satellite
     project: Automated Management
     playbook: subman_facts_update.yml
     inventory: EC2 Dynamic Inventory
