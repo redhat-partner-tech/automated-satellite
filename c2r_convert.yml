@@ -5,10 +5,7 @@
   gather_facts: true
   become: true
   environment:
-    CONVERT2RHEL_DISABLE_TELEMETRY: 1
-    # CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
     CONVERT2RHEL_INCOMPLETE_ROLLBACK: 1
-    CONVERT2RHEL_LATEST_VERSION: 0
   vars:
     rhsm_username: ""
     rhsm_password: ""
