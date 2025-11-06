@@ -6,6 +6,9 @@
   become: true
   vars:
     perform_resize: false
+  environment:
+    LANG: en_US.UTF-8
+    LC_ALL: en_US.UTF-8
   tasks:
     - name: "Read {{ full_storage_device_name }} storage device information (always use unit when probing)"
       community.general.parted:
