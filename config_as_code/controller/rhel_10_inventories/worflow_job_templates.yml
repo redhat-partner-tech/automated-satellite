@@ -121,7 +121,8 @@ controller_workflows:
         organization: Default
         all_parents_must_converge: false
         type: inventory_source
-        success_nodes: RHEL10 Development
+        success_nodes:
+          - RHEL10 Development
       - identifier: RHEL10 Development
         unified_job_template: RHEL10 Development
         organization: Default
