@@ -1,0 +1,4 @@
+---
+satellite_organization: "Default Organization"
+validate_certs: false
+...

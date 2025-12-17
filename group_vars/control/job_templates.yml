@@ -1076,6 +1076,7 @@ controller_templates:
             - ORACLE7_to_RHEL7
             - RHEL7_to_RHEL8
             - RHEL8_to_RHEL9
+            - RHEL9_to_RHEL10
           required: true
 
   - name: Z / CaC / Controller / C2R - RIPU scenario
@@ -1104,6 +1105,7 @@ controller_templates:
             - CentOS7_C2R
             - RHEL8
             - RHEL9
+            - RHEL10
           default: ''
           required: true
 

@@ -1,0 +1,21 @@
+---
+satellite_activation_keys:
+  # Leapp AK for RHEL 9 to RHEL 10
+  - name: "RHEL9IPU10_Dev"
+    lifecycle_environment: "RHEL9IPU10_Dev"
+    content_view: "RHEL9IPU10"
+    release_version: "9.7"
+  # Red Hat Enterprise Linux 9
+  - name: "RHEL9_Dev"
+    lifecycle_environment: "RHEL9_Dev"
+    content_view: "RHEL9"
+    release_version: "9.7"
+  - name: "RHEL9_QA"
+    lifecycle_environment: "RHEL9_QA"
+    content_view: "RHEL9"
+    release_version: "9.7"
+  - name: "RHEL9_Prod"
+    lifecycle_environment: "RHEL9_Prod"
+    content_view: "RHEL9"
+    release_version: "9.7"
+...
