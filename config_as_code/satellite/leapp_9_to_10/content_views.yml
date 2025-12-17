@@ -13,8 +13,10 @@ satellite_content_views:
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10.1
         product: Red Hat Enterprise Linux for x86_64
-      - name: Red Hat Satellite Client 6 for RHEL 10 x86_64 RPMs
-        product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Satellite Client 6 for RHEL 10 x86_64 RPMs"
+        product: "Red Hat Enterprise Linux for x86_64"
+      - name: "Red Hat Satellite 6 Client 2 for RHEL 10 x86_64 RPMs"
+        product: "Red Hat Enterprise Linux for x86_64"
   # Red Hat Enterprise Linux 9
   - name: RHEL9
     content_view: RHEL9
@@ -41,6 +43,8 @@ satellite_content_views:
     repositories:
       - name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10.1
         product: Red Hat Enterprise Linux for x86_64
-      - name: Red Hat Satellite Client 6 for RHEL 10 x86_64 RPMs
-        product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Satellite Client 6 for RHEL 10 x86_64 RPMs"
+        product: "Red Hat Enterprise Linux for x86_64"
+      - name: "Red Hat Satellite 6 Client 2 for RHEL 10 x86_64 RPMs"
+        product: "Red Hat Enterprise Linux for x86_64"
 ...
