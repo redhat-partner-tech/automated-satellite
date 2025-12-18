@@ -54,6 +54,9 @@
         - name: Include Satellite leapp_9_to_10 CaC via vars files
           ansible.builtin.include_vars:
             dir: config_as_code/satellite/leapp_9_to_10
+        - name: Include Satellite leapp_8_to_9 lifecycle environments via vars file
+          ansible.builtin.include_vars:
+            file: config_as_code/satellite/leapp_8_to_9/lifecycle_environments.yml
 
   roles:
     - {role: infra.controller_configuration.inventories, when: controller_inventories is defined}
