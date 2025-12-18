@@ -1,5 +1,5 @@
 ---
-- name: Patch/Update OS 
+- name: Patch/Update OS
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
   strategy: free
   gather_facts: false
@@ -69,7 +69,8 @@
       ansible.builtin.dnf:
         name: '*'
         state: latest # noqa package-latest
-        exclude: "{{ exclude_package_list | }}"
+        exclude:
+          - "{{ exclude_package_list }}"
       check_mode: "{{ update_check_only }}"
       register: package_updates_register
       when: ansible_distribution_major_version | int >= 8

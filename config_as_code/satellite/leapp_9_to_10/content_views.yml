@@ -1,11 +1,11 @@
 ---
 satellite_content_views:
   # Red Hat Enterprise Linux IPU 8 to 9
-  - name: RHEL8IPU92
-    content_view: RHEL8IPU92
+  - name: RHEL96IPU10
+    content_view: RHEL96IPU10
     content_view_update: true
     lifecycle_environments:
-      - "RHEL8IPU92_Dev"
+      - "RHEL96IPU10_Dev"
     repositories:
       - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8.8
         product: Red Hat Enterprise Linux for x86_64
@@ -17,19 +17,27 @@ satellite_content_views:
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
         product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10.0"
+        product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Enterprise Linux 10 for x86_64 - AppStream RPMs 10.0"
+        product: Red Hat Enterprise Linux for x86_64
   # Red Hat Enterprise Linux 9
-  - name: RHEL9
-    content_view: RHEL9
+  - name: RHEL10
+    content_view: RHEL10
     content_view_update: true
     lifecycle_environments:
-      - "RHEL9_Dev"
-      - "RHEL9_QA"
-      - "RHEL9_Prod"
+      - "RHEL10_Dev"
+      - "RHEL10_QA"
+      - "RHEL10_Prod"
     repositories:
       - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9.6
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9.6
         product: Red Hat Enterprise Linux for x86_64
       - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 RPMs
+        product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10.0"
+        product: Red Hat Enterprise Linux for x86_64
+      - name: "Red Hat Enterprise Linux 10 for x86_64 - AppStream RPMs 10.0"
         product: Red Hat Enterprise Linux for x86_64
 ...
