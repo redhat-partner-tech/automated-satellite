@@ -1,5 +1,5 @@
 ---
-- name: Patch/Update OS 
+- name: Patch/Update OS
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
   strategy: free
   gather_facts: false
