@@ -16,6 +16,8 @@ satellite_products:
         releasever: "9.7"
       - name: "Red Hat Enterprise Linux 10 for x86_64 - BaseOS (RPMs)"
         releasever: "10.1"
+      - name: "Red Hat Enterprise Linux 10 for x86_64 - AppStream (RPMs)"
+        releasever: "10.1"
       - name: "Red Hat Satellite Client 6 for RHEL 10 x86_64 (RPMs)"
         product: "Red Hat Enterprise Linux for x86_64"
       - name: "Red Hat Satellite 6 Client 2 for RHEL 10 x86_64 (RPMs)"
