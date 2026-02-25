@@ -5,9 +5,12 @@
   gather_facts: true
   become: true
   environment:
-    CONVERT2RHEL_DISABLE_TELEMETRY: 1
-    # CONVERT2RHEL_ALLOW_OLDER_VERSION: 1
-    # CONVERT2RHEL_UNSUPPORTED_INCOMPLETE_ROLLBACK: 1
+    # The CONVERT2RHEL_OUTDATED_PACKAGE_CHECK_SKIP and CONVERT2RHEL_ALLOW_OLDER_VERSION
+    # variables are needed when an older version of convert2rhel is used. The
+    # package-up-to-date and convert2rhel-latest-version checks inhibit the
+    # conversion if not passing but can be overriden.
+    CONVERT2RHEL_OUTDATED_PACKAGE_CHECK_SKIP: 1
+    CONVERT2RHEL_ALLOW_OLDER_VERSION: 1
   vars:
     rhsm_username: ""
     rhsm_password: ""

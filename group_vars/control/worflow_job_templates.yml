@@ -4,8 +4,7 @@ controller_workflows:
     description: Workflow for Snapshot and Pre-conversion analysis of EL systems
     extra_vars:
       org_id: "Default_Organization"
-      convert_convert2rhel_opts: '--no-rpm-va'
-      convert_reboot_requested: true
+      convert_convert2rhel_opts: ''
       lvm_snapshots_action: create
     inventory: EC2 Dynamic Inventory
     state: present
