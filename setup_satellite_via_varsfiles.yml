@@ -34,10 +34,15 @@
         dir: config_as_code/satellite/leapp_7_to_8
       when: satellite_cac_scenario == 'RHEL7_to_RHEL8'
 
-    - name: Include RHEL7 to RHEL8 IPU Satellite CaC via vars files
+    - name: Include RHEL8 to RHEL9 IPU Satellite CaC via vars files
       ansible.builtin.include_vars:
         dir: config_as_code/satellite/leapp_8_to_9
       when: satellite_cac_scenario == 'RHEL8_to_RHEL9'
+
+    - name: Include RHEL9 to RHEL10 IPU Satellite CaC via vars files
+      ansible.builtin.include_vars:
+        dir: config_as_code/satellite/leapp_9_to_10
+      when: satellite_cac_scenario == 'RHEL9_to_RHEL10'
 
     - name: Include satellite_repository_sync_subtasks
       ansible.builtin.include_tasks: satellite_repository_sync_subtasks.yml
