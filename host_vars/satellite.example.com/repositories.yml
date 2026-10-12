@@ -12,48 +12,59 @@ satellite_products:
       - name: CentOS-7 - Base RPMs x86_64
         content_type: yum
         url: https://vault.centos.org/7.9.2009/os/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-CentOS-7
       - name: CentOS-7 - Updates RPMs x86_64
         content_type: yum
         url: https://vault.centos.org/7.9.2009/updates/x86_64/
+        download_policy: on_demand
       - name: CentOS-7 - Extras RPMs x86_64
         content_type: yum
         url: https://vault.centos.org/7.9.2009/extras/x86_64/
+        download_policy: on_demand
   - name: Oracle Linux 7
     repositories:
       - name: Oracle Linux 7Server Latest x86_64
         content_type: yum
         url: https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-oracle-ol7
       - name: Oracle Linux 7Server Optional Latest x64_64
         content_type: yum
         url: https://yum.oracle.com/repo/OracleLinux/OL7/optional/latest/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-oracle-ol7
       - name: Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7Server x86_64
         content_type: yum
         url: https://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-oracle-ol7
       - name: Latest Unbreakable Enterprise Kernel Release 5 for Oracle Linux 7Server x86_64
         content_type: yum
         url: https://yum.oracle.com/repo/OracleLinux/OL7/UEKR5/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-oracle-ol7
       - name: Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7Server x86_64
         content_type: yum
         url: https://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/x86_64/
+        download_policy: on_demand
         gpg_key: RPM-GPG-KEY-oracle-ol7
   - name: Extra Packages for Enterprise Linux 7
     repositories:
       - name:  Extra Packages for Enterprise Linux 7 x86_64
         content_type: yum
         url: https://download.fedoraproject.org/pub/epel/7/x86_64/
+        download_policy: on_demand
   - name: Extra Packages for Enterprise Linux 8
     repositories:
       - name: Extra Packages for Enterprise Linux 8 x86_64
         content_type: yum
         url: https://download.fedoraproject.org/pub/epel/8/Everything/x86_64/
+        download_policy: on_demand
   - name: Foreman Client
     repositories:
       - name: Foreman Client CentOS 7
         url: https://yum.theforeman.org/client/3.9/el7/x86_64/
         content_type: yum
+        download_policy: on_demand
 ...
